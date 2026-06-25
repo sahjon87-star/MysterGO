@@ -1,0 +1,509 @@
+
+/app/applet/firestore.rules
+  146:31  warning  Insecure open read rule detected. Warn on open reads in production  @firebase/security-rules/no-open-reads
+  147:29  warning  Insecure open read rule detected. Warn on open reads in production  @firebase/security-rules/no-open-reads
+
+/app/applet/public/firebase-messaging-sw.js
+   1:1   error  'importScripts' is not defined  no-undef
+   2:1   error  'importScripts' is not defined  no-undef
+   4:1   error  'firebase' is not defined       no-undef
+  13:19  error  'firebase' is not defined       no-undef
+  16:3   error  'console' is not defined        no-undef
+  23:3   error  'self' is not defined           no-undef
+
+/app/applet/src/App.tsx
+  15:10  warning  'SetupRequired' is defined but never used     @typescript-eslint/no-unused-vars
+  16:10  warning  'isConfigured' is defined but never used      @typescript-eslint/no-unused-vars
+  62:11  warning  'profile' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/ErrorBoundary.tsx
+  39:16  warning  'e' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/admin/AdminBookings.tsx
+   2:41  warning  'orderBy' is defined but never used  @typescript-eslint/no-unused-vars
+   6:3   warning  'Search' is defined but never used   @typescript-eslint/no-unused-vars
+  16:3   warning  'Check' is defined but never used    @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/admin/AdminCategories.tsx
+  5:24  warning  'LayoutGrid' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/admin/AdminDashboard.tsx
+   2:29  warning  'onSnapshot' is defined but never used                 @typescript-eslint/no-unused-vars
+   6:3   warning  'Briefcase' is defined but never used                  @typescript-eslint/no-unused-vars
+  11:3   warning  'ArrowDownRight' is defined but never used             @typescript-eslint/no-unused-vars
+  38:10  warning  'loading' is assigned a value but never used           @typescript-eslint/no-unused-vars
+  47:11  warning  'withdrawalsCount' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/admin/AdminLayout.tsx
+  10:3   warning  'Search' is defined but never used            @typescript-eslint/no-unused-vars
+  12:3   warning  'AlertCircle' is defined but never used       @typescript-eslint/no-unused-vars
+  13:3   warning  'TrendingUp' is defined but never used        @typescript-eslint/no-unused-vars
+  47:11  warning  'profile' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  48:11  warning  't' is assigned a value but never used        @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/admin/AdminMap.tsx
+  8:18  warning  'Briefcase' is defined but never used  @typescript-eslint/no-unused-vars
+  8:29  warning  'User' is defined but never used       @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/admin/AdminNotifications.tsx
+  2:48  warning  'orderBy' is defined but never used       @typescript-eslint/no-unused-vars
+  8:3   warning  'CheckCircle2' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/admin/AdminOffers.tsx
+  2:15  warning  'getDoc' is defined but never used       @typescript-eslint/no-unused-vars
+  5:10  warning  'Megaphone' is defined but never used    @typescript-eslint/no-unused-vars
+  5:27  warning  'Check' is defined but never used        @typescript-eslint/no-unused-vars
+  5:34  warning  'AlertCircle' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/admin/AdminProviders.tsx
+   2:48  warning  'orderBy' is defined but never used       @typescript-eslint/no-unused-vars
+   5:3   warning  'ShieldCheck' is defined but never used   @typescript-eslint/no-unused-vars
+   6:3   warning  'Check' is defined but never used         @typescript-eslint/no-unused-vars
+  10:3   warning  'AlertCircle' is defined but never used   @typescript-eslint/no-unused-vars
+  12:3   warning  'User' is defined but never used          @typescript-eslint/no-unused-vars
+  13:3   warning  'CheckCircle2' is defined but never used  @typescript-eslint/no-unused-vars
+  14:3   warning  'XCircle' is defined but never used       @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/admin/AdminSettings.tsx
+   5:3   warning  'Settings' is defined but never used  @typescript-eslint/no-unused-vars
+  14:10  warning  'motion' is defined but never used    @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/admin/AdminShops.tsx
+   6:3   warning  'Check' is defined but never used         @typescript-eslint/no-unused-vars
+  10:3   warning  'AlertCircle' is defined but never used   @typescript-eslint/no-unused-vars
+  13:3   warning  'CheckCircle2' is defined but never used  @typescript-eslint/no-unused-vars
+  14:3   warning  'XCircle' is defined but never used       @typescript-eslint/no-unused-vars
+  21:10  warning  'getInitials' is defined but never used   @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/admin/AdminTransactions.tsx
+   2:41   warning  'orderBy' is defined but never used       @typescript-eslint/no-unused-vars
+   2:116  warning  'getDoc' is defined but never used        @typescript-eslint/no-unused-vars
+   5:3    warning  'CreditCard' is defined but never used    @typescript-eslint/no-unused-vars
+   8:3    warning  'Search' is defined but never used        @typescript-eslint/no-unused-vars
+   9:3    warning  'Filter' is defined but never used        @typescript-eslint/no-unused-vars
+  12:3    warning  'TrendingDown' is defined but never used  @typescript-eslint/no-unused-vars
+  17:3    warning  'Eye' is defined but never used           @typescript-eslint/no-unused-vars
+  21:23   warning  'UserProfile' is defined but never used   @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/admin/AdminUsers.tsx
+   2:73  warning  'deleteDoc' is defined but never used        @typescript-eslint/no-unused-vars
+   5:3   warning  'Users' is defined but never used            @typescript-eslint/no-unused-vars
+   7:3   warning  'MoreVertical' is defined but never used     @typescript-eslint/no-unused-vars
+   9:3   warning  'Shield' is defined but never used           @typescript-eslint/no-unused-vars
+  10:3   warning  'Trash2' is defined but never used           @typescript-eslint/no-unused-vars
+  13:3   warning  'XCircle' is defined but never used          @typescript-eslint/no-unused-vars
+  18:18  warning  'AnimatePresence' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/admin/AdminWithdrawals.tsx
+   9:3   warning  'ArrowUpRight' is defined but never used       @typescript-eslint/no-unused-vars
+  14:18  warning  'AnimatePresence' is defined but never used    @typescript-eslint/no-unused-vars
+  41:10  warning  'feedback' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/auth/OnboardingPage.tsx
+   8:71  warning  'Clock' is defined but never used       @typescript-eslint/no-unused-vars
+   8:78  warning  'Briefcase' is defined but never used   @typescript-eslint/no-unused-vars
+  14:11  warning  't' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/auth/SignupPage.tsx
+   1:27  warning  'useEffect' is defined but never used   @typescript-eslint/no-unused-vars
+   4:40  warning  'updateDoc' is defined but never used   @typescript-eslint/no-unused-vars
+   4:51  warning  'increment' is defined but never used   @typescript-eslint/no-unused-vars
+   4:62  warning  'getDocs' is defined but never used     @typescript-eslint/no-unused-vars
+   4:71  warning  'collection' is defined but never used  @typescript-eslint/no-unused-vars
+   4:83  warning  'query' is defined but never used       @typescript-eslint/no-unused-vars
+   4:90  warning  'where' is defined but never used       @typescript-eslint/no-unused-vars
+  15:11  warning  't' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/customer/BookingStatusPage.tsx
+   3:106  warning  'addDoc' is defined but never used      @typescript-eslint/no-unused-vars
+  16:11   warning  't' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/customer/BookingsPage.tsx
+   8:30  warning  'ChevronRight' is defined but never used     @typescript-eslint/no-unused-vars
+   9:26  warning  'AlertCircle' is defined but never used      @typescript-eslint/no-unused-vars
+   9:39  warning  'ShoppingBag' is defined but never used      @typescript-eslint/no-unused-vars
+  10:3   warning  'Trash2' is defined but never used           @typescript-eslint/no-unused-vars
+  10:11  warning  'Filter' is defined but never used           @typescript-eslint/no-unused-vars
+  12:18  warning  'AnimatePresence' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/customer/ChatsPage.tsx
+   7:26  warning  'ArrowLeft' is defined but never used          @typescript-eslint/no-unused-vars
+   7:37  warning  'MoreVertical' is defined but never used       @typescript-eslint/no-unused-vars
+   8:3   warning  'Phone' is defined but never used              @typescript-eslint/no-unused-vars
+   8:10  warning  'Video' is defined but never used              @typescript-eslint/no-unused-vars
+   8:17  warning  'Send' is defined but never used               @typescript-eslint/no-unused-vars
+   8:23  warning  'Smile' is defined but never used              @typescript-eslint/no-unused-vars
+   8:30  warning  'Paperclip' is defined but never used          @typescript-eslint/no-unused-vars
+   8:41  warning  'Clock' is defined but never used              @typescript-eslint/no-unused-vars
+  11:10  warning  'cn' is defined but never used                 @typescript-eslint/no-unused-vars
+  15:9   warning  'navigate' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/customer/CustomerBookings.tsx
+  15:11  warning  't' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/customer/CustomerHome.tsx
+  3:45  warning  'limit' is defined but never used   @typescript-eslint/no-unused-vars
+  6:45  warning  'Wrench' is defined but never used  @typescript-eslint/no-unused-vars
+  6:65  warning  'Gift' is defined but never used    @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/customer/CustomerNotifications.tsx
+  14:11  warning  't' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/customer/CustomerProfile.tsx
+  9:3  warning  'User' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/customer/CustomerSearch.tsx
+  15:11  warning  't' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/customer/CustomerSettings.tsx
+   6:3   warning  'User' is defined but never used                          @typescript-eslint/no-unused-vars
+   9:3   warning  'Globe' is defined but never used                         @typescript-eslint/no-unused-vars
+  14:3   warning  'Info' is defined but never used                          @typescript-eslint/no-unused-vars
+  15:3   warning  'Smartphone' is defined but never used                    @typescript-eslint/no-unused-vars
+  17:3   warning  'Map' is defined but never used                           @typescript-eslint/no-unused-vars
+  21:10  warning  'motion' is defined but never used                        @typescript-eslint/no-unused-vars
+  21:18  warning  'AnimatePresence' is defined but never used               @typescript-eslint/no-unused-vars
+  30:26  warning  't' is assigned a value but never used                    @typescript-eslint/no-unused-vars
+  33:9   warning  'updateProfileFields' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  41:14  warning  'err' is defined but never used                           @typescript-eslint/no-unused-vars
+  50:14  warning  'err' is defined but never used                           @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/customer/CustomerShops.tsx
+  3:22  warning  'query' is defined but never used   @typescript-eslint/no-unused-vars
+  3:38  warning  'where' is defined but never used   @typescript-eslint/no-unused-vars
+  6:18  warning  'Store' is defined but never used   @typescript-eslint/no-unused-vars
+  6:25  warning  'MapPin' is defined but never used  @typescript-eslint/no-unused-vars
+  6:33  warning  'Star' is defined but never used    @typescript-eslint/no-unused-vars
+  7:10  warning  'motion' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/customer/CustomerWallet.tsx
+   6:10  warning  'Wallet' is defined but never used      @typescript-eslint/no-unused-vars
+  16:11  warning  't' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/customer/LiveMap.tsx
+  5:50  warning  'useMap' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/customer/NewBookingPage.tsx
+  42:11  warning  't' is assigned a value but never used        @typescript-eslint/no-unused-vars
+  53:16  warning  'setTime' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/customer/ProfilePage.tsx
+    1:17  warning  'useState' is defined but never used    @typescript-eslint/no-unused-vars
+    5:3   warning  'User' is defined but never used        @typescript-eslint/no-unused-vars
+    6:25  warning  'Bell' is defined but never used        @typescript-eslint/no-unused-vars
+    6:31  warning  'HelpCircle' is defined but never used  @typescript-eslint/no-unused-vars
+    7:3   warning  'MapPin' is defined but never used      @typescript-eslint/no-unused-vars
+    7:30  warning  'CreditCard' is defined but never used  @typescript-eslint/no-unused-vars
+  103:33  warning  'gIdx' is defined but never used        @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/customer/SearchPage.tsx
+  6:18  warning  'MapPin' is defined but never used           @typescript-eslint/no-unused-vars
+  6:34  warning  'Star' is defined but never used             @typescript-eslint/no-unused-vars
+  8:10  warning  'motion' is defined but never used           @typescript-eslint/no-unused-vars
+  8:18  warning  'AnimatePresence' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/customer/ShopDetailsPage.tsx
+   3:49  warning  'getDocs' is defined but never used        @typescript-eslint/no-unused-vars
+   7:35  warning  'Clock' is defined but never used          @typescript-eslint/no-unused-vars
+   8:3   warning  'MessageSquare' is defined but never used  @typescript-eslint/no-unused-vars
+   8:32  warning  'ChevronRight' is defined but never used   @typescript-eslint/no-unused-vars
+   9:35  warning  'Star' is defined but never used           @typescript-eslint/no-unused-vars
+  11:10  warning  'motion' is defined but never used         @typescript-eslint/no-unused-vars
+  12:10  warning  'cn' is defined but never used             @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/customer/ShopProfilePage.tsx
+   7:51  warning  'CheckCircle2' is defined but never used  @typescript-eslint/no-unused-vars
+  10:26  warning  'getInitials' is defined but never used   @typescript-eslint/no-unused-vars
+  17:11  warning  't' is assigned a value but never used    @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/customer/WorkerCard.tsx
+  2:16  warning  'MapPin' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/customer/WorkerDetailsPage.tsx
+   3:23  warning  'collection' is defined but never used        @typescript-eslint/no-unused-vars
+   3:35  warning  'query' is defined but never used             @typescript-eslint/no-unused-vars
+   3:42  warning  'where' is defined but never used             @typescript-eslint/no-unused-vars
+   3:49  warning  'getDocs' is defined but never used           @typescript-eslint/no-unused-vars
+   7:20  warning  'MapPin' is defined but never used            @typescript-eslint/no-unused-vars
+   8:26  warning  'Info' is defined but never used              @typescript-eslint/no-unused-vars
+   9:3   warning  'StarHalf' is defined but never used          @typescript-eslint/no-unused-vars
+  13:10  warning  'cn' is defined but never used                @typescript-eslint/no-unused-vars
+  19:11  warning  'profile' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/customer/WorkerProfilePage.tsx
+   7:10  warning  'motion' is defined but never used      @typescript-eslint/no-unused-vars
+  15:11  warning  't' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/legal/HelpCenter.tsx
+   9:3   warning  'ArrowRight' is defined but never used       @typescript-eslint/no-unused-vars
+  10:3   warning  'HelpCircle' is defined but never used       @typescript-eslint/no-unused-vars
+  11:3   warning  'FileText' is defined but never used         @typescript-eslint/no-unused-vars
+  18:10  warning  'motion' is defined but never used           @typescript-eslint/no-unused-vars
+  18:18  warning  'AnimatePresence' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/legal/PrivacyPolicy.tsx
+  2:10  warning  'motion' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/legal/TermsOfService.tsx
+  3:23  warning  'Shield' is defined but never used       @typescript-eslint/no-unused-vars
+  3:50  warning  'Lock' is defined but never used         @typescript-eslint/no-unused-vars
+  3:56  warning  'Globe' is defined but never used        @typescript-eslint/no-unused-vars
+  3:63  warning  'AlertCircle' is defined but never used  @typescript-eslint/no-unused-vars
+  4:10  warning  'motion' is defined but never used       @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/provider/JobDetailsPage.tsx
+    3:55  warning  'getDoc' is defined but never used                @typescript-eslint/no-unused-vars
+    3:63  warning  'arrayUnion' is defined but never used            @typescript-eslint/no-unused-vars
+    3:87  warning  'addDoc' is defined but never used                @typescript-eslint/no-unused-vars
+    9:3   warning  'Clock' is defined but never used                 @typescript-eslint/no-unused-vars
+   18:3   warning  'AlertCircle' is defined but never used           @typescript-eslint/no-unused-vars
+   35:11  warning  't' is assigned a value but never used            @typescript-eslint/no-unused-vars
+  116:11  warning  'expectedOtp' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/provider/ProviderDashboard.tsx
+   3:18  warning  'AnimatePresence' is defined but never used  @typescript-eslint/no-unused-vars
+   4:16  warning  'ShieldCheck' is defined but never used      @typescript-eslint/no-unused-vars
+   4:29  warning  'Clock' is defined but never used            @typescript-eslint/no-unused-vars
+  74:14  warning  'err' is defined but never used              @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/provider/ProviderHome.tsx
+   3:48  warning  'getDocs' is defined but never used                 @typescript-eslint/no-unused-vars
+   3:64  warning  'orderBy' is defined but never used                 @typescript-eslint/no-unused-vars
+  11:3   warning  'MapPin' is defined but never used                  @typescript-eslint/no-unused-vars
+  12:3   warning  'Clock' is defined but never used                   @typescript-eslint/no-unused-vars
+  17:3   warning  'MoreHorizontal' is defined but never used          @typescript-eslint/no-unused-vars
+  19:3   warning  'TrendingDown' is defined but never used            @typescript-eslint/no-unused-vars
+  31:11  warning  't' is assigned a value but never used              @typescript-eslint/no-unused-vars
+  34:10  warning  'recentPayouts' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  45:14  warning  'error' is defined but never used                   @typescript-eslint/no-unused-vars
+  93:9   warning  'stats' is assigned a value but never used          @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/provider/ProviderInsights.tsx
+   3:45  warning  'limit' is defined but never used             @typescript-eslint/no-unused-vars
+   3:52  warning  'orderBy' is defined but never used           @typescript-eslint/no-unused-vars
+   8:3   warning  'TrendingUp' is defined but never used        @typescript-eslint/no-unused-vars
+   9:3   warning  'TrendingDown' is defined but never used      @typescript-eslint/no-unused-vars
+  10:3   warning  'Briefcase' is defined but never used         @typescript-eslint/no-unused-vars
+  14:3   warning  'ChevronRight' is defined but never used      @typescript-eslint/no-unused-vars
+  17:3   warning  'Calendar' is defined but never used          @typescript-eslint/no-unused-vars
+  24:19  warning  'Transaction' is defined but never used       @typescript-eslint/no-unused-vars
+  30:11  warning  't' is assigned a value but never used        @typescript-eslint/no-unused-vars
+  32:10  warning  'loading' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/provider/ProviderJobs.tsx
+   3:81  warning  'getDocs' is defined but never used       @typescript-eslint/no-unused-vars
+   3:90  warning  'limit' is defined but never used         @typescript-eslint/no-unused-vars
+   3:97  warning  'orderBy' is defined but never used       @typescript-eslint/no-unused-vars
+   7:36  warning  'CheckCircle2' is defined but never used  @typescript-eslint/no-unused-vars
+   7:50  warning  'ChevronRight' is defined but never used  @typescript-eslint/no-unused-vars
+   7:64  warning  'Filter' is defined but never used        @typescript-eslint/no-unused-vars
+   7:72  warning  'AlertCircle' is defined but never used   @typescript-eslint/no-unused-vars
+  16:11  warning  't' is assigned a value but never used    @typescript-eslint/no-unused-vars
+  51:14  warning  'error' is defined but never used         @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/provider/ProviderKYC.tsx
+   7:23  warning  'Upload' is defined but never used           @typescript-eslint/no-unused-vars
+   7:73  warning  'AlertCircle' is defined but never used      @typescript-eslint/no-unused-vars
+   8:18  warning  'AnimatePresence' is defined but never used  @typescript-eslint/no-unused-vars
+  14:11  warning  't' is assigned a value but never used       @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/provider/ProviderLayout.tsx
+  3:99  warning  'ClipboardList' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/provider/ProviderNotifications.tsx
+   8:3   warning  'orderBy' is defined but never used      @typescript-eslint/no-unused-vars
+  13:3   warning  'getDocs' is defined but never used      @typescript-eslint/no-unused-vars
+  24:3   warning  'AlertCircle' is defined but never used  @typescript-eslint/no-unused-vars
+  25:3   warning  'Trash2' is defined but never used       @typescript-eslint/no-unused-vars
+  30:3   warning  'Star' is defined but never used         @typescript-eslint/no-unused-vars
+  39:11  warning  't' is assigned a value but never used   @typescript-eslint/no-unused-vars
+  78:14  warning  'err' is defined but never used          @typescript-eslint/no-unused-vars
+  89:14  warning  'err' is defined but never used          @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/provider/ProviderProfile.tsx
+   6:3   warning  'User' is defined but never used        @typescript-eslint/no-unused-vars
+   7:3   warning  'MapPin' is defined but never used      @typescript-eslint/no-unused-vars
+   8:3   warning  'Phone' is defined but never used       @typescript-eslint/no-unused-vars
+   9:3   warning  'Mail' is defined but never used        @typescript-eslint/no-unused-vars
+  11:3   warning  'Briefcase' is defined but never used   @typescript-eslint/no-unused-vars
+  15:3   warning  'Clock' is defined but never used       @typescript-eslint/no-unused-vars
+  16:3   warning  'Settings' is defined but never used    @typescript-eslint/no-unused-vars
+  25:3   warning  'Heart' is defined but never used       @typescript-eslint/no-unused-vars
+  27:10  warning  'motion' is defined but never used      @typescript-eslint/no-unused-vars
+  29:10  warning  'doc' is defined but never used         @typescript-eslint/no-unused-vars
+  29:15  warning  'getDoc' is defined but never used      @typescript-eslint/no-unused-vars
+  29:58  warning  'limit' is defined but never used       @typescript-eslint/no-unused-vars
+  35:11  warning  't' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/provider/ProviderSettings.tsx
+   6:15  warning  'SettingsIcon' is defined but never used  @typescript-eslint/no-unused-vars
+   8:3   warning  'MapPin' is defined but never used        @typescript-eslint/no-unused-vars
+  10:3   warning  'Globe' is defined but never used         @typescript-eslint/no-unused-vars
+  13:3   warning  'Sun' is defined but never used           @typescript-eslint/no-unused-vars
+  16:3   warning  'Camera' is defined but never used        @typescript-eslint/no-unused-vars
+  17:3   warning  'LogOut' is defined but never used        @typescript-eslint/no-unused-vars
+  18:3   warning  'Trash2' is defined but never used        @typescript-eslint/no-unused-vars
+  55:14  warning  'err' is defined but never used           @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/provider/ProviderWallet.tsx
+   3:48  warning  'addDoc' is defined but never used         @typescript-eslint/no-unused-vars
+   3:78  warning  'getDocs' is defined but never used        @typescript-eslint/no-unused-vars
+   8:3   warning  'Wallet' is defined but never used         @typescript-eslint/no-unused-vars
+  10:3   warning  'ArrowDownLeft' is defined but never used  @typescript-eslint/no-unused-vars
+  19:3   warning  'AlertCircle' is defined but never used    @typescript-eslint/no-unused-vars
+  32:11  warning  't' is assigned a value but never used     @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/shared/ChatPage.tsx
+    6:69  warning  'Camera' is defined but never used            @typescript-eslint/no-unused-vars
+    7:18  warning  'AnimatePresence' is defined but never used   @typescript-eslint/no-unused-vars
+    9:10  warning  'formatCurrency' is defined but never used    @typescript-eslint/no-unused-vars
+   16:17  warning  'profile' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  171:28  warning  'index' is defined but never used             @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/shared/ErrorBoundary.tsx
+  1:17  warning  'Component' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/shared/Logo.tsx
+  2:10  warning  'Search' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/shared/ReferralPage.tsx
+   4:61  warning  'limit' is defined but never used                               @typescript-eslint/no-unused-vars
+  12:3   warning  'TrendingUp' is defined but never used                          @typescript-eslint/no-unused-vars
+  14:3   warning  'ArrowRight' is defined but never used                          @typescript-eslint/no-unused-vars
+  77:13  error    There is no `cause` attached to the symptom error being thrown  preserve-caught-error
+
+/app/applet/src/components/shop/AddProductPage.tsx
+   7:3  warning  'Package' is defined but never used  @typescript-eslint/no-unused-vars
+   8:3  warning  'Tag' is defined but never used      @typescript-eslint/no-unused-vars
+  11:3  warning  'Upload' is defined but never used   @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/shop/OrderDetailsPage.tsx
+   3:83  warning  'addDoc' is defined but never used           @typescript-eslint/no-unused-vars
+   8:3   warning  'ShoppingBag' is defined but never used      @typescript-eslint/no-unused-vars
+   9:3   warning  'Clock' is defined but never used            @typescript-eslint/no-unused-vars
+  13:3   warning  'ShieldCheck' is defined but never used      @typescript-eslint/no-unused-vars
+  19:3   warning  'AlertCircle' is defined but never used      @typescript-eslint/no-unused-vars
+  23:3   warning  'DollarSign' is defined but never used       @typescript-eslint/no-unused-vars
+  25:10  warning  'motion' is defined but never used           @typescript-eslint/no-unused-vars
+  25:18  warning  'AnimatePresence' is defined but never used  @typescript-eslint/no-unused-vars
+  35:11  warning  't' is assigned a value but never used       @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/shop/ShopDashboard.tsx
+  3:10  warning  'motion' is defined but never used   @typescript-eslint/no-unused-vars
+  4:23  warning  'Package' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/shop/ShopHome.tsx
+   3:55  warning  'orderBy' is defined but never used          @typescript-eslint/no-unused-vars
+  13:3   warning  'Clock' is defined but never used            @typescript-eslint/no-unused-vars
+  15:3   warning  'AlertCircle' is defined but never used      @typescript-eslint/no-unused-vars
+  19:3   warning  'Zap' is defined but never used              @typescript-eslint/no-unused-vars
+  21:18  warning  'AnimatePresence' is defined but never used  @typescript-eslint/no-unused-vars
+  22:26  warning  'Transaction' is defined but never used      @typescript-eslint/no-unused-vars
+  29:11  warning  't' is assigned a value but never used       @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/shop/ShopInsights.tsx
+   3:45  warning  'orderBy' is defined but never used                  @typescript-eslint/no-unused-vars
+   3:54  warning  'limit' is defined but never used                    @typescript-eslint/no-unused-vars
+  11:3   warning  'BarChart2' is defined but never used                @typescript-eslint/no-unused-vars
+  13:3   warning  'ChevronRight' is defined but never used             @typescript-eslint/no-unused-vars
+  19:3   warning  'ArrowUpRight' is defined but never used             @typescript-eslint/no-unused-vars
+  20:3   warning  'TrendingDown' is defined but never used             @typescript-eslint/no-unused-vars
+  22:18  warning  'AnimatePresence' is defined but never used          @typescript-eslint/no-unused-vars
+  29:11  warning  't' is assigned a value but never used               @typescript-eslint/no-unused-vars
+  31:10  warning  'loading' is assigned a value but never used         @typescript-eslint/no-unused-vars
+  34:10  warning  'activeRange' is assigned a value but never used     @typescript-eslint/no-unused-vars
+  34:23  warning  'setActiveRange' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/shop/ShopInventory.tsx
+   3:75  warning  'limit' is defined but never used            @typescript-eslint/no-unused-vars
+   3:82  warning  'orderBy' is defined but never used          @typescript-eslint/no-unused-vars
+   8:3   warning  'Package' is defined but never used          @typescript-eslint/no-unused-vars
+  11:3   warning  'Edit3' is defined but never used            @typescript-eslint/no-unused-vars
+  13:3   warning  'Filter' is defined but never used           @typescript-eslint/no-unused-vars
+  14:3   warning  'ChevronRight' is defined but never used     @typescript-eslint/no-unused-vars
+  15:3   warning  'AlertCircle' is defined but never used      @typescript-eslint/no-unused-vars
+  16:3   warning  'MoreVertical' is defined but never used     @typescript-eslint/no-unused-vars
+  22:18  warning  'AnimatePresence' is defined but never used  @typescript-eslint/no-unused-vars
+  30:11  warning  't' is assigned a value but never used       @typescript-eslint/no-unused-vars
+  70:16  warning  'err' is defined but never used              @typescript-eslint/no-unused-vars
+  80:14  warning  'err' is defined but never used              @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/shop/ShopKYC.tsx
+   9:3   warning  'Upload' is defined but never used       @typescript-eslint/no-unused-vars
+  12:3   warning  'Info' is defined but never used         @typescript-eslint/no-unused-vars
+  14:3   warning  'AlertCircle' is defined but never used  @typescript-eslint/no-unused-vars
+  18:3   warning  'MapPin' is defined but never used       @typescript-eslint/no-unused-vars
+  26:11  warning  't' is assigned a value but never used   @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/shop/ShopLayout.tsx
+  45:11  warning  't' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/shop/ShopNotifications.tsx
+  19:3   warning  'Package' is defined but never used      @typescript-eslint/no-unused-vars
+  23:3   warning  'AlertCircle' is defined but never used  @typescript-eslint/no-unused-vars
+  28:3   warning  'Star' is defined but never used         @typescript-eslint/no-unused-vars
+  37:11  warning  't' is assigned a value but never used   @typescript-eslint/no-unused-vars
+  76:14  warning  'err' is defined but never used          @typescript-eslint/no-unused-vars
+  86:14  warning  'err' is defined but never used          @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/shop/ShopOrders.tsx
+   3:48  warning  'limit' is defined but never used            @typescript-eslint/no-unused-vars
+   3:55  warning  'orderBy' is defined but never used          @typescript-eslint/no-unused-vars
+   8:3   warning  'ShoppingBag' is defined but never used      @typescript-eslint/no-unused-vars
+  11:3   warning  'ChevronRight' is defined but never used     @typescript-eslint/no-unused-vars
+  12:3   warning  'Package' is defined but never used          @typescript-eslint/no-unused-vars
+  13:3   warning  'Loader2' is defined but never used          @typescript-eslint/no-unused-vars
+  14:3   warning  'Filter' is defined but never used           @typescript-eslint/no-unused-vars
+  15:3   warning  'Search' is defined but never used           @typescript-eslint/no-unused-vars
+  17:3   warning  'CheckCircle2' is defined but never used     @typescript-eslint/no-unused-vars
+  18:3   warning  'XCircle' is defined but never used          @typescript-eslint/no-unused-vars
+  21:18  warning  'AnimatePresence' is defined but never used  @typescript-eslint/no-unused-vars
+  28:11  warning  't' is assigned a value but never used       @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/shop/ShopProfile.tsx
+   6:3   warning  'User' is defined but never used         @typescript-eslint/no-unused-vars
+   8:3   warning  'Phone' is defined but never used        @typescript-eslint/no-unused-vars
+   9:3   warning  'Mail' is defined but never used         @typescript-eslint/no-unused-vars
+  15:3   warning  'ChevronLeft' is defined but never used  @typescript-eslint/no-unused-vars
+  20:3   warning  'History' is defined but never used      @typescript-eslint/no-unused-vars
+  28:10  warning  'motion' is defined but never used       @typescript-eslint/no-unused-vars
+  30:45  warning  'limit' is defined but never used        @typescript-eslint/no-unused-vars
+  31:10  warning  'getInitials' is defined but never used  @typescript-eslint/no-unused-vars
+  36:11  warning  't' is assigned a value but never used   @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/shop/ShopSettings.tsx
+   6:15  warning  'SettingsIcon' is defined but never used  @typescript-eslint/no-unused-vars
+   7:3   warning  'User' is defined but never used          @typescript-eslint/no-unused-vars
+   8:3   warning  'MapPin' is defined but never used        @typescript-eslint/no-unused-vars
+   9:3   warning  'Bell' is defined but never used          @typescript-eslint/no-unused-vars
+  10:3   warning  'Globe' is defined but never used         @typescript-eslint/no-unused-vars
+  13:3   warning  'Sun' is defined but never used           @typescript-eslint/no-unused-vars
+  16:3   warning  'Camera' is defined but never used        @typescript-eslint/no-unused-vars
+  17:3   warning  'LogOut' is defined but never used        @typescript-eslint/no-unused-vars
+  18:3   warning  'Trash2' is defined but never used        @typescript-eslint/no-unused-vars
+  58:14  warning  'err' is defined but never used           @typescript-eslint/no-unused-vars
+
+/app/applet/src/components/shop/ShopWallet.tsx
+   8:3   warning  'addDoc' is defined but never used             @typescript-eslint/no-unused-vars
+  20:3   warning  'ArrowDownLeft' is defined but never used      @typescript-eslint/no-unused-vars
+  43:11  warning  't' is assigned a value but never used         @typescript-eslint/no-unused-vars
+  44:9   warning  'navigate' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/contexts/AuthContext.tsx
+   3:35  warning  'updateDoc' is defined but never used  @typescript-eslint/no-unused-vars
+  29:16  warning  'e' is defined but never used          @typescript-eslint/no-unused-vars
+
+/app/applet/src/contexts/LanguageContext.tsx
+  1:54  warning  'useEffect' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/hooks/useFCM.ts
+  34:26  warning  'e' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/src/lib/seedData.ts
+  1:27  warning  'collection' is defined but never used  @typescript-eslint/no-unused-vars
+
+/app/applet/vite.config.ts
+  7:9  warning  'env' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+✖ 356 problems (7 errors, 349 warnings)
+

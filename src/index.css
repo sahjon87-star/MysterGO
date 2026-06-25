@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  
+  --color-brand-amber: var(--brand-amber);
+  --color-brand-amber-light: var(--brand-amber-light);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-blue-light: var(--brand-blue-light);
+  --color-brand-slate: var(--brand-slate);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-surface: var(--brand-surface);
+  --color-cream: var(--cream);
+  --color-gray-teal: var(--gray-teal);
+
+  /* Legacy aliases for compatibility across all pages */
+  --color-primary-blue: var(--brand-blue);
+  --color-primary-light: var(--brand-blue-light);
+  --color-action-orange: var(--brand-amber);
+  
+  --shadow-glass: var(--shadow-glass-var);
+  --radius-glass: var(--radius-glass-var);
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+    
+    /* Global White Light Theme with Premium Glassmorphism */
+    --brand-dark: #F8FAFC;         /* Airy, pristine, minimalist light gray background */
+    --brand-slate: #FFFFFF;        /* Crisp, vibrant solid white cards & drawers */
+    --brand-surface: #E2E8F0;      /* Slate 200 for high-contrast input/inner surfaces */
+    --cream: #0F172A;              /* Slate 900 for ultra-clear readability text */
+    --gray-teal: #475569;          /* Slate 600 for clean subtle informational descriptions */
+    
+    /* Vibrant, high-contrast, accessible primary-action colors */
+    --brand-blue: #0284C7;         /* Radiant, legible Sky Blue */
+    --brand-blue-light: #0369A1;   /* Rich Royal Blue */
+    --brand-amber: #EA580C;        /* Warm Dark Orange/Amber for accessible branding */
+    --brand-amber-light: #F97316;  /* Punchy Orange/Amber light hover state */
+    
+    --glass-bg: rgba(255, 255, 255, 0.75);
+    --glass-border: rgba(15, 23, 42, 0.08);
+    --shadow-glass-var: 0 10px 40px -10px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.02);
+    --radius-glass-var: 24px;
+  }
+  
+  .dark {
+    color-scheme: dark;
+    
+    /* Global Midnight Slate Dark Theme */
+    --brand-dark: #122329;         /* Original rich deep dark canvas background */
+    --brand-slate: #1F4756;        /* Original stylish teal/slate cards & containers */
+    --brand-surface: #2A5C6F;      /* Original nested surface color */
+    --cream: #F5F5DC;              /* Original warm light cream primary text */
+    --gray-teal: #B0C4DE;          /* Original readable gray-teal secondary text */
+    
+    --brand-blue: #003366;         /* Original dark navy brand blue */
+    --brand-blue-light: #004080;   /* Original lighter navy blue accent */
+    --brand-amber: #FFB300;        /* Original bright glow yellow-amber accent */
+    --brand-amber-light: #FFC107;  /* Original bright gold hover accent */
+    
+    --glass-bg: rgba(42, 92, 111, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --shadow-glass-var: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    --radius-glass-var: 24px;
+  }
+  
+  body {
+    @apply transition-colors duration-300 font-sans antialiased text-cream bg-brand-dark;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  html {
+    @apply bg-brand-dark;
+  }
+
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-glass-var);
+    border-radius: var(--radius-glass-var);
+  }
+
+  .glass-header {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--glass-border);
+  }
+
+  .leaflet-container {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    z-index: 1;
+    background: #f8fafc;
+  }
+
+  .dark .leaflet-tile {
+    filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+  }
+
+  .dark .leaflet-container {
+    background: #020617;
+  }
+
+  .dark img:not(.no-dim) {
+    filter: brightness(.8) contrast(1.1);
+  }
+
+  /* --- Global High-Contrast Form Inputs and Controls (User Interface Accessibility Fix) --- */
+  input:not(.otp-input), 
+  textarea, 
+  select {
+    color: var(--cream);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Placeholder typography color configuration */
+  input:not(.otp-input)::placeholder, 
+  textarea::placeholder {
+    color: #94A3B8; /* Muted Slate-400 for Light Mode */
+    opacity: 1;
+  }
+
+  .dark input:not(.otp-input)::placeholder, 
+  .dark textarea::placeholder {
+    color: rgba(245, 245, 220, 0.45); /* Soft muted cream for Dark Mode */
+    opacity: 1;
+  }
+
+  /* Custom dropdown options styling to prevent browser defaults overrides */
+  option {
+    background-color: var(--brand-slate);
+    color: var(--cream);
+  }
+
+  /* Accessible borders and focus outlines against glassmorphic card backgrounds */
+  input:not(.otp-input), select, textarea {
+    border: 1px solid rgba(15, 23, 42, 0.12);
+  }
+
+  .dark input:not(.otp-input), .dark select, .dark textarea {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  /* Focus ring aesthetics matched with high-contrast accessible brand-blue */
+  input:not(.otp-input):focus, 
+  textarea:focus, 
+  select:focus {
+    border-color: var(--brand-blue);
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.25);
+    outline: none;
+  }
+
+  /* Dedicated high-contrast custom styles for OTP inputs */
+  .otp-input {
+    background-color: #e2e8f0 !important; /* Shaded background for high visibility */
+    border: 3px solid #0f172a !important;   /* Extremely clear high-contrast dark border */
+    color: #ff5722 !important;            /* Bold orange contrast typography */
+    font-weight: 900 !important;
+  }
+
+  .dark .otp-input {
+    background-color: #1e293b !important; /* Shaded dark brand color */
+    border: 3px solid #ffb300 !important;   /* Glow amber border */
+    color: #ffb300 !important;            /* Glow amber text */
+  }
+
+  /* Native Date and Time calendar icons visibility fix across modes */
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: none !important;
+  }
+  
+  .dark input[type="date"]::-webkit-calendar-picker-indicator,
+  .dark input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) !important;
+  }
+}

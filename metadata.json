@@ -1,0 +1,6 @@
+{
+  "name": "MistriGO",
+  "description": "Premium Service Marketplace of Bangladesh. Connect with elite electricians, plumbers, and technicians. Real-time booking, secure payments, and verified experts.",
+  "requestFramePermissions": ["geolocation", "camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
