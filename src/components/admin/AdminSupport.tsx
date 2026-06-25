@@ -284,14 +284,25 @@ export const AdminSupport = () => {
           </div>
           {messages.map((msg) => {
             const isAdmin = msg.senderType === 'admin';
+            const isBot = msg.senderType === 'chatbot';
             return (
-              <div key={msg.messageId} className={`flex ${isAdmin ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[80%] p-3 rounded-2xl ${isAdmin ? 'bg-brand-amber text-brand-dark rounded-tr-sm' : 'bg-brand-surface text-cream rounded-tl-sm'}`}>
-                  {msg.attachments?.map((url, i) => (
-                    <img key={i} src={url} alt="attachment" className="w-full rounded-xl mb-2" />
-                  ))}
-                  <p className="text-sm font-medium">{msg.text}</p>
-                </div>
+              <div key={msg.messageId} className={`flex ${isBot ? 'justify-center' : isAdmin ? 'justify-end' : 'justify-start'}`}>
+                {isBot ? (
+                  <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 text-center max-w-[85%] space-y-2">
+                    <div className="flex items-center justify-center gap-1.5 text-slate-400 font-bold text-xs uppercase tracking-wider">
+                      <span>🤖</span>
+                      <span>MistriGO Bot Reply</span>
+                    </div>
+                    <p className="text-xs text-slate-300 font-medium whitespace-pre-line text-left leading-relaxed">{msg.text}</p>
+                  </div>
+                ) : (
+                  <div className={`max-w-[80%] p-3 rounded-2xl ${isAdmin ? 'bg-brand-amber text-brand-dark rounded-tr-sm' : 'bg-brand-surface text-cream rounded-tl-sm'}`}>
+                    {msg.attachments?.map((url, i) => (
+                      <img key={i} src={url} alt="attachment" className="w-full rounded-xl mb-2" />
+                    ))}
+                    <p className="text-sm font-medium whitespace-pre-line">{msg.text}</p>
+                  </div>
+                )}
               </div>
             );
           })}
@@ -402,10 +413,16 @@ export const AdminSupport = () => {
                 <div className="flex justify-between items-start mb-3">
                   <div>
                     <h3 className="font-bold text-cream text-sm mb-1">{ticket.subject}</h3>
-                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-gray-teal">
+                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-gray-teal flex-wrap">
                       <span>{ticket.requesterName}</span>
                       <span>•</span>
                       <span className={ticket.priority === 'high' ? 'text-red-400' : ''}>{ticket.priority} Priority</span>
+                      {ticket.chatbotEscalated && (
+                        <>
+                          <span>•</span>
+                          <span className="px-2 py-0.5 bg-red-500/10 text-red-400 border border-red-500/20 text-[8px] font-black uppercase tracking-widest rounded">🤖 Bot Escalated</span>
+                        </>
+                      )}
                     </div>
                   </div>
                   {activeTab === 'pool' && (

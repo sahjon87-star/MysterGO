@@ -6,6 +6,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { ProviderProfile, ShopProfile } from '../../types';
+import { handleFirestoreError, OperationType } from '../../lib/firestore-errors';
 
 // Fix Leaflet icons
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -50,10 +51,14 @@ export const LiveMap: React.FC<LiveMapProps> = ({ height = '300px', filterType =
       const q = query(collection(db, 'providers'), where('isOnline', '==', true));
       return onSnapshot(q, (snap) => {
         setMarkers(snap.docs.map(doc => ({ uid: doc.id, ...doc.data() } as ProviderProfile)));
+      }, (error) => {
+        handleFirestoreError(error, OperationType.LIST, 'providers');
       });
     } else {
       return onSnapshot(collection(db, 'shops'), (snap) => {
         setMarkers(snap.docs.map(doc => ({ uid: doc.id, ...doc.data() } as ShopProfile)));
+      }, (error) => {
+        handleFirestoreError(error, OperationType.LIST, 'shops');
       });
     }
   }, [filterType]);

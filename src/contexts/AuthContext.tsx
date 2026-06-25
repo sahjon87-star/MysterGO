@@ -112,6 +112,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setProfile(profileData);
             localStorage.setItem('mistrigo_profile', JSON.stringify(profileData));
             setLoading(false);
+          }, (error) => {
+            handleFirestoreError(error, OperationType.GET, `admins/${user.uid}`);
+            setLoading(false);
           });
           return unsub;
         }
@@ -121,6 +124,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             const profileData = { uid: snap.id, ...snap.data(), _collection: 'users' } as UserProfile & { _collection: string };
             setProfile(profileData);
             localStorage.setItem('mistrigo_profile', JSON.stringify(profileData));
+            setLoading(false);
+          }, (error) => {
+            handleFirestoreError(error, OperationType.GET, `users/${user.uid}`);
             setLoading(false);
           });
           return unsub;
@@ -132,6 +138,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setProfile(profileData);
             localStorage.setItem('mistrigo_profile', JSON.stringify(profileData));
             setLoading(false);
+          }, (error) => {
+            handleFirestoreError(error, OperationType.GET, `providers/${user.uid}`);
+            setLoading(false);
           });
           return unsub;
         }
@@ -141,6 +150,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             const profileData = { uid: snap.id, ...snap.data(), _collection: 'shops' } as ShopProfile & { _collection: string };
             setProfile(profileData);
             localStorage.setItem('mistrigo_profile', JSON.stringify(profileData));
+            setLoading(false);
+          }, (error) => {
+            handleFirestoreError(error, OperationType.GET, `shops/${user.uid}`);
             setLoading(false);
           });
           return unsub;

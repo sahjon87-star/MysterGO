@@ -253,7 +253,14 @@ export const MaterialCalculator: React.FC = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch estimation');
+        let serverErrorMsg = '';
+        try {
+          const errData = await response.json();
+          serverErrorMsg = errData.error || errData.message || '';
+        } catch (e) {
+          // ignore parsing error
+        }
+        throw new Error(serverErrorMsg || `Server returned status ${response.status}`);
       }
 
       const data = await response.json();
@@ -266,11 +273,12 @@ export const MaterialCalculator: React.FC = () => {
           startSpeech(text);
         }, 200);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
+      const detailMsg = err?.message ? ` (${err.message})` : '';
       setEstimateResult(lang === 'bn' 
-        ? 'দুঃখিত, এআই অ্যাসিস্ট্যান্টের সাথে যোগাযোগ করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।' 
-        : 'Sorry, failed to connect to Gemini AI. Please try again.');
+        ? `দুঃখিত, এআই অ্যাসিস্ট্যান্টের সাথে যোগাযোগ করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।${detailMsg}` 
+        : `Sorry, failed to connect to Gemini AI. Please try again.${detailMsg}`);
     } finally {
       setLoadingEstimate(false);
     }

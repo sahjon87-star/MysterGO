@@ -222,7 +222,7 @@ export const ProviderProfile: React.FC = () => {
       <div className="px-4 space-y-8">
         {menuGroups.map((group, i) => (
           <div key={i} className="space-y-4">
-            <h3 className="text-[10px] font-black text-slate-300 dark:text-slate-600 uppercase tracking-[0.3em] px-4">{group.title}</h3>
+            <h3 className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.3em] px-4">{group.title}</h3>
             <div className="bg-white dark:bg-slate-900 rounded-[32px] border border-slate-50 dark:border-slate-800 overflow-hidden shadow-sm">
               {group.items.map((item, j) => (
                 <button
@@ -239,7 +239,7 @@ export const ProviderProfile: React.FC = () => {
                       {item.sub && <p className="text-[9px] font-black uppercase text-primary-blue tracking-widest mt-0.5">{item.sub}</p>}
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-slate-300 dark:text-slate-600" />
+                  <ChevronRight className="w-5 h-5 text-slate-500 dark:text-slate-400" />
                 </button>
               ))}
             </div>
@@ -264,8 +264,8 @@ export const ProviderProfile: React.FC = () => {
       </div>
 
       <div className="text-center space-y-1">
-        <p className="text-[10px] font-black text-slate-300 dark:text-slate-600 uppercase tracking-[0.4em]">MistriGO Provider v2.1.0</p>
-        <p className="text-[9px] font-medium text-slate-300 dark:text-slate-600 opacity-50">Crafted with ❤️ in Bangladesh</p>
+        <p className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.4em]">MistriGO Provider v2.1.0</p>
+        <p className="text-[9px] font-medium text-slate-500 dark:text-slate-400 opacity-60">Crafted with ❤️ in Bangladesh</p>
       </div>
 
       {/* Delete Account Modal */}

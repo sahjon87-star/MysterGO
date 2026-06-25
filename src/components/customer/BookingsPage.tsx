@@ -12,6 +12,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../../lib/utils';
 import { formatCurrency } from '../../lib/utils';
+import { handleFirestoreError, OperationType } from '../../lib/firestore-errors';
 
 export const BookingsPage: React.FC = () => {
   const { profile } = useAuth();
@@ -31,6 +32,9 @@ export const BookingsPage: React.FC = () => {
 
     const unsub = onSnapshot(q, (snap) => {
       setBookings(snap.docs.map(doc => ({ id: doc.id, ...doc.data() } as Booking)));
+      setLoading(false);
+    }, (error) => {
+      handleFirestoreError(error, OperationType.LIST, 'bookings');
       setLoading(false);
     });
 

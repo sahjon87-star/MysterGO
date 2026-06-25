@@ -94,11 +94,22 @@ async function retryWithBackoff<T = any>(
         errMsg.includes("busy") ||
         errMsg.includes("temporary");
 
-      if (attempt >= retries || !isTransient) {
+      // For extreme high demand / overload, fail fast to trigger the next fallback model immediately without long blocks.
+      const isHighDemand = 
+        errMsg.includes("high demand") || 
+        errMsg.includes("503") || 
+        errMsg.includes("UNAVAILABLE") || 
+        err?.status === "UNAVAILABLE" || 
+        err?.status === 503 || 
+        err?.code === 503;
+
+      const maxRetriesForThisErr = isHighDemand ? 1 : retries;
+
+      if (attempt >= maxRetriesForThisErr || !isTransient) {
         throw err;
       }
 
-      console.warn(`[Gemini-AI] Transient error encountered (attempt ${attempt}/${retries}). Retrying in ${delayMs}ms... Error:`, errMsg);
+      console.warn(`[Gemini-AI] Transient error encountered (attempt ${attempt}/${maxRetriesForThisErr}). Retrying in ${delayMs}ms... Error:`, errMsg);
       await new Promise(resolve => setTimeout(resolve, delayMs));
       delayMs *= 2; // Exponential backoff
     }
@@ -110,7 +121,7 @@ async function generateContentWithFallback(genAI: any, options: {
   contents: any;
   config?: any;
 }): Promise<any> {
-  const models = ["gemini-3.5-flash", "gemini-flash-latest", "gemini-3.1-flash-lite", "gemini-3.1-pro-preview"];
+  const models = ["gemini-3.5-flash", "gemini-3.1-flash-lite", "gemini-flash-latest", "gemini-3.1-pro-preview"];
   let lastError = null;
 
   for (const modelName of models) {
@@ -126,7 +137,7 @@ async function generateContentWithFallback(genAI: any, options: {
       console.log(`[Gemini-AI] Success with model: ${modelName}`);
       return response;
     } catch (err: any) {
-      console.warn(`[Gemini-AI] Model ${modelName} failed/busy after retries:`, err.message || err);
+      console.warn(`[Gemini-AI] Model ${modelName} failed/busy:`, err.message || err);
       lastError = err;
     }
   }
@@ -137,7 +148,7 @@ async function generateContentStreamWithFallback(genAI: any, options: {
   contents: any;
   config?: any;
 }): Promise<any> {
-  const models = ["gemini-3.5-flash", "gemini-flash-latest", "gemini-3.1-flash-lite", "gemini-3.1-pro-preview"];
+  const models = ["gemini-3.5-flash", "gemini-3.1-flash-lite", "gemini-flash-latest", "gemini-3.1-pro-preview"];
   let lastError = null;
 
   for (const modelName of models) {
@@ -153,7 +164,7 @@ async function generateContentStreamWithFallback(genAI: any, options: {
       console.log(`[Gemini-AI] Stream started successfully with model: ${modelName}`);
       return response;
     } catch (err: any) {
-      console.warn(`[Gemini-AI] Model ${modelName} stream failed/busy after retries:`, err.message || err);
+      console.warn(`[Gemini-AI] Model ${modelName} stream failed/busy:`, err.message || err);
       lastError = err;
     }
   }

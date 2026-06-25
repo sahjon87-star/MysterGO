@@ -321,13 +321,14 @@ export interface AdminProfile {
 export interface SupportTicket {
   ticketId: string;
   raisedBy: string;
-  requesterRole: 'user' | 'worker';
+  requesterRole: 'user' | 'worker' | 'shop';
   requesterName: string;
   requesterPhone: string;
   subject: string;
   status: 'open' | 'in-progress' | 'resolved' | 'escalated';
   priority: 'low' | 'medium' | 'high';
   assignedTo?: string | null;
+  chatbotEscalated?: boolean;
   createdAt: Timestamp;
   updatedAt: Timestamp;
   resolvedAt?: Timestamp | null;
@@ -337,7 +338,7 @@ export interface SupportMessage {
   messageId: string;
   ticketId: string;
   senderId: string;
-  senderType: 'admin' | 'user' | 'worker' | 'shop';
+  senderType: 'admin' | 'user' | 'worker' | 'shop' | 'chatbot';
   text: string;
   attachments?: string[];
   timestamp: Timestamp;

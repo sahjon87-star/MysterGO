@@ -142,18 +142,18 @@ export const CustomerProfile: React.FC = () => {
                   type="text" 
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-brand-slate border border-white/10 rounded-xl px-3 py-2 text-white text-sm font-bold text-center outline-none focus:border-brand-amber"
+                  className="w-full bg-brand-slate border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2 text-cream text-sm font-bold text-center outline-none focus:border-brand-amber"
                   placeholder="Name"
                 />
                 <input 
                   type="tel" 
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full bg-brand-slate border border-white/10 rounded-xl px-3 py-2 text-white text-sm font-bold text-center outline-none focus:border-brand-amber"
+                  className="w-full bg-brand-slate border border-slate-200 dark:border-white/10 rounded-xl px-3 py-2 text-cream text-sm font-bold text-center outline-none focus:border-brand-amber"
                   placeholder="Phone"
                 />
                 <div className="flex gap-2 justify-center">
-                  <button onClick={() => setIsEditing(false)} className="p-2 bg-white/5 rounded-xl text-white border border-white/5"><X className="w-4 h-4" /></button>
+                  <button onClick={() => setIsEditing(false)} className="p-2 bg-brand-surface rounded-xl text-cream border border-slate-200 dark:border-white/10"><X className="w-4 h-4" /></button>
                   <button onClick={handleSaveProfile} disabled={saving} className="p-2 bg-brand-amber rounded-xl text-brand-dark">
                     {saving ? <div className="w-4 h-4 border-2 border-brand-dark border-t-transparent rounded-full animate-spin" /> : <Check className="w-4 h-4" />}
                   </button>
@@ -168,7 +168,7 @@ export const CustomerProfile: React.FC = () => {
                 className="space-y-1"
               >
                 <div className="flex items-center justify-center gap-2">
-                  <h2 className="text-xl font-black text-white tracking-tight">{profile?.name}</h2>
+                  <h2 className="text-xl font-black text-cream tracking-tight">{profile?.name}</h2>
                   <button onClick={() => setIsEditing(true)} className="text-brand-amber"><Edit3 className="w-4 h-4" /></button>
                 </div>
                 <p className="text-gray-teal text-xs font-bold uppercase tracking-[0.2em]">{profile?.phone || profile?.email}</p>
@@ -195,13 +195,13 @@ export const CustomerProfile: React.FC = () => {
 
       {/* Stats Bar */}
       <div className="px-4 -mt-10 relative z-20">
-        <div className="bg-brand-slate rounded-[32px] shadow-2xl border border-white/5 p-6 grid grid-cols-3 gap-4">
-          <div className="text-center space-y-1 border-r border-white/5">
-            <div className="text-lg font-black text-white italic">12</div>
+        <div className="bg-brand-slate rounded-[32px] shadow-2xl border border-slate-200 dark:border-white/5 p-6 grid grid-cols-3 gap-4">
+          <div className="text-center space-y-1 border-r border-slate-200 dark:border-white/5">
+            <div className="text-lg font-black text-cream italic">12</div>
             <div className="text-[10px] font-bold text-gray-teal uppercase tracking-tighter">Bookings</div>
           </div>
-          <div className="text-center space-y-1 border-r border-white/5">
-            <div className="text-lg font-black text-white italic">৳4.2k</div>
+          <div className="text-center space-y-1 border-r border-slate-200 dark:border-white/5">
+            <div className="text-lg font-black text-cream italic">৳4.2k</div>
             <div className="text-[10px] font-bold text-gray-teal uppercase tracking-tighter">Spent</div>
           </div>
           <div className="text-center space-y-1">
@@ -213,18 +213,18 @@ export const CustomerProfile: React.FC = () => {
 
       {/* Menu */}
       <div className="px-4 pb-8">
-        <div className="bg-brand-slate rounded-[32px] border border-white/5 shadow-2xl overflow-hidden divide-y divide-white/5">
+        <div className="bg-brand-slate rounded-[32px] border border-slate-200 dark:border-white/5 shadow-2xl overflow-hidden divide-y divide-slate-200 dark:divide-white/5">
           {menuItems.map((item) => (
             <button 
               key={item.label}
               onClick={item.onClick ? item.onClick : () => navigate(item.path!)}
-              className="w-full flex items-center gap-4 p-5 hover:bg-brand-surface/50 transition-all group"
+              className="w-full flex items-center gap-4 p-5 hover:bg-brand-surface/30 transition-all group"
             >
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-active:scale-90 ${item.color} border border-white/5`}>
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-active:scale-90 ${item.color} border border-slate-200 dark:border-white/5`}>
                 <item.icon className="w-5 h-5" />
               </div>
               <div className="flex-1 text-left">
-                <h4 className="text-sm font-black text-white truncate tracking-tight uppercase leading-none">{t(item.label)}</h4>
+                <h4 className="text-sm font-black text-cream truncate tracking-tight uppercase leading-none">{t(item.label)}</h4>
                 {item.sub && <p className="text-[10px] font-bold text-gray-teal uppercase tracking-wider mt-1.5">{item.sub}</p>}
               </div>
               <ChevronRight className="w-4 h-4 text-gray-teal group-hover:text-brand-amber transition-colors" />

@@ -81,48 +81,18 @@ export const CustomerHome: React.FC = () => {
       where('isOnline', '==', true)
     );
     const unsubWorkers = onSnapshot(qWorkers, (snap) => {
-      let workerData = snap.docs
+      const workerData = snap.docs
         .map(doc => ({ uid: doc.id, ...doc.data() } as ProviderProfile))
         .filter(w => w.isBlocked === false);
-
-      const userLocation = liveLocation || profile?.location;
-
-      if (userLocation?.lat && userLocation?.lng) {
-        workerData = workerData.filter(w => {
-          if (!w.location?.lat || !w.location?.lng) return false;
-          const dist = calculateDistance(
-            userLocation.lat, 
-            userLocation.lng, 
-            w.location.lat, 
-            w.location.lng
-          );
-          return dist <= 10; // Increased to 10km
-        });
-      }
-      setWorkers(workerData.slice(0, 10));
+      setWorkers(workerData);
     }, (error) => {
       handleFirestoreError(error, OperationType.LIST, 'providers');
     });
 
     // Listen for shops
     const unsubShops = onSnapshot(collection(db, 'shops'), (snap) => {
-      let shopData = snap.docs.map(doc => ({ uid: doc.id, ...doc.data() } as ShopProfile));
-      
-      const userLocation = liveLocation || profile?.location;
-
-      if (userLocation?.lat && userLocation?.lng) {
-        shopData = shopData.filter(s => {
-          if (!s.location?.lat || !s.location?.lng) return false;
-          const dist = calculateDistance(
-            userLocation.lat, 
-            userLocation.lng, 
-            s.location.lat, 
-            s.location.lng
-          );
-          return dist <= 10; // Increased to 10km
-        });
-      }
-      setShops(shopData.slice(0, 10));
+      const shopData = snap.docs.map(doc => ({ uid: doc.id, ...doc.data() } as ShopProfile));
+      setShops(shopData);
     }, (error) => {
       handleFirestoreError(error, OperationType.LIST, 'shops');
     });
@@ -159,16 +129,52 @@ export const CustomerHome: React.FC = () => {
       unsubShops();
       unsubBanners();
     };
-  }, [profile?.location, liveLocation]);
+  }, []);
 
   const calculateMarkupPrice = (basePrice: number) => {
     const markup = basePrice * (1 + (settings.applicationFeeRate + settings.paymentChargeRate) / 100);
     return Math.round(markup);
   };
 
-  const filteredWorkers = activeCat === 'all' 
-    ? workers 
-    : workers.filter(w => w.category === activeCat);
+  const userLocation = liveLocation || profile?.location;
+
+  const filteredWorkers = React.useMemo(() => {
+    let workerData = activeCat === 'all' 
+      ? workers 
+      : workers.filter(w => w.category === activeCat);
+
+    if (userLocation?.lat && userLocation?.lng) {
+      workerData = workerData.filter(w => {
+        if (!w.location?.lat || !w.location?.lng) return false;
+        const dist = calculateDistance(
+          userLocation.lat, 
+          userLocation.lng, 
+          w.location.lat, 
+          w.location.lng
+        );
+        return dist <= 10; // Increased to 10km
+      });
+    }
+    return workerData.slice(0, 10);
+  }, [workers, activeCat, userLocation?.lat, userLocation?.lng]);
+
+  const filteredShops = React.useMemo(() => {
+    let shopData = shops;
+
+    if (userLocation?.lat && userLocation?.lng) {
+      shopData = shopData.filter(s => {
+        if (!s.location?.lat || !s.location?.lng) return false;
+        const dist = calculateDistance(
+          userLocation.lat, 
+          userLocation.lng, 
+          s.location.lat, 
+          s.location.lng
+        );
+        return dist <= 10; // Increased to 10km
+      });
+    }
+    return shopData.slice(0, 10);
+  }, [shops, userLocation?.lat, userLocation?.lng]);
 
   return (
     <div className="space-y-6 pb-20">
@@ -535,13 +541,13 @@ export const CustomerHome: React.FC = () => {
             [1, 2, 3].map((i) => (
               <div key={i} className="flex-shrink-0 w-52 h-52 glass-card animate-pulse shadow-sm" />
             ))
-          ) : shops.length === 0 ? (
+          ) : filteredShops.length === 0 ? (
             <div className="flex-shrink-0 w-full py-16 text-center space-y-4 glass-card border-none mx-2">
               <div className="text-5xl opacity-20">🏬</div>
               <p className="text-slate-400 dark:text-slate-500 font-black text-[10px] uppercase tracking-widest">No Active Depots Detected</p>
             </div>
           ) : (
-            shops.map((shop, index) => (
+            filteredShops.map((shop, index) => (
               <motion.div
                 key={shop.uid}
                 initial={{ opacity: 0, y: 15, scale: 0.95 }}

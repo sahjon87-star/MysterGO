@@ -195,7 +195,7 @@ export const ShopProfile: React.FC = () => {
       <div className="px-4 space-y-8">
         {menuGroups.map((group, i) => (
           <div key={i} className="space-y-4">
-            <h3 className="text-[10px] font-black text-slate-300 dark:text-slate-600 uppercase tracking-[0.3em] px-4">{group.title}</h3>
+            <h3 className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.3em] px-4">{group.title}</h3>
             <div className="bg-white dark:bg-slate-900 rounded-[32px] border border-slate-50 dark:border-slate-800 overflow-hidden shadow-sm">
               {group.items.map((item, j) => (
                 <button
@@ -212,7 +212,7 @@ export const ShopProfile: React.FC = () => {
                       {item.sub && <p className="text-[9px] font-black uppercase text-primary-blue tracking-widest mt-0.5">{item.sub}</p>}
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-slate-300 dark:text-slate-600" />
+                  <ChevronRight className="w-5 h-5 text-slate-500 dark:text-slate-400" />
                 </button>
               ))}
             </div>
@@ -222,20 +222,26 @@ export const ShopProfile: React.FC = () => {
 
       {/* Danger Zone */}
       <div className="px-4 pt-4">
-        <button className="w-full flex items-center justify-between p-6 rounded-[32px] border-2 border-red-100 dark:border-red-900/20 bg-red-50/10 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors group">
+        <button 
+          onClick={() => navigate('/settings')}
+          className="w-full flex items-center justify-between p-6 rounded-[32px] border-2 border-red-100 dark:border-red-900/20 bg-red-50/10 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors group"
+        >
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-red-500/10 text-red-500">
               <Trash2 className="w-5 h-5" />
             </div>
-            <span className="text-sm font-black text-red-500 uppercase tracking-widest">Close Account</span>
+            <div className="text-left">
+              <span className="text-sm font-black text-red-500 uppercase tracking-widest">Delete Account</span>
+              <p className="text-[9px] font-bold text-red-400 dark:text-red-500 uppercase tracking-wider mt-0.5">Permanently close shop</p>
+            </div>
           </div>
           <ChevronRight className="w-5 h-5 text-red-200 dark:text-red-900/40 group-hover:text-red-500" />
         </button>
       </div>
 
       <div className="text-center space-y-1">
-        <p className="text-[10px] font-black text-slate-300 dark:text-slate-600 uppercase tracking-[0.4em]">MistriGO Merchant v1.5.0</p>
-        <p className="text-[9px] font-medium text-slate-300 dark:text-slate-600 opacity-50">Empowering Local Businesses</p>
+        <p className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.4em]">MistriGO Merchant v1.5.0</p>
+        <p className="text-[9px] font-medium text-slate-500 dark:text-slate-400 opacity-60">Empowering Local Businesses</p>
       </div>
     </div>
   );
