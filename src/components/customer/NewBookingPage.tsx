@@ -494,31 +494,128 @@ export const NewBookingPage: React.FC = () => {
         )}
 
         {/* Financial Protocol Selection */}
-        <div className="space-y-4">
-          <h3 className="font-black text-white uppercase tracking-[0.3em] text-[10px] px-2 flex items-center gap-3">
-             <div className="w-5 h-[1px] bg-brand-amber" />
-             Payment Channel Matrix
+        <div className="space-y-5 p-6 rounded-[36px] bg-white dark:bg-brand-slate/40 border border-slate-100 dark:border-white/5 shadow-2xl relative overflow-hidden backdrop-blur-md">
+          {/* Subtle accent ambient glows */}
+          <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#FF5A00]/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-brand-amber/5 rounded-full blur-3xl pointer-events-none" />
+
+          <h3 className="font-black text-slate-800 dark:text-white uppercase tracking-[0.3em] text-[10px] px-2 flex items-center gap-3 relative z-10">
+             <div className="w-5 h-[1px] bg-[#FF5A00]" />
+             Payment Gateway Matrix
           </h3>
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 gap-4 relative z-10">
             {([
-              { id: 'wallet', label: 'Matrix Ledger Balance', icon: '💰', color: 'text-brand-amber' },
-              { id: 'bkash', label: 'bKash Protocol', icon: '💙', color: 'text-pink-500' },
-              { id: 'nagad', label: 'Nagad Protocol', icon: '🧡', color: 'text-orange-500' },
-              { id: 'cash', label: 'Direct Site Settlement', icon: '💵', color: 'text-emerald-500' },
+              { 
+                id: 'wallet', 
+                label: 'MistriGO Wallet', 
+                sub: 'Instant Escrow deduction',
+                icon: (
+                  <div className="w-12 h-12 flex-shrink-0">
+                    <svg viewBox="0 0 100 100" className="w-full h-full">
+                      <circle cx="50" cy="50" r="48" fill="url(#walletGradient)" />
+                      <defs>
+                        <linearGradient id="walletGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#6366F1" />
+                          <stop offset="100%" stopColor="#4F46E5" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M 28,34 C 28,30 31,28 35,28 L 65,28 C 69,28 72,31 72,35 L 72,40 L 40,40 C 35,40 32,43 32,48 L 32,54 C 32,59 35,62 40,62 L 72,62 L 72,65 C 72,69 69,72 65,72 L 35,72 C 31,72 28,69 28,65 Z" fill="#FFFFFF" />
+                      <path d="M 40,44 L 72,44 C 75,44 76,46 76,48 L 76,54 C 76,56 75,58 72,58 L 40,58 C 37,58 36,56 36,54 L 36,48 C 36,46 37,44 40,44 Z" fill="#FFFFFF" opacity="0.9" />
+                      <circle cx="56" cy="51" r="4" fill="#FFD700" />
+                    </svg>
+                  </div>
+                )
+              },
+              { 
+                id: 'bkash', 
+                label: 'bKash', 
+                sub: 'bKash Wallet Transfer',
+                icon: (
+                  <div className="w-12 h-12 flex-shrink-0">
+                    <svg viewBox="0 0 100 100" className="w-full h-full">
+                      <circle cx="50" cy="50" r="48" fill="#E2136E" />
+                      <path d="M 28,68 L 36,44 L 54,64 Z" fill="#FFFFFF" opacity="0.9" />
+                      <path d="M 36,44 L 62,32 L 54,64 Z" fill="#FFFFFF" />
+                      <path d="M 62,32 L 72,48 L 54,64 Z" fill="#FFFFFF" opacity="0.8" />
+                      <path d="M 62,32 L 78,24 L 72,48 Z" fill="#FFFFFF" opacity="0.95" />
+                    </svg>
+                  </div>
+                )
+              },
+              { 
+                id: 'nagad', 
+                label: 'Nagad', 
+                sub: 'Nagad Wallet Transfer',
+                icon: (
+                  <div className="w-12 h-12 flex-shrink-0">
+                    <svg viewBox="0 0 100 100" className="w-full h-full">
+                      <circle cx="50" cy="50" r="48" fill="url(#nagadGradient)" />
+                      <defs>
+                        <linearGradient id="nagadGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#F37021" />
+                          <stop offset="100%" stopColor="#ED1C24" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M 35,65 C 30,50 38,35 50,30 C 58,27 66,32 70,38 C 65,34 58,34 52,38 C 42,45 42,58 50,65 C 55,68 62,68 68,64 C 60,70 48,72 35,65 Z" fill="#FFFFFF" />
+                      <path d="M 52,42 C 48,46 48,54 52,58 C 55,60 59,60 62,58 C 59,58 56,56 55,54 C 53,51 53,46 55,42 C 54,42 53,42 52,42 Z" fill="#FFFFFF" opacity="0.9" />
+                    </svg>
+                  </div>
+                )
+              },
+              { 
+                id: 'cash', 
+                label: 'Pay After Service (Cash)', 
+                sub: 'Cash Settlement after service',
+                icon: (
+                  <div className="w-12 h-12 flex-shrink-0">
+                    <svg viewBox="0 0 100 100" className="w-full h-full">
+                      <circle cx="50" cy="50" r="48" fill="url(#cashGradient)" />
+                      <defs>
+                        <linearGradient id="cashGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#10B981" />
+                          <stop offset="100%" stopColor="#059669" />
+                        </linearGradient>
+                      </defs>
+                      <rect x="24" y="32" width="52" height="36" rx="6" stroke="#FFFFFF" strokeWidth="4" fill="none" />
+                      <circle cx="50" cy="50" r="8" stroke="#FFFFFF" strokeWidth="4" fill="none" />
+                      <path d="M 32,38 L 40,38" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" />
+                      <path d="M 68,62 L 68,56" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" />
+                      <path d="M 32,62 L 32,56" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" />
+                      <path d="M 68,38 L 68,44" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" />
+                    </svg>
+                  </div>
+                )
+              },
             ] as const).map((m) => (
               <motion.button 
                 key={m.id}
-                whileHover={{ x: 5 }}
+                whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setPaymentMethod(m.id)}
-                className={`flex items-center gap-5 p-6 rounded-[32px] border-2 transition-all ${paymentMethod === m.id ? 'border-brand-amber bg-brand-amber/5 text-brand-amber shadow-2xl' : 'border-white/5 bg-brand-surface text-gray-teal'}`}
+                className={`flex items-center gap-5 p-5 rounded-[24px] border-2 transition-all duration-300 relative overflow-hidden text-left ${
+                  paymentMethod === m.id 
+                    ? 'border-[#FF5A00] bg-[#FF5A00]/5 shadow-[0_0_25px_rgba(255,90,0,0.15)]' 
+                    : 'border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-brand-surface hover:border-slate-200 dark:hover:border-white/10'
+                }`}
               >
-                <span className="text-2xl">{m.icon}</span>
+                {/* Active channel accent glow */}
+                {paymentMethod === m.id && (
+                  <div className="absolute top-0 right-0 w-24 h-full bg-gradient-to-l from-[#FF5A00]/10 to-transparent pointer-events-none" />
+                )}
+                {m.icon}
                 <div className="flex flex-col items-start space-y-0.5">
-                   <span className="font-black text-xs uppercase tracking-widest leading-none">{m.label}</span>
-                   {paymentMethod === m.id && <span className="text-[7px] font-black text-brand-amber uppercase tracking-[0.3em]">Channel Active</span>}
+                   <span className="font-black text-xs uppercase tracking-wider leading-none text-slate-900 dark:text-white">{m.label}</span>
+                   <span className="text-[8px] font-bold text-slate-500 dark:text-gray-teal/70 uppercase tracking-widest mt-1">
+                     {m.sub}
+                   </span>
+                   {paymentMethod === m.id && (
+                     <span className="text-[7px] font-black text-[#FF5A00] uppercase tracking-[0.3em] mt-1.5 flex items-center gap-1.5 animate-pulse">
+                       <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A00]" />
+                       Channel Active
+                     </span>
+                   )}
                 </div>
-                {paymentMethod === m.id && <CheckCircle2 className="ml-auto w-6 h-6 text-brand-amber" />}
+                {paymentMethod === m.id && <CheckCircle2 className="ml-auto w-6 h-6 text-[#FF5A00]" />}
               </motion.button>
             ))}
           </div>

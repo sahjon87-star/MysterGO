@@ -30,14 +30,35 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; role?: 'customer' | 
   const profile = authProfile as any;
   const location = useLocation();
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-white dark:bg-slate-950 transition-colors">
+  if (loading) return <div className="min-h-screen flex flex-col items-center justify-center bg-[#121316] text-white">
     <motion.div 
-      initial={{ opacity: 0, scale: 0.9 }}
+      initial={{ opacity: 0, scale: 0.85 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="flex flex-col items-center gap-4"
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="flex flex-col items-center text-center px-6"
     >
-      <Logo iconOnly className="h-16 w-16" />
-      <div className="w-8 h-8 border-4 border-primary-blue border-t-transparent rounded-full animate-spin" />
+      {/* Centered Premium Squircle Brand Logo */}
+      <Logo iconOnly size="xl" className="mb-6 filter drop-shadow-[0_10px_20px_rgba(255,90,0,0.15)] animate-pulse" />
+      
+      {/* Title */}
+      <h1 className="text-4xl font-black tracking-tight text-white mb-2">
+        Mistri<span className="text-[#FF5A00] italic">GO</span>
+      </h1>
+      
+      {/* Subtext with wide tracking */}
+      <p className="text-[11px] font-extrabold uppercase tracking-[0.35em] text-[#8E9CAE] opacity-80 mb-8">
+        Expert Service Providers
+      </p>
+
+      {/* Modern, sleek custom loading bar instead of generic spinner */}
+      <div className="w-32 h-1 bg-white/5 rounded-full overflow-hidden relative border border-white/5">
+        <motion.div 
+          initial={{ left: "-100%" }}
+          animate={{ left: "100%" }}
+          transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+          className="absolute top-0 bottom-0 w-1/2 bg-gradient-to-r from-transparent via-[#FF5A00] to-transparent"
+        />
+      </div>
     </motion.div>
   </div>;
 

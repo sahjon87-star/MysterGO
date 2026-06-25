@@ -1,0 +1,27 @@
+<svg
+  width="512"
+  height="512"
+  viewBox="0 0 100 100"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- Background Squircle - Premium Dark Charcoal Slate -->
+  <rect width="100" height="100" rx="24" fill="#121316" />
+
+  <!-- Stylized M - Left half in solid white for structural stability and trust -->
+  <rect x="23" y="32" width="10" height="34" rx="4" fill="#FFFFFF" />
+  <path d="M 33 32 L 50 78 L 50 60 L 33 32 Z" fill="#FFFFFF" />
+
+  <!-- Stylized M - Right half in vibrant Neon Orange (#FF5A00) for motion, acceleration, and speed -->
+  <rect x="67" y="32" width="10" height="34" rx="4" fill="#FF5A00" />
+  <path d="M 67 32 L 50 78 L 50 60 L 67 32 Z" fill="#FF5A00" />
+
+  <!-- Location Map Pin - A sharp V-shaped point at (50,78) with a pinhole cutout -->
+  <circle cx="50" cy="50" r="5" fill="#121316" />
+
+  <!-- Wrench Tool - Circular head integrated into upper-right vertex of the M with a jaw cutout at 45 degrees -->
+  <circle cx="72" cy="28" r="9" fill="#FF5A00" />
+  <!-- Rotating jaw cutout -->
+  <path d="M 72 28 L 78 22 A 6 6 0 0 0 70 20 L 72 28 Z" fill="#121316" />
+  <circle cx="72" cy="28" r="3.5" fill="#121316" />
+</svg>
