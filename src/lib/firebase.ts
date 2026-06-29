@@ -4,7 +4,8 @@ import {
   browserLocalPersistence, 
   indexedDBLocalPersistence,
   initializeAuth,
-  getAuth
+  getAuth,
+  browserPopupRedirectResolver
 } from "firebase/auth";
 import { initializeFirestore, memoryLocalCache } from "firebase/firestore";
 import { getMessaging } from "firebase/messaging";
@@ -97,7 +98,8 @@ try {
   
   if (persistences.length > 0) {
     authInstance = initializeAuth(app, {
-      persistence: persistences
+      persistence: persistences,
+      popupRedirectResolver: browserPopupRedirectResolver
     });
   } else {
     authInstance = getAuth(app);
