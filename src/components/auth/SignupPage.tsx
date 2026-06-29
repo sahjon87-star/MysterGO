@@ -33,19 +33,53 @@ export const SignupPage: React.FC = () => {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
+    setError('');
+
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+    const trimmedConfirm = confirmPassword.trim();
+
+    if (!trimmedName) {
+      setError('Please enter your full name.');
+      return;
+    }
+
+    if (!trimmedEmail) {
+      setError('Please enter your email address.');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(trimmedEmail)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    if (!trimmedPassword) {
+      setError('Please enter a password.');
+      return;
+    }
+
+    if (trimmedPassword.length < 6) {
+      setError('Password must be at least 6 characters long.');
+      return;
+    }
+
+    if (trimmedPassword !== trimmedConfirm) {
       setError('Passwords do not match');
       return;
     }
+
     if (!acceptedTerms || !acceptedPrivacy) {
       setError('Please accept the Terms and Privacy Policy');
       return;
     }
+
     setLoading(true);
-    setError('');
     try {
-      const cred = await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(cred.user, { displayName: name });
+      const cred = await createUserWithEmailAndPassword(auth, trimmedEmail, trimmedPassword);
+      await updateProfile(cred.user, { displayName: trimmedName });
       
       const referralCode = 'MGO-' + cred.user.uid.slice(0, 6).toUpperCase();
       
@@ -58,8 +92,8 @@ export const SignupPage: React.FC = () => {
 
       const baseData = {
         uid: cred.user.uid,
-        name,
-        email,
+        name: trimmedName,
+        email: trimmedEmail,
         role,
         preferredLanguage: lang,
         onboardingComplete: false,
