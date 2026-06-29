@@ -4,7 +4,7 @@ import { createUserWithEmailAndPassword, updateProfile, signInWithPopup } from '
 import { doc, setDoc, serverTimestamp, updateDoc, increment, getDocs, collection, query, where } from 'firebase/firestore';
 import { auth, db, googleProvider } from '../../lib/firebase';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { User, Mail, Lock, Check, ScrollText, ShieldAlert, Wrench, Store, ShieldCheck, Loader2 } from 'lucide-react';
+import { User, Mail, Lock, Check, ScrollText, ShieldAlert, Wrench, Store, ShieldCheck, Loader2, Eye, EyeOff } from 'lucide-react';
 import { Logo } from '../shared/Logo';
 import { motion } from 'motion/react';
 import { UserRole } from '../../types';
@@ -20,6 +20,8 @@ export const SignupPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [acceptedTerms, setAcceptedTerms] = useState(false);
@@ -259,13 +261,22 @@ export const SignupPage: React.FC = () => {
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-teal w-5 h-5" />
               <input 
-                type="password" 
+                type={showPassword ? "text" : "password"} 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-brand-surface border border-white/5 rounded-2xl focus:ring-2 focus:ring-brand-amber transition-all outline-none text-slate-900 placeholder:text-slate-400 font-medium"
+                className="w-full pl-12 pr-12 py-4 bg-brand-surface border border-white/5 rounded-2xl focus:ring-2 focus:ring-brand-amber transition-all outline-none text-slate-900 placeholder:text-slate-400 font-medium animate-none"
                 placeholder="••••••••"
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-teal hover:text-brand-amber transition-colors p-1"
+                id="toggle-signup-password"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
             </div>
           </div>
 
@@ -274,13 +285,22 @@ export const SignupPage: React.FC = () => {
             <div className="relative">
               <ShieldCheck className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-teal w-5 h-5" />
               <input 
-                type="password" 
+                type={showConfirmPassword ? "text" : "password"} 
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-brand-surface border border-white/5 rounded-2xl focus:ring-2 focus:ring-brand-amber transition-all outline-none text-slate-900 placeholder:text-slate-400 font-medium"
+                className="w-full pl-12 pr-12 py-4 bg-brand-surface border border-white/5 rounded-2xl focus:ring-2 focus:ring-brand-amber transition-all outline-none text-slate-900 placeholder:text-slate-400 font-medium animate-none"
                 placeholder="••••••••"
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-teal hover:text-brand-amber transition-colors p-1"
+                id="toggle-signup-confirm-password"
+                aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+              >
+                {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
             </div>
           </div>
 
