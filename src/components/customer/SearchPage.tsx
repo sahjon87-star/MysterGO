@@ -86,9 +86,9 @@ export const SearchPage: React.FC = () => {
       <div className="sticky top-0 z-50 bg-brand-dark/80 backdrop-blur-3xl border-b border-white/5 p-4 space-y-4">
         <div className="flex items-center gap-4">
           <button onClick={() => navigate(-1)} className="p-2 bg-brand-surface border border-white/5 rounded-xl transition-all">
-            <ChevronLeft size={24} className="text-white" />
+            <ChevronLeft size={24} className="text-cream" />
           </button>
-          <h1 className="text-xl font-black text-white uppercase tracking-tight">Search Deck</h1>
+          <h1 className="text-xl font-black text-cream uppercase tracking-tight">Search Deck</h1>
         </div>
 
         <div className="relative group">
@@ -99,7 +99,7 @@ export const SearchPage: React.FC = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search for service, worker name..."
-            className="w-full bg-brand-surface border border-white/5 focus:border-brand-amber py-4 pl-12 pr-12 rounded-2xl outline-none text-sm font-bold text-white transition-all shadow-inner placeholder:text-gray-teal/50"
+            className="w-full bg-brand-surface border border-white/5 focus:border-brand-amber py-4 pl-12 pr-12 rounded-2xl outline-none text-sm font-bold text-cream transition-all shadow-inner placeholder:text-gray-teal/50"
           />
           {searchTerm && (
             <button 

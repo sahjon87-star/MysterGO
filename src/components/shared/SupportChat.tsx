@@ -391,11 +391,11 @@ export const SupportChat = () => {
                 <div key={msg.messageId} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
                   {isBot ? (
                     <div className="flex gap-2 max-w-[85%] items-start">
-                      <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700/60 flex items-center justify-center text-sm shrink-0">
+                      <div className="w-8 h-8 rounded-full bg-brand-surface border border-slate-700/60 flex items-center justify-center text-sm shrink-0">
                         🤖
                       </div>
-                      <div className="bg-slate-800/80 text-cream rounded-2xl rounded-tl-sm border border-slate-700 p-3.5 shadow-lg space-y-1">
-                        <div className="flex items-center gap-1.5 text-slate-400 font-extrabold text-[9px] uppercase tracking-wider mb-1">
+                      <div className="bg-brand-surface/80 text-cream rounded-2xl rounded-tl-sm border border-slate-700 p-3.5 shadow-lg space-y-1">
+                        <div className="flex items-center gap-1.5 text-gray-teal font-extrabold text-[9px] uppercase tracking-wider mb-1">
                           <span>MistriGO 24/7 Helper</span>
                         </div>
                         {renderMessageText(msg.text)}

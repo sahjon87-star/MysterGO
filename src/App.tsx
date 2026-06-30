@@ -30,7 +30,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; role?: 'customer' | 
   const profile = authProfile as any;
   const location = useLocation();
 
-  if (loading) return <div className="min-h-screen flex flex-col items-center justify-center bg-[#121316] text-white">
+  if (loading) return <div className="min-h-screen flex flex-col items-center justify-center bg-brand-dark text-cream">
     <motion.div 
       initial={{ opacity: 0, scale: 0.85 }}
       animate={{ opacity: 1, scale: 1 }}
@@ -38,25 +38,25 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; role?: 'customer' | 
       className="flex flex-col items-center text-center px-6"
     >
       {/* Centered Premium Squircle Brand Logo */}
-      <Logo iconOnly size="xl" className="mb-6 filter drop-shadow-[0_10px_20px_rgba(255,90,0,0.15)] animate-pulse" />
+      <Logo iconOnly size="xl" className="mb-6 filter drop-shadow-[0_10px_20px_rgba(245,158,11,0.15)] animate-pulse" />
       
       {/* Title */}
-      <h1 className="text-4xl font-black tracking-tight text-white mb-2">
-        Mistri<span className="text-[#FF5A00] italic">GO</span>
+      <h1 className="text-4xl font-black tracking-tight text-cream mb-2">
+        Mistri<span className="text-brand-amber italic">GO</span>
       </h1>
       
       {/* Subtext with wide tracking */}
-      <p className="text-[11px] font-extrabold uppercase tracking-[0.35em] text-[#8E9CAE] opacity-80 mb-8">
+      <p className="text-[11px] font-extrabold uppercase tracking-[0.35em] text-gray-teal opacity-80 mb-8">
         Expert Service Providers
       </p>
 
       {/* Modern, sleek custom loading bar instead of generic spinner */}
-      <div className="w-32 h-1 bg-white/5 rounded-full overflow-hidden relative border border-white/5">
+      <div className="w-32 h-1 bg-brand-surface rounded-full overflow-hidden relative border border-white/5">
         <motion.div 
           initial={{ left: "-100%" }}
           animate={{ left: "100%" }}
           transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-          className="absolute top-0 bottom-0 w-1/2 bg-gradient-to-r from-transparent via-[#FF5A00] to-transparent"
+          className="absolute top-0 bottom-0 w-1/2 bg-gradient-to-r from-transparent via-brand-amber to-transparent"
         />
       </div>
     </motion.div>
@@ -82,7 +82,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; role?: 'customer' | 
 
   if (checkRole()) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-brand-dark text-white p-6">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-brand-dark text-cream p-6">
         <div className="bg-brand-slate border border-white/10 rounded-2xl p-8 max-w-md w-full text-center space-y-4 shadow-glass-var">
           <h2 className="text-xl font-black text-brand-amber uppercase tracking-widest">Access Denied</h2>
           <p className="text-gray-teal text-sm leading-relaxed">
@@ -117,7 +117,7 @@ const PanelRouter: React.FC = () => {
 
   if (!isCustomer) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-brand-dark text-white p-6">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-brand-dark text-cream p-6">
         <div className="bg-brand-slate border border-white/10 rounded-2xl p-8 max-w-md w-full text-center space-y-4">
           <h2 className="text-xl font-black text-brand-amber uppercase tracking-widest">Access Denied</h2>
           <p className="text-gray-teal text-sm leading-relaxed">

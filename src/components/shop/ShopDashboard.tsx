@@ -16,20 +16,20 @@ export const ShopDashboard: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-lg shadow-slate-200/40">
+        <div className="bg-brand-slate p-6 rounded-3xl border border-slate-100 shadow-lg shadow-slate-200/40">
           <TrendingUp className="text-emerald-500 mb-4" />
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Sales (Today)</p>
+          <p className="text-[10px] font-black text-gray-teal uppercase tracking-widest">Sales (Today)</p>
           <h4 className="text-2xl font-black">৳0</h4>
         </div>
-        <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-lg shadow-slate-200/40">
+        <div className="bg-brand-slate p-6 rounded-3xl border border-slate-100 shadow-lg shadow-slate-200/40">
           <ShoppingBag className="text-primary-blue mb-4" />
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Active Orders</p>
+          <p className="text-[10px] font-black text-gray-teal uppercase tracking-widest">Active Orders</p>
           <h4 className="text-2xl font-black">0</h4>
         </div>
       </div>
 
-      <div className="bg-white p-10 rounded-[40px] border border-slate-100 text-center space-y-4">
-        <p className="text-slate-400 font-bold uppercase text-xs">Module Restoration in Progress</p>
+      <div className="bg-brand-slate p-10 rounded-[40px] border border-slate-100 text-center space-y-4">
+        <p className="text-gray-teal font-bold uppercase text-xs">Module Restoration in Progress</p>
         <h3 className="text-xl font-bold">Additional Shop sub-modules are being re-initialized.</h3>
       </div>
     </div>

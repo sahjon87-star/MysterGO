@@ -289,10 +289,10 @@ export const NewBookingPage: React.FC = () => {
           onClick={() => navigate(-1)} 
           className="p-3 bg-brand-surface rounded-2xl transition-colors border border-white/5"
         >
-          <ArrowLeft className="w-5 h-5 text-white" />
+          <ArrowLeft className="w-5 h-5 text-cream" />
         </motion.button>
         <div className="flex flex-col">
-          <h1 className="font-black text-white uppercase tracking-tighter text-lg leading-none">Book Service</h1>
+          <h1 className="font-black text-cream uppercase tracking-tighter text-lg leading-none">Book Service</h1>
           <span className="text-[8px] font-black text-brand-amber uppercase tracking-[0.3em] mt-1">Booking Form</span>
         </div>
       </nav>
@@ -312,7 +312,7 @@ export const NewBookingPage: React.FC = () => {
             )}
           </div>
           <div className="flex-1 space-y-1">
-            <h3 className="font-black text-white text-base uppercase tracking-tighter leading-none">{worker.name}</h3>
+            <h3 className="font-black text-cream text-base uppercase tracking-tighter leading-none">{worker.name}</h3>
             <p className="text-brand-amber text-[9px] font-black uppercase tracking-[0.2em]">{worker.skill || worker.providerType}</p>
             <div className="flex items-center gap-2 mt-2">
               <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
@@ -336,7 +336,7 @@ export const NewBookingPage: React.FC = () => {
 
         {/* Matrix Quadrant Selection */}
         <div className="space-y-4">
-          <h3 className="font-black text-white uppercase tracking-[0.3em] text-[10px] px-2 flex items-center gap-3">
+          <h3 className="font-black text-cream uppercase tracking-[0.3em] text-[10px] px-2 flex items-center gap-3">
              <div className="w-5 h-[1px] bg-brand-amber" />
              Job Category
           </h3>
@@ -365,7 +365,7 @@ export const NewBookingPage: React.FC = () => {
         {/* Helper Configuration & Live BD Rates */}
         <div className="space-y-4">
           <div className="flex justify-between items-center px-2">
-            <h3 className="font-black text-white uppercase tracking-[0.3em] text-[10px] flex items-center gap-3">
+            <h3 className="font-black text-cream uppercase tracking-[0.3em] text-[10px] flex items-center gap-3">
               <div className="w-5 h-[1px] bg-brand-amber" />
               Add Reliable Helpers (Jogan)
             </h3>
@@ -377,7 +377,7 @@ export const NewBookingPage: React.FC = () => {
           <div className="bg-brand-slate rounded-[32px] p-6 border border-white/5 shadow-2xl space-y-4">
             <div className="flex items-start justify-between gap-4 border-b border-white/5 pb-4">
               <div className="space-y-1">
-                <p className="text-[10px] font-black text-white uppercase tracking-wider">
+                <p className="text-[10px] font-black text-cream uppercase tracking-wider">
                   Helper / Jogali Combo Support
                 </p>
                 <p className="text-[8px] font-bold text-gray-teal uppercase tracking-widest">
@@ -433,7 +433,7 @@ export const NewBookingPage: React.FC = () => {
               >
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 rounded-full bg-brand-amber animate-pulse" />
-                  <span className="text-[8px] font-black text-white uppercase tracking-widest">
+                  <span className="text-[8px] font-black text-cream uppercase tracking-widest">
                     Combo Allocation Active
                   </span>
                 </div>
@@ -513,7 +513,7 @@ export const NewBookingPage: React.FC = () => {
           <div className="bg-brand-dark rounded-[36px] p-8 space-y-4 border border-white/5 shadow-2xl relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-64 h-64 bg-brand-amber/5 rounded-full blur-[80px] -mr-32 -mt-32" />
             
-            <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em] text-gray-teal group-hover:text-white transition-colors">
+            <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em] text-gray-teal group-hover:text-cream transition-colors">
               <span>
                 Worker Fare / কাজের মজুরি ({
                   jobType === 'daily' 
@@ -523,7 +523,7 @@ export const NewBookingPage: React.FC = () => {
                       : `${formatCurrency(worker.hourlyRate)} × ${hours}hr`
                 })
               </span>
-              <span className="text-white">
+              <span className="text-cream">
                 {formatCurrency(currentBasePrice)}
               </span>
             </div>
@@ -537,15 +537,15 @@ export const NewBookingPage: React.FC = () => {
                 </span>
               </div>
             )}
-            <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em] text-gray-teal group-hover:text-white transition-colors">
+            <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em] text-gray-teal group-hover:text-cream transition-colors">
               <span>Service Charge ({settings.applicationFeeRate}%)</span>
-              <span className="text-white">
+              <span className="text-cream">
                 {formatCurrency(pricing.applicationFee)}
               </span>
             </div>
-            <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em] text-gray-teal group-hover:text-white transition-colors">
+            <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em] text-gray-teal group-hover:text-cream transition-colors">
               <span>Platform Fee ({settings.paymentChargeRate}%)</span>
-              <span className="text-white">
+              <span className="text-cream">
                 {formatCurrency(pricing.paymentCharges)}
               </span>
             </div>
@@ -555,7 +555,7 @@ export const NewBookingPage: React.FC = () => {
                 <span className="text-[10px] font-black text-brand-amber uppercase tracking-[0.3em] block">Total Payable Amount</span>
                 <span className="text-[8px] font-black text-gray-teal uppercase tracking-widest">Calculated Real-Time</span>
               </div>
-              <span className="text-4xl font-black text-white tracking-tighter">
+              <span className="text-4xl font-black text-cream tracking-tighter">
                 {formatCurrency(pricing.markupPrice)}
               </span>
             </div>
@@ -566,7 +566,7 @@ export const NewBookingPage: React.FC = () => {
         {nearbyShops.length > 0 && (
           <div className="space-y-4">
             <div className="flex items-center justify-between px-2">
-              <h3 className="font-black text-white uppercase tracking-[0.3em] text-[10px] flex items-center gap-3">
+              <h3 className="font-black text-cream uppercase tracking-[0.3em] text-[10px] flex items-center gap-3">
                 <div className="w-5 h-[1px] bg-brand-amber" />
                 Linked Supply Depots
               </h3>
@@ -584,14 +584,14 @@ export const NewBookingPage: React.FC = () => {
                       <Store className="w-6 h-6" />
                     </div>
                     <div className="overflow-hidden space-y-0.5">
-                      <h4 className="font-black text-white text-[10px] uppercase tracking-tighter truncate leading-none">{shop.shopName}</h4>
+                      <h4 className="font-black text-cream text-[10px] uppercase tracking-tighter truncate leading-none">{shop.shopName}</h4>
                       <p className="text-[8px] font-black text-gray-teal uppercase tracking-widest truncate">{shop.shopAddress}</p>
                     </div>
                   </div>
                   <motion.button 
                     whileTap={{ scale: 0.95 }}
                     onClick={() => navigate(`/shop/${shop.uid}`)}
-                    className="w-full bg-brand-surface text-white text-[9px] font-black py-4 rounded-2xl border border-white/5 uppercase tracking-[0.2em] shadow-lg active:scale-95 transition-all"
+                    className="w-full bg-brand-surface text-cream text-[9px] font-black py-4 rounded-2xl border border-white/5 uppercase tracking-[0.2em] shadow-lg active:scale-95 transition-all"
                   >
                     Sync Depot
                   </motion.button>
@@ -602,12 +602,12 @@ export const NewBookingPage: React.FC = () => {
         )}
 
         {/* Financial Protocol Selection */}
-        <div className="space-y-5 p-6 rounded-[36px] bg-white dark:bg-brand-slate/40 border border-slate-100 dark:border-white/5 shadow-2xl relative overflow-hidden backdrop-blur-md">
+        <div className="space-y-5 p-6 rounded-[36px] bg-brand-slate dark:bg-brand-slate/40 border border-slate-100 dark:border-white/5 shadow-2xl relative overflow-hidden backdrop-blur-md">
           {/* Subtle accent ambient glows */}
           <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#FF5A00]/5 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-brand-amber/5 rounded-full blur-3xl pointer-events-none" />
 
-          <h3 className="font-black text-slate-800 dark:text-white uppercase tracking-[0.3em] text-[10px] px-2 flex items-center gap-3 relative z-10">
+          <h3 className="font-black text-cream dark:text-cream uppercase tracking-[0.3em] text-[10px] px-2 flex items-center gap-3 relative z-10">
              <div className="w-5 h-[1px] bg-[#FF5A00]" />
              Payment Gateway Matrix
           </h3>
@@ -712,8 +712,8 @@ export const NewBookingPage: React.FC = () => {
                 )}
                 {m.icon}
                 <div className="flex flex-col items-start space-y-0.5">
-                   <span className="font-black text-xs uppercase tracking-wider leading-none text-slate-900 dark:text-white">{m.label}</span>
-                   <span className="text-[8px] font-bold text-slate-500 dark:text-gray-teal/70 uppercase tracking-widest mt-1">
+                   <span className="font-black text-xs uppercase tracking-wider leading-none text-cream dark:text-cream">{m.label}</span>
+                   <span className="text-[8px] font-bold text-gray-teal dark:text-gray-teal/70 uppercase tracking-widest mt-1">
                      {m.sub}
                    </span>
                    {paymentMethod === m.id && (

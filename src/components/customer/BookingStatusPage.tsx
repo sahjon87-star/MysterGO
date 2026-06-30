@@ -275,7 +275,7 @@ export const BookingStatusPage: React.FC = () => {
             </div>
             
             <div className="space-y-2">
-              <h3 className={`text-2xl font-black uppercase tracking-tighter leading-none ${ booking.isRequestingStartOtp ? 'text-brand-dark' : 'text-slate-900 dark:text-white'}`}>
+              <h3 className={`text-2xl font-black uppercase tracking-tighter leading-none ${ booking.isRequestingStartOtp ? 'text-brand-dark' : 'text-cream dark:text-cream'}`}>
                 {booking.isRequestingStartOtp ? 'OTP Required' : 'Start Code'}
               </h3>
               <p className={`text-[9px] font-black uppercase tracking-[0.3em] ${ booking.isRequestingStartOtp ? 'text-brand-dark/80' : 'text-gray-teal'}`}>
@@ -283,7 +283,7 @@ export const BookingStatusPage: React.FC = () => {
               </p>
             </div>
 
-            <div className={`rounded-3xl py-6 text-5xl font-black tracking-[0.5em] shadow-inner border-4 transition-colors ${ booking.isRequestingStartOtp ? 'bg-brand-dark text-brand-amber border-brand-dark/10' : 'bg-brand-dark text-slate-900 dark:text-white border-slate-200 dark:border-white/5'}`}>
+            <div className={`rounded-3xl py-6 text-5xl font-black tracking-[0.5em] shadow-inner border-4 transition-colors ${ booking.isRequestingStartOtp ? 'bg-brand-dark text-brand-amber border-brand-dark/10' : 'bg-brand-dark text-cream dark:text-cream border-slate-200 dark:border-white/5'}`}>
               {booking.otp}
             </div>
 
@@ -310,7 +310,7 @@ export const BookingStatusPage: React.FC = () => {
             </div>
 
             <div className="space-y-2">
-              <h3 className={`text-2xl font-black uppercase tracking-tighter leading-none ${ booking.isRequestingCompletionOtp ? 'text-brand-dark' : 'text-slate-900 dark:text-white'}`}>
+              <h3 className={`text-2xl font-black uppercase tracking-tighter leading-none ${ booking.isRequestingCompletionOtp ? 'text-brand-dark' : 'text-cream dark:text-cream'}`}>
                 {booking.isRequestingCompletionOtp ? 'CONFIRM FINISH' : 'Completion Key'}
               </h3>
               <p className={`text-[9px] font-black uppercase tracking-[0.3em] ${ booking.isRequestingCompletionOtp ? 'text-brand-dark/80' : 'text-gray-teal'}`}>
@@ -318,7 +318,7 @@ export const BookingStatusPage: React.FC = () => {
               </p>
             </div>
 
-            <div className={`rounded-3xl py-6 text-5xl font-black tracking-[0.5em] shadow-inner border-4 transition-colors ${ booking.isRequestingCompletionOtp ? 'bg-brand-dark text-emerald-500 border-brand-dark/10' : 'bg-brand-dark text-slate-900 dark:text-white border-slate-200 dark:border-white/5'}`}>
+            <div className={`rounded-3xl py-6 text-5xl font-black tracking-[0.5em] shadow-inner border-4 transition-colors ${ booking.isRequestingCompletionOtp ? 'bg-brand-dark text-emerald-500 border-brand-dark/10' : 'bg-brand-dark text-cream dark:text-cream border-slate-200 dark:border-white/5'}`}>
               {booking.completionOTP}
             </div>
           </motion.div>
@@ -674,7 +674,7 @@ export const BookingStatusPage: React.FC = () => {
                 </div>
                 <div className="space-y-1">
                    <h4 className="font-black text-brand-amber text-sm uppercase tracking-widest">Verifying Payment</h4>
-                   <p className="text-[9px] text-gray-teal font-black uppercase tracking-[0.2em] leading-relaxed">Our team is verifying your Transaction ID: <span className="text-white border-b border-white/20 pb-0.5">{booking.trxId}</span></p>
+                   <p className="text-[9px] text-gray-teal font-black uppercase tracking-[0.2em] leading-relaxed">Our team is verifying your Transaction ID: <span className="text-cream border-b border-white/20 pb-0.5">{booking.trxId}</span></p>
                 </div>
               </div>
             ) : (

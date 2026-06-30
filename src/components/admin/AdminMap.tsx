@@ -54,7 +54,7 @@ const CenterButton = ({ center }: { center: [number, number] }) => {
   return (
     <button 
       onClick={() => map.setView(center, 12)}
-      className="absolute top-6 right-6 bg-white/90 dark:bg-slate-900/90 backdrop-blur p-3 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800 z-[1000] text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all active:scale-95"
+      className="absolute top-6 right-6 bg-white/90 dark:bg-brand-dark/90 backdrop-blur p-3 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800 z-[1000] text-slate-600 dark:text-gray-teal hover:text-cream dark:hover:text-cream transition-all active:scale-95"
     >
       <MapPin className="w-5 h-5" />
     </button>
@@ -108,11 +108,11 @@ export const AdminMap: React.FC = () => {
   return (
     <div className="p-6 space-y-6 h-full flex flex-col">
       <div className="space-y-1">
-        <h2 className="text-2xl font-black text-slate-800 dark:text-white tracking-tight">Live Platform Map</h2>
-        <p className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest">Real-time view of workers and jobs</p>
+        <h2 className="text-2xl font-black text-cream dark:text-cream tracking-tight">Live Platform Map</h2>
+        <p className="text-gray-teal dark:text-gray-teal text-xs font-bold uppercase tracking-widest">Real-time view of workers and jobs</p>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 rounded-[32px] border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden relative" style={{ height: '500px', width: '100%' }}>
+      <div className="bg-brand-slate dark:bg-brand-dark rounded-[32px] border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden relative" style={{ height: '500px', width: '100%' }}>
         <MapContainer center={center} zoom={12} style={{ height: '100%', width: '100%' }} zoomControl={false}>
           <MapInvalidator />
           <ChangeView center={center} />
@@ -130,10 +130,10 @@ export const AdminMap: React.FC = () => {
               icon={workerIcon}
             >
               <Popup>
-                <div className="text-center p-1 dark:text-slate-200">
+                <div className="text-center p-1 dark:text-cream">
                   <p className="font-black text-xs">{p.name}</p>
                   <p className="text-[10px] text-primary-blue font-bold uppercase">{p.skill}</p>
-                  <p className="text-[8px] text-slate-400 dark:text-slate-500 mt-1">ONLINE</p>
+                  <p className="text-[8px] text-gray-teal dark:text-gray-teal mt-1">ONLINE</p>
                 </div>
               </Popup>
             </Marker>
@@ -147,7 +147,7 @@ export const AdminMap: React.FC = () => {
               icon={shopIcon}
             >
               <Popup>
-                <div className="text-center p-1 dark:text-slate-200">
+                <div className="text-center p-1 dark:text-cream">
                   <div className="w-8 h-8 bg-primary-blue/10 rounded-lg flex items-center justify-center mx-auto mb-1">
                     <Store className="w-4 h-4 text-primary-blue" />
                   </div>
@@ -166,10 +166,10 @@ export const AdminMap: React.FC = () => {
               icon={customerIcon}
             >
               <Popup>
-                <div className="text-center p-1 dark:text-slate-200">
+                <div className="text-center p-1 dark:text-cream">
                   <p className="font-black text-xs">Job: {j.service}</p>
                   <p className="text-[10px] text-action-orange font-bold uppercase">{j.status}</p>
-                  <p className="text-[8px] text-slate-400 dark:text-slate-500 mt-1">Customer: {j.customerName}</p>
+                  <p className="text-[8px] text-gray-teal dark:text-gray-teal mt-1">Customer: {j.customerName}</p>
                 </div>
               </Popup>
             </Marker>
@@ -177,18 +177,18 @@ export const AdminMap: React.FC = () => {
         </MapContainer>
 
         {/* Legend */}
-        <div className="absolute bottom-6 right-6 bg-white/90 dark:bg-slate-900/90 backdrop-blur p-4 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800 z-[1000] space-y-3">
+        <div className="absolute bottom-6 right-6 bg-white/90 dark:bg-brand-dark/90 backdrop-blur p-4 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800 z-[1000] space-y-3">
           <div className="flex items-center gap-3">
             <div className="w-3 h-3 bg-primary-blue rounded-full" />
-            <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-widest">Online Workers ({providers.length})</span>
+            <span className="text-[10px] font-bold text-slate-600 dark:text-cream uppercase tracking-widest">Online Workers ({providers.length})</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-3 h-3 bg-action-orange rounded-full" />
-            <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-widest">Active Jobs ({activeJobs.length})</span>
+            <span className="text-[10px] font-bold text-slate-600 dark:text-cream uppercase tracking-widest">Active Jobs ({activeJobs.length})</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-3 h-3 bg-primary-blue/50 rounded-full" />
-            <span className="text-[10px] font-bold text-slate-600 dark:text-slate-300 uppercase tracking-widest">Shops ({shops.length})</span>
+            <span className="text-[10px] font-bold text-slate-600 dark:text-cream uppercase tracking-widest">Shops ({shops.length})</span>
           </div>
         </div>
       </div>

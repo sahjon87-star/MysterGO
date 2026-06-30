@@ -400,7 +400,7 @@ export const MaterialCalculator: React.FC = () => {
           
           <div className="flex items-center gap-3">
             {/* Highly Polished & Highlighted Estimator Logo */}
-            <div className="relative flex items-center justify-center w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-amber to-brand-amber-light text-white shadow-lg shadow-brand-amber/20 overflow-hidden group">
+            <div className="relative flex items-center justify-center w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-amber to-brand-amber-light text-cream shadow-lg shadow-brand-amber/20 overflow-hidden group">
               <div className="absolute inset-0 bg-white/10 group-hover:scale-115 transition-transform duration-500" />
               <Calculator className="w-5 h-5 animate-pulse" />
               <span className="absolute top-1 right-1 flex h-1.5 w-1.5">
@@ -434,7 +434,7 @@ export const MaterialCalculator: React.FC = () => {
             className={`py-3.5 rounded-2xl font-black text-[9px] uppercase tracking-widest transition-all ${
               activeTab === 'concrete' 
                 ? 'bg-brand-blue text-white shadow-lg' 
-                : 'text-gray-teal hover:text-white'
+                : 'text-gray-teal hover:text-cream'
             }`}
           >
             {lang === 'bn' ? 'কংক্রিট' : 'Concrete'}
@@ -444,7 +444,7 @@ export const MaterialCalculator: React.FC = () => {
             className={`py-3.5 rounded-2xl font-black text-[9px] uppercase tracking-widest transition-all ${
               activeTab === 'brickwork' 
                 ? 'bg-brand-blue text-white shadow-lg' 
-                : 'text-gray-teal hover:text-white'
+                : 'text-gray-teal hover:text-cream'
             }`}
           >
             {lang === 'bn' ? 'গাঁথুনি' : 'Brick Wall'}
@@ -454,7 +454,7 @@ export const MaterialCalculator: React.FC = () => {
             className={`py-3.5 rounded-2xl font-black text-[9px] uppercase tracking-widest transition-all ${
               activeTab === 'plaster' 
                 ? 'bg-brand-blue text-white shadow-lg' 
-                : 'text-gray-teal hover:text-white'
+                : 'text-gray-teal hover:text-cream'
             }`}
           >
             {lang === 'bn' ? 'প্লাস্টার' : 'Plaster'}
@@ -474,7 +474,7 @@ export const MaterialCalculator: React.FC = () => {
               >
                 <div className="flex items-center gap-3 border-b border-white/5 pb-2 mb-2">
                   <Layers className="w-5 h-5 text-brand-amber animate-pulse" />
-                  <h3 className="text-xs font-black text-white uppercase tracking-widest">
+                  <h3 className="text-xs font-black text-cream uppercase tracking-widest">
                     {lang === 'bn' ? 'কংক্রিট/ঢালাই পরিমাপ' : 'Concrete Slab / Column'}
                   </h3>
                 </div>
@@ -565,7 +565,7 @@ export const MaterialCalculator: React.FC = () => {
               >
                 <div className="flex items-center gap-3 border-b border-white/5 pb-2 mb-2">
                   <Grid className="w-5 h-5 text-brand-amber animate-pulse" />
-                  <h3 className="text-xs font-black text-white uppercase tracking-widest">
+                  <h3 className="text-xs font-black text-cream uppercase tracking-widest">
                     {lang === 'bn' ? 'ইটের গাঁথুনি পরিমাপ' : 'Brick Wall Installation'}
                   </h3>
                 </div>
@@ -611,7 +611,7 @@ export const MaterialCalculator: React.FC = () => {
                         className={`py-3 rounded-xl border text-[10px] font-black transition-all ${
                           brickThickness === '5'
                             ? 'bg-brand-blue text-white border-brand-blue'
-                            : 'bg-brand-slate text-gray-teal border-white/5 hover:text-white'
+                            : 'bg-brand-slate text-gray-teal border-white/5 hover:text-cream'
                         }`}
                       >
                         5 Inch (৫ ইঞ্চি)
@@ -622,7 +622,7 @@ export const MaterialCalculator: React.FC = () => {
                         className={`py-3 rounded-xl border text-[10px] font-black transition-all ${
                           brickThickness === '10'
                             ? 'bg-brand-blue text-white border-brand-blue'
-                            : 'bg-brand-slate text-gray-teal border-white/5 hover:text-white'
+                            : 'bg-brand-slate text-gray-teal border-white/5 hover:text-cream'
                         }`}
                       >
                         10 Inch (১০ ইঞ্চি)
@@ -658,7 +658,7 @@ export const MaterialCalculator: React.FC = () => {
               >
                 <div className="flex items-center gap-3 border-b border-white/5 pb-2 mb-2">
                   <Brush className="w-5 h-5 text-brand-amber animate-pulse" />
-                  <h3 className="text-xs font-black text-white uppercase tracking-widest">
+                  <h3 className="text-xs font-black text-cream uppercase tracking-widest">
                     {lang === 'bn' ? 'দেয়াল প্লাস্টার পরিমাপ' : 'Wall Plastering'}
                   </h3>
                 </div>
@@ -718,7 +718,7 @@ export const MaterialCalculator: React.FC = () => {
           <div className="flex justify-end border-t border-white/5 pt-4">
             <button
               onClick={resetAll}
-              className="flex items-center gap-2 bg-white/5 hover:bg-white/10 text-gray-teal hover:text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all"
+              className="flex items-center gap-2 bg-white/5 hover:bg-white/10 text-gray-teal hover:text-cream px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               Reset Inputs
@@ -727,7 +727,7 @@ export const MaterialCalculator: React.FC = () => {
         </div>
 
         {/* Calculations Outputs Card */}
-        <div className="bg-brand-blue/10 dark:bg-slate-900/40 border border-brand-blue/20 rounded-[32px] p-6 relative overflow-hidden">
+        <div className="bg-brand-blue/10 dark:bg-brand-dark/40 border border-brand-blue/20 rounded-[32px] p-6 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-24 h-24 bg-brand-amber/10 rounded-full blur-[40px] pointer-events-none" />
 
           <div className="space-y-4">
@@ -950,7 +950,7 @@ export const MaterialCalculator: React.FC = () => {
                       <h4 className="text-[11px] font-black text-brand-blue uppercase tracking-widest leading-none">
                         {lang === 'bn' ? 'এআই খরচের প্রতিবেদন' : 'AI Strategic Cost Summary'}
                       </h4>
-                      <p className="text-[8px] font-bold text-slate-400 mt-1 uppercase tracking-wider">
+                      <p className="text-[8px] font-bold text-gray-teal mt-1 uppercase tracking-wider">
                         Powering standard civil standards
                       </p>
                     </div>
@@ -985,7 +985,7 @@ export const MaterialCalculator: React.FC = () => {
                     <button
                       onClick={() => setShowSettings(!showSettings)}
                       className={`p-2 rounded-xl border transition-all ${
-                        showSettings ? 'bg-brand-amber/20 border-brand-amber text-brand-amber' : 'bg-white/5 border-white/5 text-gray-teal hover:text-white'
+                        showSettings ? 'bg-brand-amber/20 border-brand-amber text-brand-amber' : 'bg-white/5 border-white/5 text-gray-teal hover:text-cream'
                       }`}
                       title="Adjust Speech Settings"
                     >
@@ -1004,7 +1004,7 @@ export const MaterialCalculator: React.FC = () => {
                       className="bg-brand-dark/60 border border-white/5 p-3 rounded-xl mb-4 space-y-3 overflow-hidden text-[10px] font-black uppercase tracking-widest text-gray-teal"
                     >
                       <div className="flex justify-between items-center">
-                        <span className="text-[9px] text-white">Adjustable voice controls</span>
+                        <span className="text-[9px] text-cream">Adjustable voice controls</span>
                         <button onClick={() => setShowSettings(false)} className="text-[8px] text-brand-amber">Close</button>
                       </div>
 
@@ -1089,10 +1089,10 @@ export const MaterialCalculator: React.FC = () => {
         </div>
 
         {/* Informative Tip Badge */}
-        <div className="bg-brand-surface border border-white/5 rounded-2xl p-4 flex gap-3 text-slate-400">
+        <div className="bg-brand-surface border border-white/5 rounded-2xl p-4 flex gap-3 text-gray-teal">
           <Info className="w-5 h-5 text-brand-amber flex-shrink-0 mt-0.5" />
           <div className="space-y-1">
-            <h4 className="text-[10px] font-black uppercase text-white tracking-widest">Calculations Protocol Notice</h4>
+            <h4 className="text-[10px] font-black uppercase text-cream tracking-widest">Calculations Protocol Notice</h4>
             <p className="text-[10px] leading-relaxed font-bold">
               {lang === 'bn' 
                 ? 'উপরের হিসাবগুলো বাংলাদেশের স্ট্যান্ডার্ড কনস্ট্রাকশন পদ্ধতি অনুযায়ী করা হয়েছে। কংক্রিটের জন্য ১.৫৪ এবং মশলার গাঁথুনির জন্য শুষ্ক ফ্যাক্টর হিসাবযুক্ত করা হয়েছে।'

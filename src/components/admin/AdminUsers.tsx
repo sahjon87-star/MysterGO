@@ -55,36 +55,36 @@ export const AdminUsers: React.FC = () => {
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div className="space-y-1">
-          <h2 className="text-2xl font-black text-slate-800 dark:text-white tracking-tight">User Management</h2>
-          <p className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest">Manage platform customers</p>
+          <h2 className="text-2xl font-black text-cream dark:text-cream tracking-tight">User Management</h2>
+          <p className="text-gray-teal dark:text-gray-teal text-xs font-bold uppercase tracking-widest">Manage platform customers</p>
         </div>
-        <button className="w-12 h-12 bg-slate-900 dark:bg-primary-blue rounded-2xl flex items-center justify-center shadow-lg shadow-slate-900/20 dark:shadow-primary-blue/20 active:scale-90 transition-all">
-          <UserPlus className="text-white w-6 h-6" />
+        <button className="w-12 h-12 bg-brand-dark dark:bg-primary-blue rounded-2xl flex items-center justify-center shadow-lg shadow-slate-900/20 dark:shadow-primary-blue/20 active:scale-90 transition-all">
+          <UserPlus className="text-cream w-6 h-6" />
         </button>
       </div>
 
       {/* Search */}
       <div className="relative">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 dark:text-slate-500" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-teal dark:text-gray-teal" />
         <input 
           type="text" 
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search by name, phone or email..."
-          className="w-full bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl pl-12 pr-4 py-4 focus:ring-2 focus:ring-slate-900 dark:focus:ring-primary-blue outline-none shadow-sm font-medium text-sm text-slate-800 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600"
+          className="w-full bg-brand-slate dark:bg-brand-dark border border-slate-100 dark:border-slate-800 rounded-2xl pl-12 pr-4 py-4 focus:ring-2 focus:ring-slate-900 dark:focus:ring-primary-blue outline-none shadow-sm font-medium text-sm text-cream dark:text-cream placeholder:text-gray-teal dark:placeholder:text-slate-600"
         />
       </div>
 
       {/* User List */}
       <div className="space-y-4">
         {loading ? (
-          [1, 2, 3, 4].map(i => <div key={i} className="h-24 bg-white dark:bg-slate-900 rounded-[32px] animate-pulse border border-slate-100 dark:border-slate-800" />)
+          [1, 2, 3, 4].map(i => <div key={i} className="h-24 bg-brand-slate dark:bg-brand-dark rounded-[32px] animate-pulse border border-slate-100 dark:border-slate-800" />)
         ) : filteredUsers.length === 0 ? (
-          <div className="bg-white dark:bg-slate-900 rounded-[32px] p-16 text-center space-y-4 border border-slate-100 dark:border-slate-800 shadow-sm">
+          <div className="bg-brand-slate dark:bg-brand-dark rounded-[32px] p-16 text-center space-y-4 border border-slate-100 dark:border-slate-800 shadow-sm">
             <div className="text-5xl opacity-20">👥</div>
             <div className="space-y-1">
-              <h4 className="font-black uppercase tracking-tight text-sm text-slate-800 dark:text-white">No users found</h4>
-              <p className="text-slate-500 dark:text-slate-400 text-[10px] font-medium">Try searching with a different term.</p>
+              <h4 className="font-black uppercase tracking-tight text-sm text-cream dark:text-cream">No users found</h4>
+              <p className="text-gray-teal dark:text-gray-teal text-[10px] font-medium">Try searching with a different term.</p>
             </div>
           </div>
         ) : (
@@ -97,7 +97,7 @@ export const AdminUsers: React.FC = () => {
             >
               <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary-blue/30 group-hover:w-1.5 transition-all" />
               
-              <div className="w-16 h-16 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-800 flex items-center justify-center overflow-hidden shadow-inner shrink-0 group-hover:scale-105 transition-transform">
+              <div className="w-16 h-16 rounded-2xl bg-brand-slate dark:bg-brand-surface border border-slate-100 dark:border-slate-800 flex items-center justify-center overflow-hidden shadow-inner shrink-0 group-hover:scale-105 transition-transform">
                 {user.photoURL ? (
                   <img 
                     src={user.photoURL} 
@@ -106,13 +106,13 @@ export const AdminUsers: React.FC = () => {
                     referrerPolicy="no-referrer"
                   />
                 ) : (
-                  <span className="text-slate-400 dark:text-slate-500 font-black text-xl">{getInitials(user.name)}</span>
+                  <span className="text-gray-teal dark:text-gray-teal font-black text-xl">{getInitials(user.name)}</span>
                 )}
               </div>
               
               <div className="flex-1 min-w-0 space-y-1">
                 <div className="flex items-center flex-wrap gap-2">
-                  <h4 className="font-black text-slate-800 dark:text-white text-base tracking-tight leading-none truncate">{user.name || 'Anonymous User'}</h4>
+                  <h4 className="font-black text-cream dark:text-cream text-base tracking-tight leading-none truncate">{user.name || 'Anonymous User'}</h4>
                   {user.isBlocked && (
                     <span className="bg-red-500 text-white text-[8px] font-black uppercase px-2 py-0.5 rounded-full tracking-widest shadow-lg shadow-red-500/20">Blacklisted</span>
                   )}
@@ -123,7 +123,7 @@ export const AdminUsers: React.FC = () => {
                   )}
                 </div>
                 
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-slate-500 dark:text-slate-400">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-gray-teal dark:text-gray-teal">
                   <div className="flex items-center gap-1.5">
                     <Phone className="w-3 h-3 text-primary-blue" />
                     <span className="text-[10px] font-bold uppercase tracking-widest">{user.phone || 'No Phone'}</span>
@@ -135,8 +135,8 @@ export const AdminUsers: React.FC = () => {
                 </div>
 
                 <div className="pt-2 border-t border-slate-50 dark:border-slate-800 flex items-start gap-2 max-w-md">
-                   <MapPin className="w-3.5 h-3.5 text-slate-300 dark:text-slate-600 shrink-0 mt-0.5" />
-                   <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400 italic line-clamp-1">{user.address || 'Physical address not registered'}</p>
+                   <MapPin className="w-3.5 h-3.5 text-cream dark:text-slate-600 shrink-0 mt-0.5" />
+                   <p className="text-[10px] font-medium text-gray-teal dark:text-gray-teal italic line-clamp-1">{user.address || 'Physical address not registered'}</p>
                 </div>
               </div>
 

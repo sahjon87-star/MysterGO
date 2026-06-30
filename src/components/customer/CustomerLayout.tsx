@@ -200,7 +200,7 @@ export const CustomerLayout: React.FC = () => {
                   <span className="font-bold text-sm uppercase tracking-widest">{t(item.label)}</span>
                 </div>
                 {isBookings && activeBookingsCount > 0 && (
-                  <span className="flex h-5 min-w-5 px-1.5 items-center justify-center rounded-full bg-orange-500 text-[10px] font-black text-white shadow-lg animate-pulse shrink-0">
+                  <span className="flex h-5 min-w-5 px-1.5 items-center justify-center rounded-full bg-orange-500 text-[10px] font-black text-cream shadow-lg animate-pulse shrink-0">
                     {activeBookingsCount}
                   </span>
                 )}
@@ -236,7 +236,7 @@ export const CustomerLayout: React.FC = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowSidebar(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[80] md:hidden w-full"
+              className="fixed inset-0 bg-brand-dark/60 backdrop-blur-sm z-[80] md:hidden w-full"
             />
             <motion.div 
               initial={{ x: '-100%' }}
@@ -275,7 +275,7 @@ export const CustomerLayout: React.FC = () => {
                         <span className="font-bold text-sm uppercase tracking-widest">{t(item.label)}</span>
                       </div>
                       {isBookings && activeBookingsCount > 0 && (
-                        <span className="flex h-5 min-w-5 px-1.5 items-center justify-center rounded-full bg-orange-500 text-[10px] font-black text-white shadow-lg animate-pulse shrink-0">
+                        <span className="flex h-5 min-w-5 px-1.5 items-center justify-center rounded-full bg-orange-500 text-[10px] font-black text-cream shadow-lg animate-pulse shrink-0">
                           {activeBookingsCount}
                         </span>
                       )}
@@ -313,7 +313,7 @@ export const CustomerLayout: React.FC = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => setShowSidebar(true)}
-            className="p-3 -ml-2 text-cream hover:bg-black/5 dark:hover:bg-white/10 rounded-2xl transition-all"
+            className="p-3 -ml-2 text-cream hover:bg-brand-dark/5 dark:hover:bg-white/10 rounded-2xl transition-all"
           >
             <Menu className="w-6 h-6" />
           </motion.button>
@@ -324,7 +324,7 @@ export const CustomerLayout: React.FC = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => navigate('/notifications')} 
-            className="relative p-3 text-cream hover:bg-black/5 dark:hover:bg-white/10 rounded-2xl transition-all"
+            className="relative p-3 text-cream hover:bg-brand-dark/5 dark:hover:bg-white/10 rounded-2xl transition-all"
           >
             <Bell className="w-6 h-6" />
             <span className="absolute top-3 right-3 w-3 h-3 bg-red-500 border-2 border-brand-dark rounded-full shadow-lg animate-pulse" />
@@ -436,7 +436,7 @@ export const CustomerLayout: React.FC = () => {
               {!anyUnpaid && (
                 <button
                   onClick={handleSnooze}
-                  className="text-slate-400 hover:text-slate-200 absolute top-3.5 right-3.5 p-1 cursor-pointer rounded-full hover:bg-white/10 transition-colors z-50"
+                  className="text-gray-teal hover:text-cream absolute top-3.5 right-3.5 p-1 cursor-pointer rounded-full hover:bg-white/10 transition-colors z-50"
                   aria-label="Dismiss"
                 >
                   <X className="w-5 h-5" />
@@ -460,7 +460,7 @@ export const CustomerLayout: React.FC = () => {
                         <p className="text-xs text-gray-teal font-medium leading-relaxed">
                           Your provider <span className="text-brand-amber font-bold">{booking.providerName}</span> has completed the work. Please review and Release Payment.
                         </p>
-                        <p className="text-[10px] font-mono text-slate-400">
+                        <p className="text-[10px] font-mono text-gray-teal">
                           Job ID: #{booking.id.slice(-6).toUpperCase()} • Amount: {formatCurrency(booking.totalAmount)}
                         </p>
                       </div>
@@ -487,7 +487,7 @@ export const CustomerLayout: React.FC = () => {
                           "flex-1 font-black py-3 px-4 rounded-2xl text-xs uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2",
                           isPaymentDetailsSubmitted 
                             ? "bg-brand-amber hover:bg-brand-amber/90 text-brand-dark shadow-xl shadow-brand-amber/20 active:scale-[0.98]" 
-                            : "bg-slate-700/50 text-slate-400 opacity-40 cursor-not-allowed"
+                            : "bg-slate-700/50 text-gray-teal opacity-40 cursor-not-allowed"
                         )}
                       >
                         {isReleasing ? (

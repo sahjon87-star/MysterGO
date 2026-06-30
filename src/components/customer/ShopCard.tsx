@@ -27,7 +27,7 @@ export const ShopCard: React.FC<ShopCardProps> = ({ shop, onClick }) => {
       
       <div className="p-5 flex-1 flex flex-col gap-3">
         <div className="space-y-1">
-          <h3 className="font-black text-white text-[11px] uppercase tracking-tighter truncate leading-none">
+          <h3 className="font-black text-cream text-[11px] uppercase tracking-tighter truncate leading-none">
             {shop.shopName || 'Unnamed Depot'}
           </h3>
           <p className="text-[8px] font-black text-gray-teal uppercase tracking-widest">

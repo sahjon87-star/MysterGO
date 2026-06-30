@@ -69,15 +69,15 @@ const ShopOrderCard: React.FC<{ order: Order; customerLoc: [number, number] }> =
     <motion.div 
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-100 dark:border-slate-800 shadow-sm space-y-4"
+      className="bg-brand-slate dark:bg-brand-dark rounded-3xl p-5 border border-slate-100 dark:border-slate-800 shadow-sm space-y-4"
     >
       <div className="flex items-center gap-4">
-        <div className="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 dark:text-slate-500 font-bold text-sm">
+        <div className="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-brand-surface flex items-center justify-center text-gray-teal dark:text-gray-teal font-bold text-sm">
           {getInitials(order.shopName)}
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-bold text-slate-800 dark:text-white truncate">{order.productName || (order.items && order.items[0]?.name) || 'Product'}</h3>
-          <p className="text-slate-400 dark:text-[10px] dark:text-slate-500 font-bold uppercase tracking-wider">{order.shopName}</p>
+          <h3 className="font-bold text-cream dark:text-cream truncate">{order.productName || (order.items && order.items[0]?.name) || 'Product'}</h3>
+          <p className="text-gray-teal dark:text-[10px] dark:text-gray-teal font-bold uppercase tracking-wider">{order.shopName}</p>
         </div>
         <div className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
           order.status === 'delivered' ? 'bg-primary-blue/10 text-primary-blue' :
@@ -113,7 +113,7 @@ const ShopOrderCard: React.FC<{ order: Order; customerLoc: [number, number] }> =
       )}
 
       <div className="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-800 gap-4">
-        <div className="text-[10px] font-bold text-slate-400 dark:text-slate-300 uppercase tracking-widest">
+        <div className="text-[10px] font-bold text-gray-teal dark:text-cream uppercase tracking-widest">
           {order.createdAt?.seconds ? new Date(order.createdAt.seconds * 1000).toLocaleDateString() : 'Just now'}
         </div>
         
@@ -121,7 +121,7 @@ const ShopOrderCard: React.FC<{ order: Order; customerLoc: [number, number] }> =
           {['processing', 'shipped', 'delivered'].includes(order.status) && (
             <button 
               onClick={() => setExpanded(!expanded)}
-              className="px-4 py-2 border border-slate-100 dark:border-slate-850 text-slate-600 dark:text-slate-300 rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-850 transition-all cursor-pointer"
+              className="px-4 py-2 border border-slate-100 dark:border-slate-850 text-slate-600 dark:text-cream rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-850 transition-all cursor-pointer"
             >
               {expanded ? 'Hide Map' : 'Track Delivery'}
             </button>
@@ -193,11 +193,11 @@ export const CustomerBookings: React.FC = () => {
   return (
     <div className="space-y-6">
       <div className="px-4 pt-6">
-        <h2 className="text-2xl font-black text-slate-800 dark:text-white uppercase tracking-tight">My Bookings</h2>
+        <h2 className="text-2xl font-black text-cream dark:text-cream uppercase tracking-tight">My Bookings</h2>
       </div>
 
       <div className="px-4">
-        <div className="flex bg-white dark:bg-slate-900 p-1 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm overflow-x-auto no-scrollbar">
+        <div className="flex bg-brand-slate dark:bg-brand-dark p-1 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm overflow-x-auto no-scrollbar">
           {([
             { id: 'active', label: 'Active' },
             { id: 'completed', label: 'Completed' },
@@ -207,7 +207,7 @@ export const CustomerBookings: React.FC = () => {
             <button 
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 py-2.5 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === tab.id ? 'bg-primary-blue text-white shadow-md shadow-primary-blue/20' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}
+              className={`flex-1 py-2.5 px-4 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === tab.id ? 'bg-primary-blue text-cream shadow-md shadow-primary-blue/20' : 'text-gray-teal dark:text-gray-teal hover:text-slate-600 dark:hover:text-cream'}`}
             >
               {tab.label}
             </button>
@@ -218,14 +218,14 @@ export const CustomerBookings: React.FC = () => {
       <div className="px-4 space-y-4 sm:space-y-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {loading ? (
           [1, 2, 3, 4, 5, 6].map(i => (
-            <div key={i} className="h-32 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 animate-pulse" />
+            <div key={i} className="h-32 bg-brand-slate dark:bg-brand-dark rounded-3xl border border-slate-100 dark:border-slate-800 animate-pulse" />
           ))
         ) : activeTab === 'shop' ? (
           shopOrders.length === 0 ? (
             <div className="text-center py-20 space-y-4 col-span-full">
               <div className="text-6xl opacity-20">🛍️</div>
-              <h3 className="text-lg font-bold text-slate-800 dark:text-white">No shop orders</h3>
-              <p className="text-slate-500 dark:text-slate-400 text-sm">You haven't ordered any products yet.</p>
+              <h3 className="text-lg font-bold text-cream dark:text-cream">No shop orders</h3>
+              <p className="text-gray-teal dark:text-gray-teal text-sm">You haven't ordered any products yet.</p>
             </div>
           ) : (
             shopOrders.map((order) => (
@@ -235,12 +235,12 @@ export const CustomerBookings: React.FC = () => {
         ) : filteredBookings.length === 0 ? (
           <div className="text-center py-20 space-y-4 col-span-full">
             <div className="text-6xl opacity-20">📋</div>
-            <h3 className="text-lg font-bold text-slate-800 dark:text-white">No bookings found</h3>
-            <p className="text-slate-500 dark:text-slate-400 text-sm">You don't have any {activeTab} bookings.</p>
+            <h3 className="text-lg font-bold text-cream dark:text-cream">No bookings found</h3>
+            <p className="text-gray-teal dark:text-gray-teal text-sm">You don't have any {activeTab} bookings.</p>
             {activeTab === 'active' && (
               <button 
                 onClick={() => navigate('/search')}
-                className="bg-primary-blue text-white px-6 py-3 rounded-2xl font-bold text-sm shadow-lg shadow-primary-blue/20 active:scale-95 transition-all"
+                className="bg-primary-blue text-cream px-6 py-3 rounded-2xl font-bold text-sm shadow-lg shadow-primary-blue/20 active:scale-95 transition-all"
               >
                 Book a Service
               </button>
@@ -253,15 +253,15 @@ export const CustomerBookings: React.FC = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               onClick={() => navigate(`/booking-status/${booking.id}`)}
-              className="bg-white dark:bg-slate-900 rounded-3xl p-5 border border-slate-100 dark:border-slate-800 shadow-sm hover:border-primary-blue/30 dark:hover:border-primary-blue/30 transition-all cursor-pointer group"
+              className="bg-brand-slate dark:bg-brand-dark rounded-3xl p-5 border border-slate-100 dark:border-slate-800 shadow-sm hover:border-primary-blue/30 dark:hover:border-primary-blue/30 transition-all cursor-pointer group"
             >
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-12 h-12 rounded-2xl bg-primary-blue/10 flex items-center justify-center text-primary-blue font-bold text-sm">
                   {getInitials(booking.providerName)}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-slate-800 dark:text-white group-hover:text-primary-blue dark:group-hover:text-primary-blue transition-colors truncate">{booking.providerName}</h3>
-                  <p className="text-slate-400 dark:text-slate-500 text-[10px] font-bold uppercase tracking-wider">{booking.service}</p>
+                  <h3 className="font-bold text-cream dark:text-cream group-hover:text-primary-blue dark:group-hover:text-primary-blue transition-colors truncate">{booking.providerName}</h3>
+                  <p className="text-gray-teal dark:text-gray-teal text-[10px] font-bold uppercase tracking-wider">{booking.service}</p>
                 </div>
                 <div className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
                   booking.status === 'completed' ? 'bg-primary-blue/10 text-primary-blue' :
@@ -274,11 +274,11 @@ export const CustomerBookings: React.FC = () => {
 
               <div className="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-slate-800">
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-1.5 text-slate-400 dark:text-slate-500">
+                  <div className="flex items-center gap-1.5 text-gray-teal dark:text-gray-teal">
                     <Calendar className="w-3.5 h-3.5" />
                     <span className="text-[10px] font-bold uppercase">{booking.date}</span>
                   </div>
-                  <div className="flex items-center gap-1.5 text-slate-400 dark:text-slate-500">
+                  <div className="flex items-center gap-1.5 text-gray-teal dark:text-gray-teal">
                     <Clock className="w-3.5 h-3.5" />
                     <span className="text-[10px] font-bold uppercase">{booking.time}</span>
                   </div>

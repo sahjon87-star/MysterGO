@@ -98,7 +98,7 @@ export const LoginPage: React.FC = () => {
                 type="email" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-brand-surface border border-white/5 rounded-2xl focus:ring-2 focus:ring-brand-amber transition-all outline-none text-slate-900 placeholder:text-slate-400 font-medium"
+                className="w-full pl-12 pr-4 py-4 bg-brand-surface border border-white/5 rounded-2xl focus:ring-2 focus:ring-brand-amber transition-all outline-none text-cream placeholder:text-gray-teal font-medium"
                 placeholder="example@email.com"
                 required
               />
@@ -113,7 +113,7 @@ export const LoginPage: React.FC = () => {
                 type={showPassword ? "text" : "password"} 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-12 pr-12 py-4 bg-brand-surface border border-white/5 rounded-2xl focus:ring-2 focus:ring-brand-amber transition-all outline-none text-slate-900 placeholder:text-slate-400 font-medium animate-none"
+                className="w-full pl-12 pr-12 py-4 bg-brand-surface border border-white/5 rounded-2xl focus:ring-2 focus:ring-brand-amber transition-all outline-none text-cream placeholder:text-gray-teal font-medium animate-none"
                 placeholder="••••••••"
                 required
               />

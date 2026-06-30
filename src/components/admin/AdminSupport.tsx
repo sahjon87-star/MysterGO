@@ -255,7 +255,7 @@ export const AdminSupport = () => {
         {/* Chat Header */}
         <div className="flex items-center justify-between p-4 bg-brand-slate rounded-2xl mb-4 border border-brand-surface">
           <div className="flex items-center gap-3">
-            <button onClick={() => setSelectedTicket(null)} className="p-2 bg-brand-surface rounded-xl text-gray-teal hover:text-white transition-all">
+            <button onClick={() => setSelectedTicket(null)} className="p-2 bg-brand-surface rounded-xl text-gray-teal hover:text-cream transition-all">
               <ArrowLeft className="w-5 h-5" />
             </button>
             <div>
@@ -288,12 +288,12 @@ export const AdminSupport = () => {
             return (
               <div key={msg.messageId} className={`flex ${isBot ? 'justify-center' : isAdmin ? 'justify-end' : 'justify-start'}`}>
                 {isBot ? (
-                  <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4 text-center max-w-[85%] space-y-2">
-                    <div className="flex items-center justify-center gap-1.5 text-slate-400 font-bold text-xs uppercase tracking-wider">
+                  <div className="bg-brand-surface/60 border border-slate-700/50 rounded-2xl p-4 text-center max-w-[85%] space-y-2">
+                    <div className="flex items-center justify-center gap-1.5 text-gray-teal font-bold text-xs uppercase tracking-wider">
                       <span>🤖</span>
                       <span>MistriGO Bot Reply</span>
                     </div>
-                    <p className="text-xs text-slate-300 font-medium whitespace-pre-line text-left leading-relaxed">{msg.text}</p>
+                    <p className="text-xs text-cream font-medium whitespace-pre-line text-left leading-relaxed">{msg.text}</p>
                   </div>
                 ) : (
                   <div className={`max-w-[80%] p-3 rounded-2xl ${isAdmin ? 'bg-brand-amber text-brand-dark rounded-tr-sm' : 'bg-brand-surface text-cream rounded-tl-sm'}`}>

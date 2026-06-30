@@ -57,22 +57,22 @@ export const CustomerShops: React.FC = () => {
   return (
     <div className="space-y-6 pb-20">
       {/* Header */}
-      <div className="bg-slate-900 px-4 pt-6 pb-10 relative overflow-hidden">
+      <div className="bg-brand-dark px-4 pt-6 pb-10 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full -mr-32 -mt-32 blur-3xl" />
         
         <div className="relative z-10 space-y-6">
           <div className="space-y-1">
-            <h2 className="text-2xl font-black text-white leading-tight">Nearby Hardware<br />& Material Shops</h2>
-            <p className="text-slate-400 text-sm">Get materials delivered to your site</p>
+            <h2 className="text-2xl font-black text-cream leading-tight">Nearby Hardware<br />& Material Shops</h2>
+            <p className="text-gray-teal text-sm">Get materials delivered to your site</p>
           </div>
 
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-teal w-5 h-5" />
             <input 
               type="text" 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 bg-white dark:bg-slate-800 rounded-2xl shadow-xl shadow-black/20 dark:shadow-none outline-none text-slate-800 dark:text-white font-medium border border-transparent dark:border-slate-700 focus:border-blue-500 transition-all"
+              className="w-full pl-12 pr-4 py-4 bg-brand-slate dark:bg-brand-surface rounded-2xl shadow-xl shadow-black/20 dark:shadow-none outline-none text-cream dark:text-cream font-medium border border-transparent dark:border-slate-700 focus:border-blue-500 transition-all"
               placeholder="Search for shops..."
             />
           </div>
@@ -85,7 +85,7 @@ export const CustomerShops: React.FC = () => {
           <button 
             key={cat.id}
             onClick={() => setActiveCategory(cat.id)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 whitespace-nowrap transition-all ${activeCategory === cat.id ? 'border-blue-500 bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400' : 'border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400'}`}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 whitespace-nowrap transition-all ${activeCategory === cat.id ? 'border-blue-500 bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400' : 'border-slate-100 dark:border-slate-800 bg-brand-slate dark:bg-brand-dark text-gray-teal dark:text-gray-teal'}`}
           >
             <span className="text-sm">{cat.icon}</span>
             <span className="text-xs font-bold uppercase tracking-wider">{cat.label}</span>
@@ -98,14 +98,14 @@ export const CustomerShops: React.FC = () => {
         {loading ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="h-48 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 animate-pulse" />
+              <div key={i} className="h-48 bg-brand-slate dark:bg-brand-dark rounded-3xl border border-slate-100 dark:border-slate-800 animate-pulse" />
             ))}
           </div>
         ) : filteredShops.length === 0 ? (
           <div className="text-center py-20 space-y-4">
             <div className="text-6xl opacity-20">🏪</div>
-            <h3 className="text-lg font-bold text-slate-800 dark:text-white">No shops found</h3>
-            <p className="text-slate-500 dark:text-slate-400 text-sm">Try a different category or search term</p>
+            <h3 className="text-lg font-bold text-cream dark:text-cream">No shops found</h3>
+            <p className="text-gray-teal dark:text-gray-teal text-sm">Try a different category or search term</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">

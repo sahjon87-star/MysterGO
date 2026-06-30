@@ -39,7 +39,7 @@ export const WorkerCard: React.FC<WorkerCardProps> = ({ worker, displayPrice, on
       </div>
       
       <div className="space-y-1 mb-4">
-        <h3 className="font-black text-white text-sm uppercase tracking-tight truncate">{worker.name}</h3>
+        <h3 className="font-black text-cream text-sm uppercase tracking-tight truncate">{worker.name}</h3>
         <div className="flex items-center gap-2">
           <p className="text-gray-teal text-[8px] font-black uppercase tracking-[0.2em]">{worker.skill || worker.providerType}</p>
           <div className="w-1 h-1 bg-brand-amber rounded-full" />
@@ -51,7 +51,7 @@ export const WorkerCard: React.FC<WorkerCardProps> = ({ worker, displayPrice, on
       
       <div className="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
         <div className="flex flex-col">
-          <span className="text-white font-black text-lg leading-none">
+          <span className="text-cream font-black text-lg leading-none">
             {formatCurrency(displayPrice || worker.hourlyRate)}
           </span>
           <span className="text-[8px] font-black text-gray-teal uppercase tracking-widest mt-1">/ CYCLE</span>

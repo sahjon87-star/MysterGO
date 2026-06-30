@@ -226,7 +226,7 @@ export const CustomerHome: React.FC = () => {
               <motion.div 
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="flex items-center gap-2 bg-brand-surface/85 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 px-3 py-1.5 rounded-2xl"
+                className="flex items-center gap-2 bg-brand-surface/85 dark:bg-brand-dark border border-slate-100 dark:border-slate-800 px-3 py-1.5 rounded-2xl"
               >
                 <MapPin className="w-4 h-4 text-brand-blue animate-pulse" />
                 <span className="text-[9px] font-black tracking-wider text-gray-teal uppercase">
@@ -241,10 +241,10 @@ export const CustomerHome: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               className="relative group"
             >
-              <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 z-10" />
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-teal w-5 h-5 z-10" />
               <input 
                 type="text" 
-                className="relative w-full pl-15 pr-6 py-4.5 rounded-[22px] border border-slate-100 dark:border-slate-850 outline-none bg-white dark:bg-slate-900 text-slate-800 dark:text-white font-black tracking-widest text-xs transition-all shadow-sm focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-slate-400"
+                className="relative w-full pl-15 pr-6 py-4.5 rounded-[22px] border border-slate-100 dark:border-slate-850 outline-none bg-brand-slate dark:bg-brand-dark text-cream dark:text-cream font-black tracking-widest text-xs transition-all shadow-sm focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-teal"
                 placeholder="Query Service Database..."
                 onFocus={() => navigate('/search')}
               />
@@ -280,7 +280,7 @@ export const CustomerHome: React.FC = () => {
 
               {/* Slider Dots */}
               {banners.length > 1 && (
-                <div className="absolute bottom-3.5 left-1/2 -translate-x-1/2 flex gap-1.5 z-20 bg-black/30 backdrop-blur-sm px-3 py-1.5 rounded-full">
+                <div className="absolute bottom-3.5 left-1/2 -translate-x-1/2 flex gap-1.5 z-20 bg-brand-dark/30 backdrop-blur-sm px-3 py-1.5 rounded-full">
                   {banners.map((_, idx) => (
                     <button
                       key={idx}
@@ -309,7 +309,7 @@ export const CustomerHome: React.FC = () => {
                 className="flex items-center gap-3 bg-brand-blue/10 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/20"
               >
                 <div className="relative">
-                  <MapPin className={`w-5 h-5 ${locationStatus === 'granted' ? 'text-brand-blue' : 'text-white/50'} animate-pulse`} />
+                  <MapPin className={`w-5 h-5 ${locationStatus === 'granted' ? 'text-brand-blue' : 'text-cream/50'} animate-pulse`} />
                   <div className="absolute inset-0 bg-brand-blue/40 rounded-full blur-md animate-ping" />
                 </div>
                 <div className="flex flex-col">
@@ -328,7 +328,7 @@ export const CustomerHome: React.FC = () => {
                 transition={{ delay: 0.2 }}
                 className="text-4xl font-black text-brand-blue leading-[0.9] tracking-tighter"
               >
-                Welcome to<br /><span className="text-white drop-shadow-sm">MistriGO</span>
+                Welcome to<br /><span className="text-cream drop-shadow-sm">MistriGO</span>
               </motion.h2>
               <motion.p 
                 initial={{ opacity: 0, y: 10 }}
@@ -349,7 +349,7 @@ export const CustomerHome: React.FC = () => {
               <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-brand-blue/50 w-6 h-6 z-10" />
               <input 
                 type="text" 
-                className="relative w-full pl-16 pr-6 py-6 bg-white rounded-[28px] border-none outline-none text-brand-blue font-black tracking-widest text-sm transition-all shadow-2xl focus:ring-2 focus:ring-brand-blue"
+                className="relative w-full pl-16 pr-6 py-6 bg-brand-slate rounded-[28px] border-none outline-none text-brand-blue font-black tracking-widest text-sm transition-all shadow-2xl focus:ring-2 focus:ring-brand-blue"
                 placeholder="Query Service Database..."
                 onFocus={() => navigate('/search')}
               />
@@ -440,11 +440,11 @@ export const CustomerHome: React.FC = () => {
         <section className="px-6">
           <motion.div 
             whileHover={{ scale: 1.02 }}
-            className="rounded-[40px] p-8 text-white relative overflow-hidden shadow-2xl"
+            className="rounded-[40px] p-8 text-cream relative overflow-hidden shadow-2xl"
             style={{ backgroundColor: promoOffer.backgroundColor }}
           >
             <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-3xl animate-pulse" />
-            <div className="absolute -left-10 -bottom-10 w-40 h-40 bg-black/10 rounded-full blur-3xl" />
+            <div className="absolute -left-10 -bottom-10 w-40 h-40 bg-brand-dark/10 rounded-full blur-3xl" />
             
             <div className="relative z-10 space-y-4">
               <div className="flex items-center gap-2">
@@ -462,7 +462,7 @@ export const CustomerHome: React.FC = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigate('/search')}
-                className="bg-white px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl transition-all"
+                className="bg-brand-slate px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl transition-all"
                 style={{ color: promoOffer.backgroundColor }}
               >
                 Access Quadrant
@@ -499,7 +499,7 @@ export const CustomerHome: React.FC = () => {
           ) : filteredWorkers.length === 0 ? (
             <div className="flex-shrink-0 w-full py-16 text-center space-y-4 glass-card border-none mx-2">
               <div className="text-5xl opacity-20">🦾</div>
-              <p className="text-slate-400 dark:text-slate-500 font-black text-[10px] uppercase tracking-widest">No Service Providers Found</p>
+              <p className="text-gray-teal dark:text-gray-teal font-black text-[10px] uppercase tracking-widest">No Service Providers Found</p>
             </div>
           ) : (
             filteredWorkers.map((worker, index) => (
@@ -544,7 +544,7 @@ export const CustomerHome: React.FC = () => {
           ) : filteredShops.length === 0 ? (
             <div className="flex-shrink-0 w-full py-16 text-center space-y-4 glass-card border-none mx-2">
               <div className="text-5xl opacity-20">🏬</div>
-              <p className="text-slate-400 dark:text-slate-500 font-black text-[10px] uppercase tracking-widest">No Active Depots Detected</p>
+              <p className="text-gray-teal dark:text-gray-teal font-black text-[10px] uppercase tracking-widest">No Active Depots Detected</p>
             </div>
           ) : (
             filteredShops.map((shop, index) => (

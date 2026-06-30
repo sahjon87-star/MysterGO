@@ -350,7 +350,7 @@ export const OnboardingPage: React.FC = () => {
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
       <motion.div 
         layout
-        className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8 border border-slate-100"
+        className="w-full max-w-md bg-brand-slate rounded-3xl shadow-xl p-8 border border-slate-100"
       >
         <div className="flex gap-2 justify-center mb-8">
           {[0, 1, 2, 3, 4, 5, 6].map((s) => (
@@ -374,16 +374,16 @@ export const OnboardingPage: React.FC = () => {
                 <div className="w-16 h-16 bg-primary-blue/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <UserPlus className="text-primary-blue w-8 h-8" />
                 </div>
-                <h2 className="text-xl font-bold text-slate-800">Welcome to MistriGO!</h2>
-                <p className="text-slate-500 text-sm mt-1">How would you like to use the app?</p>
+                <h2 className="text-xl font-bold text-cream">Welcome to MistriGO!</h2>
+                <p className="text-gray-teal text-sm mt-1">How would you like to use the app?</p>
               </div>
 
               <div className="grid grid-cols-1 gap-3">
                 <button 
                   onClick={() => setRole('customer')}
-                  className={`flex items-center gap-4 p-4 rounded-2xl border-2 transition-all ${role === 'customer' ? 'border-primary-blue bg-primary-blue/5 text-primary-blue' : 'border-slate-100 bg-slate-50 text-slate-500'}`}
+                  className={`flex items-center gap-4 p-4 rounded-2xl border-2 transition-all ${role === 'customer' ? 'border-primary-blue bg-primary-blue/5 text-primary-blue' : 'border-slate-100 bg-slate-50 text-gray-teal'}`}
                 >
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${role === 'customer' ? 'bg-primary-blue text-white' : 'bg-slate-200 text-slate-400'}`}>
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${role === 'customer' ? 'bg-primary-blue text-cream' : 'bg-slate-200 text-gray-teal'}`}>
                     <User className="w-5 h-5" />
                   </div>
                   <div className="text-left">
@@ -393,9 +393,9 @@ export const OnboardingPage: React.FC = () => {
                 </button>
                 <button 
                   onClick={() => setRole('provider')}
-                  className={`flex items-center gap-4 p-4 rounded-2xl border-2 transition-all ${role === 'provider' ? 'border-primary-blue bg-primary-blue/5 text-primary-blue' : 'border-slate-100 bg-slate-50 text-slate-500'}`}
+                  className={`flex items-center gap-4 p-4 rounded-2xl border-2 transition-all ${role === 'provider' ? 'border-primary-blue bg-primary-blue/5 text-primary-blue' : 'border-slate-100 bg-slate-50 text-gray-teal'}`}
                 >
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${role === 'provider' ? 'bg-primary-blue text-white' : 'bg-slate-200 text-slate-400'}`}>
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${role === 'provider' ? 'bg-primary-blue text-cream' : 'bg-slate-200 text-gray-teal'}`}>
                     <Wrench className="w-5 h-5" />
                   </div>
                   <div className="text-left">
@@ -405,9 +405,9 @@ export const OnboardingPage: React.FC = () => {
                 </button>
                 <button 
                   onClick={() => setRole('shop_owner')}
-                  className={`flex items-center gap-4 p-4 rounded-2xl border-2 transition-all ${role === 'shop_owner' ? 'border-primary-blue bg-primary-blue/5 text-primary-blue' : 'border-slate-100 bg-slate-50 text-slate-500'}`}
+                  className={`flex items-center gap-4 p-4 rounded-2xl border-2 transition-all ${role === 'shop_owner' ? 'border-primary-blue bg-primary-blue/5 text-primary-blue' : 'border-slate-100 bg-slate-50 text-gray-teal'}`}
                 >
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${role === 'shop_owner' ? 'bg-primary-blue text-white' : 'bg-slate-200 text-slate-400'}`}>
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${role === 'shop_owner' ? 'bg-primary-blue text-cream' : 'bg-slate-200 text-gray-teal'}`}>
                     <Store className="w-5 h-5" />
                   </div>
                   <div className="text-left">
@@ -419,9 +419,9 @@ export const OnboardingPage: React.FC = () => {
                 {role === 'admin' && (
                   <button 
                     onClick={() => setRole('admin')}
-                    className={`flex items-center gap-4 p-4 rounded-2xl border-2 transition-all ${role === 'admin' ? 'border-primary-blue bg-primary-blue/5 text-primary-blue' : 'border-slate-100 bg-slate-50 text-slate-500'}`}
+                    className={`flex items-center gap-4 p-4 rounded-2xl border-2 transition-all ${role === 'admin' ? 'border-primary-blue bg-primary-blue/5 text-primary-blue' : 'border-slate-100 bg-slate-50 text-gray-teal'}`}
                   >
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${role === 'admin' ? 'bg-primary-blue text-white' : 'bg-slate-200 text-slate-400'}`}>
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${role === 'admin' ? 'bg-primary-blue text-cream' : 'bg-slate-200 text-gray-teal'}`}>
                       <ShieldCheck className="w-5 h-5" />
                     </div>
                     <div className="text-left">
@@ -434,7 +434,7 @@ export const OnboardingPage: React.FC = () => {
 
               <button 
                 onClick={() => setStep(1)}
-                className="w-full bg-primary-blue text-white font-bold py-3 rounded-xl shadow-lg shadow-primary-blue/20 active:scale-[0.98] transition-all"
+                className="w-full bg-primary-blue text-cream font-bold py-3 rounded-xl shadow-lg shadow-primary-blue/20 active:scale-[0.98] transition-all"
               >
                 Continue
               </button>
@@ -449,7 +449,7 @@ export const OnboardingPage: React.FC = () => {
               exit={{ opacity: 0, x: -20 }}
               className="space-y-6"
             >
-              <h2 className="text-xl font-bold text-slate-800">Set up your profile</h2>
+              <h2 className="text-xl font-bold text-cream">Set up your profile</h2>
               
               <div className="text-center">
                 <div className="relative inline-block">
@@ -462,10 +462,10 @@ export const OnboardingPage: React.FC = () => {
                         referrerPolicy="no-referrer"
                       />
                     ) : (
-                      <User className="w-10 h-10 text-slate-400" />
+                      <User className="w-10 h-10 text-gray-teal" />
                     )}
                   </div>
-                  <label className="absolute bottom-0 right-0 bg-primary-blue p-2 rounded-full text-white shadow-lg cursor-pointer hover:bg-primary-blue/90 transition-colors">
+                  <label className="absolute bottom-0 right-0 bg-primary-blue p-2 rounded-full text-cream shadow-lg cursor-pointer hover:bg-primary-blue/90 transition-colors">
                     <Camera className="w-4 h-4" />
                     <input type="file" className="hidden" accept="image/*" onChange={handlePhotoUpload} />
                   </label>
@@ -475,24 +475,24 @@ export const OnboardingPage: React.FC = () => {
 
               <div className="space-y-4">
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-500 uppercase">Full Name</label>
+                  <label className="text-xs font-bold text-gray-teal uppercase">Full Name</label>
                   <input 
                     type="text" 
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-50 text-slate-900 placeholder:text-slate-400 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-blue outline-none"
+                    className="w-full px-4 py-3 bg-slate-50 text-cream placeholder:text-gray-teal border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-blue outline-none"
                     placeholder="Your Name"
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-500 uppercase">Phone Number</label>
+                  <label className="text-xs font-bold text-gray-teal uppercase">Phone Number</label>
                   <div className="flex border border-slate-200 rounded-xl overflow-hidden bg-slate-50">
-                    <span className="px-3 py-3 bg-slate-100 text-slate-500 font-bold border-r border-slate-200">+880</span>
+                    <span className="px-3 py-3 bg-slate-100 text-gray-teal font-bold border-r border-slate-200">+880</span>
                     <input 
                       type="tel" 
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="flex-1 px-4 py-3 bg-transparent text-slate-900 placeholder:text-slate-400 outline-none"
+                      className="flex-1 px-4 py-3 bg-transparent text-cream placeholder:text-gray-teal outline-none"
                       placeholder="01XXXXXXXXX"
                     />
                   </div>
@@ -508,7 +508,7 @@ export const OnboardingPage: React.FC = () => {
                 </button>
                 <button 
                   onClick={() => setStep(2)}
-                  className="flex-1 bg-primary-blue text-white font-bold py-3 rounded-xl shadow-lg shadow-primary-blue/20 active:scale-[0.98] transition-all"
+                  className="flex-1 bg-primary-blue text-cream font-bold py-3 rounded-xl shadow-lg shadow-primary-blue/20 active:scale-[0.98] transition-all"
                 >
                   Next Step
                 </button>
@@ -528,24 +528,24 @@ export const OnboardingPage: React.FC = () => {
                 <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <UserPlus className="text-blue-600 w-8 h-8" />
                 </div>
-                <h2 className="text-xl font-bold text-slate-800">Referral Code</h2>
-                <p className="text-slate-500 text-sm mt-1">Have a referral code? Enter it below to get rewards!</p>
+                <h2 className="text-xl font-bold text-cream">Referral Code</h2>
+                <p className="text-gray-teal text-sm mt-1">Have a referral code? Enter it below to get rewards!</p>
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-slate-500 uppercase ml-2">Referral Code (Optional)</label>
+                <label className="text-xs font-bold text-gray-teal uppercase ml-2">Referral Code (Optional)</label>
                 <input 
                   type="text" 
                   value={referralInput}
                   onChange={(e) => setReferralInput(e.target.value)}
-                  className="w-full px-4 py-4 bg-slate-50 text-slate-900 placeholder:text-slate-400 border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none font-bold text-center tracking-widest uppercase"
+                  className="w-full px-4 py-4 bg-slate-50 text-cream placeholder:text-gray-teal border border-slate-200 rounded-2xl focus:ring-2 focus:ring-blue-500 outline-none font-bold text-center tracking-widest uppercase"
                   placeholder="MGO-XXXXXX"
                 />
               </div>
 
               <div className="flex gap-4">
                 <button onClick={() => setStep(1)} className="flex-1 bg-slate-100 text-slate-600 font-bold py-3 rounded-xl">Back</button>
-                <button onClick={() => setStep(3)} className="flex-1 bg-primary-blue text-white font-bold py-3 rounded-xl shadow-lg shadow-primary-blue/20">Next</button>
+                <button onClick={() => setStep(3)} className="flex-1 bg-primary-blue text-cream font-bold py-3 rounded-xl shadow-lg shadow-primary-blue/20">Next</button>
               </div>
             </motion.div>
           )}
@@ -558,18 +558,18 @@ export const OnboardingPage: React.FC = () => {
               exit={{ opacity: 0, x: -20 }}
               className="space-y-6"
             >
-              <h2 className="text-xl font-bold text-slate-800">Choose Language</h2>
+              <h2 className="text-xl font-bold text-cream">Choose Language</h2>
               <div className="grid grid-cols-1 gap-4">
                 <button 
                   onClick={() => setLang('bn')}
-                  className={`flex items-center justify-between p-4 rounded-2xl border-2 transition-all ${lang === 'bn' ? 'border-primary-blue bg-primary-blue/5 text-primary-blue' : 'border-slate-100 bg-slate-50 text-slate-500'}`}
+                  className={`flex items-center justify-between p-4 rounded-2xl border-2 transition-all ${lang === 'bn' ? 'border-primary-blue bg-primary-blue/5 text-primary-blue' : 'border-slate-100 bg-slate-50 text-gray-teal'}`}
                 >
                   <span className="font-bold text-lg">বাংলা</span>
                   {lang === 'bn' && <CheckCircle2 className="w-6 h-6 border-none" />}
                 </button>
                 <button 
                   onClick={() => setLang('en')}
-                  className={`flex items-center justify-between p-4 rounded-2xl border-2 transition-all ${lang === 'en' ? 'border-primary-blue bg-primary-blue/5 text-primary-blue' : 'border-slate-100 bg-slate-50 text-slate-500'}`}
+                  className={`flex items-center justify-between p-4 rounded-2xl border-2 transition-all ${lang === 'en' ? 'border-primary-blue bg-primary-blue/5 text-primary-blue' : 'border-slate-100 bg-slate-50 text-gray-teal'}`}
                 >
                   <span className="font-bold text-lg">English</span>
                   {lang === 'en' && <CheckCircle2 className="w-6 h-6 border-none" />}
@@ -577,7 +577,7 @@ export const OnboardingPage: React.FC = () => {
               </div>
               <div className="flex gap-4">
                 <button onClick={() => setStep(2)} className="flex-1 bg-slate-100 text-slate-600 font-bold py-3 rounded-xl">Back</button>
-                <button onClick={() => setStep(4)} className="flex-1 bg-primary-blue text-white font-bold py-3 rounded-xl shadow-lg shadow-primary-blue/20">Next</button>
+                <button onClick={() => setStep(4)} className="flex-1 bg-primary-blue text-cream font-bold py-3 rounded-xl shadow-lg shadow-primary-blue/20">Next</button>
               </div>
             </motion.div>
           )}
@@ -592,29 +592,29 @@ export const OnboardingPage: React.FC = () => {
             >
               {role === 'provider' || role === 'shop_owner' ? (
                 <>
-                  <h2 className="text-xl font-bold text-slate-800">
+                  <h2 className="text-xl font-bold text-cream">
                     {role === 'provider' ? 'Select your specialty' : 'Select shop category'}
                   </h2>
                   
                   {role === 'shop_owner' && (
                     <div className="space-y-4 mb-4">
                       <div className="space-y-1">
-                        <label className="text-xs font-bold text-slate-500 uppercase">Shop Name</label>
+                        <label className="text-xs font-bold text-gray-teal uppercase">Shop Name</label>
                         <input 
                           type="text" 
                           value={shopName}
                           onChange={(e) => setShopName(e.target.value)}
-                          className="w-full px-4 py-3 bg-slate-50 text-slate-900 placeholder:text-slate-400 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-blue outline-none"
+                          className="w-full px-4 py-3 bg-slate-50 text-cream placeholder:text-gray-teal border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-blue outline-none"
                           placeholder="My Awesome Shop"
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-xs font-bold text-slate-500 uppercase">Shop Address</label>
+                        <label className="text-xs font-bold text-gray-teal uppercase">Shop Address</label>
                         <input 
                           type="text" 
                           value={shopAddress}
                           onChange={(e) => setShopAddress(e.target.value)}
-                          className="w-full px-4 py-3 bg-slate-50 text-slate-900 placeholder:text-slate-400 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-blue outline-none"
+                          className="w-full px-4 py-3 bg-slate-50 text-cream placeholder:text-gray-teal border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-blue outline-none"
                           placeholder="Shop Address"
                         />
                       </div>
@@ -624,8 +624,8 @@ export const OnboardingPage: React.FC = () => {
                   <div className="grid grid-cols-2 gap-3 max-h-[250px] overflow-y-auto p-1">
                     {categories.length === 0 ? (
                       <div className="col-span-2 py-8 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-200">
-                        <p className="text-slate-400 text-xs font-medium italic">No categories available yet.</p>
-                        <p className="text-slate-400 text-[10px] mt-1">Please contact admin or try again later.</p>
+                        <p className="text-gray-teal text-xs font-medium italic">No categories available yet.</p>
+                        <p className="text-gray-teal text-[10px] mt-1">Please contact admin or try again later.</p>
                       </div>
                     ) : (
                       categories.map((cat) => (
@@ -660,7 +660,7 @@ export const OnboardingPage: React.FC = () => {
                           setStep(6);
                         }
                       }} 
-                      className="flex-1 bg-primary-blue text-white font-bold py-3 rounded-xl shadow-lg shadow-primary-blue/20"
+                      className="flex-1 bg-primary-blue text-cream font-bold py-3 rounded-xl shadow-lg shadow-primary-blue/20"
                     >
                       Next
                     </button>
@@ -671,8 +671,8 @@ export const OnboardingPage: React.FC = () => {
                   <div className="w-20 h-20 bg-primary-blue/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <MapPin className="w-10 h-10 text-primary-blue" />
                   </div>
-                  <h2 className="text-xl font-bold text-slate-800">Almost there!</h2>
-                  <p className="text-slate-500 text-sm">We need your location to show you the best services nearby.</p>
+                  <h2 className="text-xl font-bold text-cream">Almost there!</h2>
+                  <p className="text-gray-teal text-sm">We need your location to show you the best services nearby.</p>
                   
                   <button 
                     onClick={() => {
@@ -699,7 +699,7 @@ export const OnboardingPage: React.FC = () => {
                     <button 
                       onClick={handleFinish}
                       disabled={loading}
-                      className="flex-1 bg-action-orange text-white font-bold py-3 rounded-xl shadow-lg shadow-action-orange/20 active:scale-[0.98] transition-all disabled:opacity-70 flex items-center justify-center gap-2"
+                      className="flex-1 bg-action-orange text-cream font-bold py-3 rounded-xl shadow-lg shadow-action-orange/20 active:scale-[0.98] transition-all disabled:opacity-70 flex items-center justify-center gap-2"
                     >
                       {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Let's Go! 🚀"}
                     </button>
@@ -717,21 +717,21 @@ export const OnboardingPage: React.FC = () => {
               exit={{ opacity: 0, x: -20 }}
               className="space-y-6"
             >
-              <h2 className="text-xl font-bold text-slate-800">Work Type & Rates</h2>
+              <h2 className="text-xl font-bold text-cream">Work Type & Rates</h2>
               
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Preferred Work Type</label>
+                  <label className="text-xs font-bold text-gray-teal uppercase tracking-wider">Preferred Work Type</label>
                   <div className="grid grid-cols-2 gap-2">
                     <button 
                       onClick={() => setPreferredJobType('daily')}
-                      className={`p-3 rounded-xl border-2 text-xs font-bold transition-all ${preferredJobType === 'daily' ? 'border-primary-blue bg-primary-blue/5 text-primary-blue' : 'border-slate-100 bg-slate-50 text-slate-500'}`}
+                      className={`p-3 rounded-xl border-2 text-xs font-bold transition-all ${preferredJobType === 'daily' ? 'border-primary-blue bg-primary-blue/5 text-primary-blue' : 'border-slate-100 bg-slate-50 text-gray-teal'}`}
                     >
                       Daily Wage
                     </button>
                     <button 
                       onClick={() => setPreferredJobType('contract')}
-                      className={`p-3 rounded-xl border-2 text-xs font-bold transition-all ${preferredJobType === 'contract' ? 'border-primary-blue bg-primary-blue/5 text-primary-blue' : 'border-slate-100 bg-slate-50 text-slate-500'}`}
+                      className={`p-3 rounded-xl border-2 text-xs font-bold transition-all ${preferredJobType === 'contract' ? 'border-primary-blue bg-primary-blue/5 text-primary-blue' : 'border-slate-100 bg-slate-50 text-gray-teal'}`}
                     >
                       Contract Base
                     </button>
@@ -739,33 +739,33 @@ export const OnboardingPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Hourly Rate (৳)</label>
+                  <label className="text-xs font-bold text-gray-teal uppercase tracking-wider">Hourly Rate (৳)</label>
                   <input 
                     type="number" 
                     value={hourlyRate}
                     onChange={(e) => setHourlyRate(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-50 text-slate-900 placeholder:text-slate-400 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-blue outline-none text-sm"
+                    className="w-full px-4 py-3 bg-slate-50 text-cream placeholder:text-gray-teal border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-blue outline-none text-sm"
                     placeholder="e.g. 500"
                   />
-                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">How much you charge per hour</p>
+                  <p className="text-[10px] text-gray-teal font-bold uppercase tracking-widest mt-1">How much you charge per hour</p>
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Daily Rate (৳)</label>
+                  <label className="text-xs font-bold text-gray-teal uppercase tracking-wider">Daily Rate (৳)</label>
                   <input 
                     type="number" 
                     value={dailyRate}
                     onChange={(e) => setDailyRate(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-50 text-slate-900 placeholder:text-slate-400 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-blue outline-none text-sm"
+                    className="w-full px-4 py-3 bg-slate-50 text-cream placeholder:text-gray-teal border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-blue outline-none text-sm"
                     placeholder="e.g. 2000"
                   />
-                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Standard rate for 8 hours of work</p>
+                  <p className="text-[10px] text-gray-teal font-bold uppercase tracking-widest mt-1">Standard rate for 8 hours of work</p>
                 </div>
               </div>
 
               <div className="flex gap-4">
                 <button onClick={() => setStep(4)} className="flex-1 bg-slate-100 text-slate-600 font-bold py-3 rounded-xl">Back</button>
-                <button onClick={() => setStep(6)} className="flex-1 bg-primary-blue text-white font-bold py-3 rounded-xl shadow-lg shadow-primary-blue/20">Next</button>
+                <button onClick={() => setStep(6)} className="flex-1 bg-primary-blue text-cream font-bold py-3 rounded-xl shadow-lg shadow-primary-blue/20">Next</button>
               </div>
             </motion.div>
           )}
@@ -781,8 +781,8 @@ export const OnboardingPage: React.FC = () => {
               <div className="w-20 h-20 bg-primary-blue/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <MapPin className="w-10 h-10 text-primary-blue" />
               </div>
-              <h2 className="text-xl font-bold text-slate-800">Almost there!</h2>
-              <p className="text-slate-500 text-sm">We need your location to show you the best services nearby.</p>
+              <h2 className="text-xl font-bold text-cream">Almost there!</h2>
+              <p className="text-gray-teal text-sm">We need your location to show you the best services nearby.</p>
               
               <button 
                 onClick={() => {
@@ -809,7 +809,7 @@ export const OnboardingPage: React.FC = () => {
                 <button 
                   onClick={handleFinish}
                   disabled={loading}
-                  className="flex-1 bg-action-orange text-white font-bold py-3 rounded-xl shadow-lg shadow-action-orange/20 active:scale-[0.98] transition-all disabled:opacity-70 flex items-center justify-center gap-2"
+                  className="flex-1 bg-action-orange text-cream font-bold py-3 rounded-xl shadow-lg shadow-action-orange/20 active:scale-[0.98] transition-all disabled:opacity-70 flex items-center justify-center gap-2"
                 >
                   {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Let's Go! 🚀"}
                 </button>

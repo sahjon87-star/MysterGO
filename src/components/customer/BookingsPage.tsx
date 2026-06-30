@@ -50,11 +50,11 @@ export const BookingsPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-24">
       {/* Header Visual */}
-      <div className="bg-slate-900 p-8 pt-12 rounded-b-[48px] shadow-2xl relative overflow-hidden mb-8">
+      <div className="bg-brand-dark p-8 pt-12 rounded-b-[48px] shadow-2xl relative overflow-hidden mb-8">
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary-blue/20 rounded-full -mr-32 -mt-32 blur-3xl" />
         
         <div className="relative z-10 space-y-6">
-          <div className="flex items-center justify-between text-white">
+          <div className="flex items-center justify-between text-cream">
             <h1 className="text-xl font-black uppercase tracking-[0.2em]">My Bookings</h1>
             <div className="w-10 h-10 bg-white/10 rounded-2xl flex items-center justify-center">
               <Calendar size={20} />
@@ -69,7 +69,7 @@ export const BookingsPage: React.FC = () => {
                 onClick={() => setActiveFilter(f)}
                 className={cn(
                   "flex-1 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all",
-                  activeFilter === f ? "bg-white text-slate-900 shadow-lg" : "text-slate-400 hover:text-white"
+                  activeFilter === f ? "bg-brand-slate text-cream shadow-lg" : "text-gray-teal hover:text-cream"
                 )}
               >
                 {f}
@@ -82,18 +82,18 @@ export const BookingsPage: React.FC = () => {
       <div className="px-4 space-y-4">
         {loading ? (
           [1, 2, 3].map(i => (
-            <div key={i} className="h-44 bg-white dark:bg-slate-900 rounded-[40px] animate-pulse" />
+            <div key={i} className="h-44 bg-brand-slate dark:bg-brand-dark rounded-[40px] animate-pulse" />
           ))
         ) : filteredBookings.length === 0 ? (
           <div className="py-20 flex flex-col items-center justify-center text-center opacity-30">
-            <div className="w-20 h-20 bg-slate-200 dark:bg-slate-800 rounded-3xl flex items-center justify-center mb-6">
-              <History size={40} className="text-slate-400" />
+            <div className="w-20 h-20 bg-slate-200 dark:bg-brand-surface rounded-3xl flex items-center justify-center mb-6">
+              <History size={40} className="text-gray-teal" />
             </div>
             <h3 className="text-xs font-black uppercase tracking-[0.4em]">No booking history</h3>
-            <p className="text-[10px] font-medium text-slate-500 uppercase mt-2">Book your first service from the home screen.</p>
+            <p className="text-[10px] font-medium text-gray-teal uppercase mt-2">Book your first service from the home screen.</p>
             <button 
               onClick={() => navigate('/')}
-              className="mt-8 px-6 py-3 bg-primary-blue text-white rounded-2xl font-black text-[10px] uppercase tracking-widest flex items-center gap-2 active:scale-95 transition-all"
+              className="mt-8 px-6 py-3 bg-primary-blue text-cream rounded-2xl font-black text-[10px] uppercase tracking-widest flex items-center gap-2 active:scale-95 transition-all"
             >
               Explore Services <Search size={14} />
             </button>
@@ -107,12 +107,12 @@ export const BookingsPage: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.05 }}
                 onClick={() => navigate(`/booking-status/${booking.id}`)}
-                className="bg-white dark:bg-slate-900 rounded-[40px] p-6 shadow-sm border border-slate-100 dark:border-slate-800 space-y-4 group cursor-pointer active:scale-[0.98] transition-all"
+                className="bg-brand-slate dark:bg-brand-dark rounded-[40px] p-6 shadow-sm border border-slate-100 dark:border-slate-800 space-y-4 group cursor-pointer active:scale-[0.98] transition-all"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className={cn(
-                      "w-12 h-12 rounded-2xl flex items-center justify-center text-white shadow-lg transition-transform group-hover:scale-110",
+                      "w-12 h-12 rounded-2xl flex items-center justify-center text-cream shadow-lg transition-transform group-hover:scale-110",
                       booking.status === 'completed' ? "bg-emerald-500 shadow-emerald-500/20" :
                       booking.status === 'cancelled' ? "bg-red-500 shadow-red-500/20" :
                       "bg-primary-blue shadow-primary-blue/20"
@@ -120,10 +120,10 @@ export const BookingsPage: React.FC = () => {
                       <Hammer size={24} />
                     </div>
                     <div>
-                      <h4 className="text-base font-black text-slate-800 dark:text-white uppercase tracking-tight leading-tight">
+                      <h4 className="text-base font-black text-cream dark:text-cream uppercase tracking-tight leading-tight">
                         {booking.service}
                       </h4>
-                      <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mt-0.5">
+                      <p className="text-[8px] font-black text-gray-teal uppercase tracking-widest mt-0.5">
                         {booking.date} at {booking.time}
                       </p>
                     </div>
@@ -140,12 +140,12 @@ export const BookingsPage: React.FC = () => {
 
                 <div className="flex items-center gap-6 pt-4 border-t border-slate-50 dark:border-slate-800">
                   <div className="flex items-center gap-2">
-                    <MapPin size={12} className="text-slate-400" />
-                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tight truncate max-w-[120px]">{booking.address}</span>
+                    <MapPin size={12} className="text-gray-teal" />
+                    <span className="text-[10px] font-bold text-gray-teal uppercase tracking-tight truncate max-w-[120px]">{booking.address}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Clock size={12} className="text-slate-400" />
-                    <span className="text-[10px] font-black text-slate-800 dark:text-white uppercase tracking-tight">{formatCurrency(booking.totalAmount)}</span>
+                    <Clock size={12} className="text-gray-teal" />
+                    <span className="text-[10px] font-black text-cream dark:text-cream uppercase tracking-tight">{formatCurrency(booking.totalAmount)}</span>
                   </div>
                 </div>
               </motion.div>

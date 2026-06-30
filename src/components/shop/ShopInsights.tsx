@@ -97,16 +97,16 @@ export const ShopInsights: React.FC = () => {
     <div className="space-y-6 pb-24">
       {/* Header */}
       <div className="px-4 pt-6 space-y-1">
-        <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-slate-400 hover:text-slate-600 transition-colors">
+        <button onClick={() => navigate(-1)} className="p-2 -ml-2 text-gray-teal hover:text-slate-600 transition-colors">
           <ChevronLeft className="w-8 h-8" />
         </button>
-        <h2 className="text-3xl font-black text-slate-800 dark:text-white uppercase tracking-tight">Business Intelligence</h2>
-        <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1 leading-none">Global Shop Performance Analysis</p>
+        <h2 className="text-3xl font-black text-cream dark:text-cream uppercase tracking-tight">Business Intelligence</h2>
+        <p className="text-[10px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest mt-1 leading-none">Global Shop Performance Analysis</p>
       </div>
 
       {/* Main Revenue Card */}
       <div className="px-4">
-        <div className="bg-slate-900 rounded-[40px] p-8 text-white relative overflow-hidden shadow-2xl">
+        <div className="bg-brand-dark rounded-[40px] p-8 text-cream relative overflow-hidden shadow-2xl">
            <div className="absolute top-0 right-0 p-8 opacity-10">
             <BarChart className="w-32 h-32" />
           </div>
@@ -114,7 +114,7 @@ export const ShopInsights: React.FC = () => {
           <div className="relative z-10 space-y-8">
              <div className="flex items-center justify-between">
                 <div className="space-y-1">
-                   <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Total Sales Revenue</p>
+                   <p className="text-[9px] font-black text-gray-teal uppercase tracking-widest">Total Sales Revenue</p>
                    <h3 className="text-4xl font-black tracking-tighter">{formatCurrency(stats.totalSales)}</h3>
                 </div>
                 <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-md">
@@ -137,7 +137,7 @@ export const ShopInsights: React.FC = () => {
                    </div>
                 ))}
              </div>
-             <p className="text-[9px] font-black text-slate-500 text-center uppercase tracking-widest">Week-over-week growth performance</p>
+             <p className="text-[9px] font-black text-gray-teal text-center uppercase tracking-widest">Week-over-week growth performance</p>
           </div>
         </div>
       </div>
@@ -147,17 +147,17 @@ export const ShopInsights: React.FC = () => {
         {metricCards.map((card, i) => (
           <div 
             key={i} 
-            className={`bg-white dark:bg-slate-900 rounded-[32px] p-6 border border-slate-50 dark:border-slate-800 shadow-sm space-y-3 relative group transition-all hover:border-primary-blue/20 ${card.critical ? 'ring-2 ring-red-500' : ''}`}
+            className={`bg-brand-slate dark:bg-brand-dark rounded-[32px] p-6 border border-slate-50 dark:border-slate-800 shadow-sm space-y-3 relative group transition-all hover:border-primary-blue/20 ${card.critical ? 'ring-2 ring-red-500' : ''}`}
           >
              <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 ${card.color}`}>
                 <card.icon className="w-5 h-5" />
              </div>
              <div className="space-y-0.5">
-                <p className="text-lg font-black text-slate-800 dark:text-white uppercase tracking-tight truncate leading-tight">{card.value}</p>
+                <p className="text-lg font-black text-cream dark:text-cream uppercase tracking-tight truncate leading-tight">{card.value}</p>
                 <div className="flex items-center gap-1">
-                   <p className="text-[8px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-widest">{card.label}</p>
+                   <p className="text-[8px] font-black text-gray-teal dark:text-slate-600 uppercase tracking-widest">{card.label}</p>
                    <span className="w-1 h-1 bg-slate-200 rounded-full" />
-                   <p className="text-[8px] font-medium text-slate-400 group-hover:text-primary-blue transition-colors">{card.sub}</p>
+                   <p className="text-[8px] font-medium text-gray-teal group-hover:text-primary-blue transition-colors">{card.sub}</p>
                 </div>
              </div>
           </div>
@@ -166,19 +166,19 @@ export const ShopInsights: React.FC = () => {
 
       {/* Performance Metrics */}
       <div className="px-4 space-y-4 pt-4">
-         <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] px-4">Efficiency Tracking</h3>
-         <div className="bg-white dark:bg-slate-900 rounded-[32px] border border-slate-50 dark:border-slate-800 shadow-sm overflow-hidden divide-y divide-slate-50 dark:divide-slate-800">
+         <h3 className="text-[10px] font-black text-gray-teal uppercase tracking-[0.3em] px-4">Efficiency Tracking</h3>
+         <div className="bg-brand-slate dark:bg-brand-dark rounded-[32px] border border-slate-50 dark:border-slate-800 shadow-sm overflow-hidden divide-y divide-slate-50 dark:divide-slate-800">
             <div className="p-6 flex items-center justify-between">
                <div className="flex items-center gap-4">
                   <div className="w-10 h-10 bg-green-500/10 text-green-500 rounded-xl flex items-center justify-center">
                     <Target className="w-5 h-5" />
                   </div>
                   <div>
-                    <h5 className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-tight">Order Fulfillment</h5>
-                    <p className="text-[9px] font-bold text-slate-400 mt-0.5">Time to process order</p>
+                    <h5 className="text-xs font-black text-cream dark:text-cream uppercase tracking-tight">Order Fulfillment</h5>
+                    <p className="text-[9px] font-bold text-gray-teal mt-0.5">Time to process order</p>
                   </div>
                </div>
-               <div className="text-sm font-black text-slate-800 dark:text-white">12m <span className="text-[9px] text-green-500 font-black">FAST</span></div>
+               <div className="text-sm font-black text-cream dark:text-cream">12m <span className="text-[9px] text-green-500 font-black">FAST</span></div>
             </div>
 
             <div className="p-6 flex items-center justify-between">
@@ -187,11 +187,11 @@ export const ShopInsights: React.FC = () => {
                     <PieChart className="w-5 h-5" />
                   </div>
                   <div>
-                    <h5 className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-tight">Return Rate</h5>
-                    <p className="text-[9px] font-bold text-slate-400 mt-0.5">Items returned by users</p>
+                    <h5 className="text-xs font-black text-cream dark:text-cream uppercase tracking-tight">Return Rate</h5>
+                    <p className="text-[9px] font-bold text-gray-teal mt-0.5">Items returned by users</p>
                   </div>
                </div>
-               <div className="text-sm font-black text-slate-800 dark:text-white">0.4% <span className="text-[9px] text-primary-blue font-black">EXCELLENT</span></div>
+               <div className="text-sm font-black text-cream dark:text-cream">0.4% <span className="text-[9px] text-primary-blue font-black">EXCELLENT</span></div>
             </div>
 
             <div className="p-6 flex items-center justify-between">
@@ -200,35 +200,35 @@ export const ShopInsights: React.FC = () => {
                     <Clock className="w-5 h-5" />
                   </div>
                   <div>
-                    <h5 className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-tight">Avg Delivery Time</h5>
-                    <p className="text-[9px] font-bold text-slate-400 mt-0.5">Courier delivery estimate</p>
+                    <h5 className="text-xs font-black text-cream dark:text-cream uppercase tracking-tight">Avg Delivery Time</h5>
+                    <p className="text-[9px] font-bold text-gray-teal mt-0.5">Courier delivery estimate</p>
                   </div>
                </div>
-               <div className="text-sm font-black text-slate-800 dark:text-white">45m <span className="text-[9px] text-action-orange font-black">GOOD</span></div>
+               <div className="text-sm font-black text-cream dark:text-cream">45m <span className="text-[9px] text-action-orange font-black">GOOD</span></div>
             </div>
          </div>
       </div>
 
        {/* Sales Target Placeholder */}
        <div className="px-4 pt-6">
-          <div className="bg-slate-100 dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-800 rounded-[32px] p-8 space-y-6">
+          <div className="bg-slate-100 dark:bg-brand-dark border-2 border-slate-100 dark:border-slate-800 rounded-[32px] p-8 space-y-6">
              <div className="flex justify-between items-center">
                 <div className="space-y-1">
-                   <h4 className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-tight">Monthly Sales Goal</h4>
-                   <p className="text-[10px] font-medium text-slate-500">Reach target to unlock Premium shop badge</p>
+                   <h4 className="text-xs font-black text-cream dark:text-cream uppercase tracking-tight">Monthly Sales Goal</h4>
+                   <p className="text-[10px] font-medium text-gray-teal">Reach target to unlock Premium shop badge</p>
                 </div>
                 <div className="text-right">
                    <div className="text-sm font-black text-primary-blue leading-none">62%</div>
                 </div>
              </div>
-             <div className="h-3 bg-white dark:bg-slate-800 rounded-full overflow-hidden border border-slate-50 dark:border-slate-700 shadow-inner">
+             <div className="h-3 bg-brand-slate dark:bg-brand-surface rounded-full overflow-hidden border border-slate-50 dark:border-slate-700 shadow-inner">
                 <motion.div 
                   initial={{ width: 0 }}
                   animate={{ width: '62%' }}
                   className="h-full bg-gradient-to-r from-primary-blue to-purple-500 shadow-lg shadow-primary-blue/30"
                 />
              </div>
-             <div className="flex justify-between items-center text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">
+             <div className="flex justify-between items-center text-[10px] font-black text-gray-teal uppercase tracking-widest px-1">
                 <span>৳0 Sold</span>
                 <span>৳10k Target</span>
              </div>

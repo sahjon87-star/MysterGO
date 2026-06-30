@@ -9,7 +9,7 @@ export const ThemeToggle: React.FC = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all active:scale-90"
+      className="p-2 rounded-xl bg-slate-100 dark:bg-brand-surface text-slate-600 dark:text-gray-teal hover:text-cream dark:hover:text-cream transition-all active:scale-90"
       title="Toggle Theme"
     >
       <motion.div

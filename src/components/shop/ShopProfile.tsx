@@ -95,21 +95,21 @@ export const ShopProfile: React.FC = () => {
       title: 'Management',
       items: [
         { icon: Package, label: 'Manage Inventory', path: '/merchant/inventory', color: 'text-green-500 bg-green-500/10' },
-        { icon: Bell, label: 'Store Notifications', path: '/merchant/notifications', color: 'text-slate-400 bg-slate-100 dark:bg-slate-800' },
+        { icon: Bell, label: 'Store Notifications', path: '/merchant/notifications', color: 'text-gray-teal bg-slate-100 dark:bg-brand-surface' },
       ]
     },
     {
       title: 'Verification & Safety',
       items: [
         { icon: ShieldCheck, label: 'Shop Verification', path: '/merchant/kyc', color: 'text-primary-blue bg-primary-blue/10', sub: profile?.isVerified ? 'Verified' : 'Required' },
-        { icon: Lock, label: 'Privacy Settings', path: '/merchant/settings', color: 'text-slate-400 bg-slate-100 dark:bg-slate-800' },
+        { icon: Lock, label: 'Privacy Settings', path: '/merchant/settings', color: 'text-gray-teal bg-slate-100 dark:bg-brand-surface' },
       ]
     },
     {
       title: 'Shop settings',
       items: [
-        { icon: Globe, label: 'App Language', path: '/settings', color: 'text-slate-400 bg-slate-100 dark:bg-slate-800' },
-        { icon: Settings, label: 'General Settings', path: '/settings', color: 'text-slate-400 bg-slate-100 dark:bg-slate-800' },
+        { icon: Globe, label: 'App Language', path: '/settings', color: 'text-gray-teal bg-slate-100 dark:bg-brand-surface' },
+        { icon: Settings, label: 'General Settings', path: '/settings', color: 'text-gray-teal bg-slate-100 dark:bg-brand-surface' },
         { icon: Share2, label: 'Share Shop ID', onClick: () => {
           if (navigator.share) {
             navigator.share({
@@ -118,7 +118,7 @@ export const ShopProfile: React.FC = () => {
               url: window.location.href
             }).catch(console.error);
           }
-        }, color: 'text-slate-400 bg-slate-100 dark:bg-slate-800' },
+        }, color: 'text-gray-teal bg-slate-100 dark:bg-brand-surface' },
       ]
     }
   ];
@@ -126,7 +126,7 @@ export const ShopProfile: React.FC = () => {
   return (
     <div className="space-y-8 pb-32">
       {/* Shop Header */}
-      <div className="bg-slate-900 pt-12 pb-24 relative overflow-hidden transition-colors border-b border-primary-blue/20">
+      <div className="bg-brand-dark pt-12 pb-24 relative overflow-hidden transition-colors border-b border-primary-blue/20">
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary-blue/10 rounded-full -mr-32 -mt-32 blur-3xl" />
         
         <div className="relative z-10 flex flex-col items-center">
@@ -135,20 +135,20 @@ export const ShopProfile: React.FC = () => {
               {profile?.photoURL ? (
                 <img src={profile.photoURL} className="w-full h-full object-cover" alt="Shop" />
               ) : (
-                <Store className="w-12 h-12 text-white/40" />
+                <Store className="w-12 h-12 text-cream/40" />
               )}
             </div>
-            <button className="absolute bottom-1 right-1 w-10 h-10 bg-primary-blue text-white rounded-2xl shadow-xl flex items-center justify-center border-4 border-slate-900 transition-transform active:scale-90">
+            <button className="absolute bottom-1 right-1 w-10 h-10 bg-primary-blue text-cream rounded-2xl shadow-xl flex items-center justify-center border-4 border-brand-dark transition-transform active:scale-90">
               <Camera className="w-4 h-4" />
             </button>
           </div>
 
           <div className="mt-6 text-center space-y-1 px-6">
             <div className="flex items-center justify-center gap-2">
-              <h2 className="text-2xl font-black text-white tracking-tight uppercase">{profile?.shopName || profile?.name}</h2>
+              <h2 className="text-2xl font-black text-cream tracking-tight uppercase">{profile?.shopName || profile?.name}</h2>
               {profile?.isVerified && <ShieldCheck className="w-5 h-5 text-primary-blue" />}
             </div>
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">{profile?.shopCategory || 'Hardware & Tools'}</p>
+            <p className="text-[10px] font-black text-gray-teal uppercase tracking-[0.3em]">{profile?.shopCategory || 'Hardware & Tools'}</p>
             <div className="flex items-center justify-center gap-1.5 text-primary-blue mt-2 bg-primary-blue/10 px-4 py-1.5 rounded-full border border-primary-blue/20">
               <Award className="w-3 h-3" />
               <span className="text-[10px] font-black uppercase tracking-widest">{stats.recognition}</span>
@@ -159,34 +159,34 @@ export const ShopProfile: React.FC = () => {
 
       {/* Stats Dashboard */}
       <div className="px-4 -mt-16 relative z-20">
-        <div className="bg-white dark:bg-slate-900 rounded-[40px] border border-slate-100 dark:border-slate-800 shadow-2xl p-8 grid grid-cols-3 gap-4">
+        <div className="bg-brand-slate dark:bg-brand-dark rounded-[40px] border border-slate-100 dark:border-slate-800 shadow-2xl p-8 grid grid-cols-3 gap-4">
           <div className="text-center space-y-1 border-r border-slate-50 dark:border-slate-800">
-            <div className="text-xl font-black text-slate-800 dark:text-white leading-none">{profile?.rating?.toFixed(1) || '0.0'}</div>
-            <div className="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Rating</div>
+            <div className="text-xl font-black text-cream dark:text-cream leading-none">{profile?.rating?.toFixed(1) || '0.0'}</div>
+            <div className="text-[8px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest">Rating</div>
           </div>
           <div className="text-center space-y-1 border-r border-slate-50 dark:border-slate-800">
-            <div className="text-xl font-black text-slate-800 dark:text-white leading-none">{stats.completedOrders}</div>
-            <div className="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Orders</div>
+            <div className="text-xl font-black text-cream dark:text-cream leading-none">{stats.completedOrders}</div>
+            <div className="text-[8px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest">Orders</div>
           </div>
           <div className="text-center space-y-1">
-            <div className="text-xl font-black text-slate-800 dark:text-white leading-none">{stats.activeProducts}</div>
-            <div className="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Items</div>
+            <div className="text-xl font-black text-cream dark:text-cream leading-none">{stats.activeProducts}</div>
+            <div className="text-[8px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest">Items</div>
           </div>
         </div>
       </div>
 
        {/* Location Preview */}
       <div className="px-4">
-        <div className="bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[32px] p-6 flex items-center gap-5 group cursor-pointer hover:bg-white dark:hover:bg-slate-800 transition-all">
-          <div className="w-14 h-14 bg-white dark:bg-slate-800 rounded-2xl flex items-center justify-center text-primary-blue shadow-sm shrink-0 border border-slate-100 dark:border-slate-700">
+        <div className="bg-slate-100 dark:bg-brand-dark border border-slate-200 dark:border-slate-800 rounded-[32px] p-6 flex items-center gap-5 group cursor-pointer hover:bg-brand-slate dark:hover:bg-brand-surface transition-all">
+          <div className="w-14 h-14 bg-brand-slate dark:bg-brand-surface rounded-2xl flex items-center justify-center text-primary-blue shadow-sm shrink-0 border border-slate-100 dark:border-slate-700">
             <MapPin className="w-7 h-7" />
           </div>
           <div className="flex-1 min-w-0">
              <div className="flex items-center justify-between">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Shop Location</p>
+                <p className="text-[10px] font-black text-gray-teal uppercase tracking-widest leading-none">Shop Location</p>
                 <div onClick={() => navigate('/settings')} className="text-[9px] font-bold text-primary-blue uppercase tracking-widest">Edit</div>
              </div>
-             <p className="text-sm font-bold text-slate-800 dark:text-slate-300 leading-tight mt-1.5 truncate pr-6">{profile?.address || 'Set shop address'}</p>
+             <p className="text-sm font-bold text-cream dark:text-cream leading-tight mt-1.5 truncate pr-6">{profile?.address || 'Set shop address'}</p>
           </div>
         </div>
       </div>
@@ -195,24 +195,24 @@ export const ShopProfile: React.FC = () => {
       <div className="px-4 space-y-8">
         {menuGroups.map((group, i) => (
           <div key={i} className="space-y-4">
-            <h3 className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.3em] px-4">{group.title}</h3>
-            <div className="bg-white dark:bg-slate-900 rounded-[32px] border border-slate-50 dark:border-slate-800 overflow-hidden shadow-sm">
+            <h3 className="text-[10px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-[0.3em] px-4">{group.title}</h3>
+            <div className="bg-brand-slate dark:bg-brand-dark rounded-[32px] border border-slate-50 dark:border-slate-800 overflow-hidden shadow-sm">
               {group.items.map((item, j) => (
                 <button
                   key={j}
                   onClick={item.onClick || (() => navigate(item.path!))}
-                  className={`w-full flex items-center justify-between p-6 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors ${j !== group.items.length - 1 ? 'border-b border-slate-50 dark:border-slate-800' : ''}`}
+                  className={`w-full flex items-center justify-between p-6 hover:bg-slate-50 dark:hover:bg-brand-surface transition-colors ${j !== group.items.length - 1 ? 'border-b border-slate-50 dark:border-slate-800' : ''}`}
                 >
                   <div className="flex items-center gap-4">
                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${item.color}`}>
                       <item.icon className="w-5 h-5" />
                     </div>
                     <div className="text-left">
-                      <span className="text-sm font-bold text-slate-700 dark:text-slate-300">{item.label}</span>
+                      <span className="text-sm font-bold text-slate-700 dark:text-cream">{item.label}</span>
                       {item.sub && <p className="text-[9px] font-black uppercase text-primary-blue tracking-widest mt-0.5">{item.sub}</p>}
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-slate-500 dark:text-slate-400" />
+                  <ChevronRight className="w-5 h-5 text-gray-teal dark:text-gray-teal" />
                 </button>
               ))}
             </div>
@@ -240,8 +240,8 @@ export const ShopProfile: React.FC = () => {
       </div>
 
       <div className="text-center space-y-1">
-        <p className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.4em]">MistriGO Merchant v1.5.0</p>
-        <p className="text-[9px] font-medium text-slate-500 dark:text-slate-400 opacity-60">Empowering Local Businesses</p>
+        <p className="text-[10px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-[0.4em]">MistriGO Merchant v1.5.0</p>
+        <p className="text-[9px] font-medium text-gray-teal dark:text-gray-teal opacity-60">Empowering Local Businesses</p>
       </div>
     </div>
   );

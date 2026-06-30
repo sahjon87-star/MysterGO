@@ -148,7 +148,7 @@ export const CustomerProfile: React.FC = () => {
                 <span className="text-brand-amber font-black text-3xl">{profile ? getInitials(profile.name) : '??'}</span>
               )}
               {uploading && (
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <div className="absolute inset-0 bg-brand-dark/40 flex items-center justify-center">
                   <div className="w-6 h-6 border-2 border-brand-amber border-t-transparent rounded-full animate-spin" />
                 </div>
               )}

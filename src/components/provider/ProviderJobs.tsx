@@ -200,17 +200,17 @@ export const ProviderJobs: React.FC = () => {
                         <span className="text-[9px] font-black text-brand-amber uppercase tracking-wider block">
                           Job Description / কাজের বিবরণ
                         </span>
-                        <p className="text-xs font-bold text-slate-900 leading-relaxed">
+                        <p className="text-xs font-bold text-cream leading-relaxed">
                           {job.deploymentDescription || job.description || 'No description provided / কোনো কাজের বিবরণ নেই'}
                         </p>
                         
-                        <div className="my-3 p-3 bg-slate-800/80 border border-slate-700 rounded-lg">
-                          <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 block mb-1">
+                        <div className="my-3 p-3 bg-brand-surface/80 border border-slate-700 rounded-lg">
+                          <span className="text-xs font-semibold uppercase tracking-wider text-gray-teal block mb-1">
                             প্রয়োজনীয় কর্মী / Crew Requirements
                           </span>
                           <div className="flex items-center gap-2">
                             <span className="text-xl">🧑🤝🧑</span>
-                            <span className="text-sm font-bold text-white">
+                            <span className="text-sm font-bold text-cream">
                               {(job.helperCount || 0) > 0 
                                 ? `${job.helperCount} সাহায্যকারী প্রয়োজন (${job.helperCount} Helper Required)` 
                                 : "কোন সাহায্যকারী লাগবে না (Only Mistri)"}
@@ -223,7 +223,7 @@ export const ProviderJobs: React.FC = () => {
                           )}
                         </div>
 
-                        <p className="text-[9px] text-slate-500 font-medium leading-normal mt-1 pt-1 border-t border-slate-200">
+                        <p className="text-[9px] text-gray-teal font-medium leading-normal mt-1 pt-1 border-t border-slate-200">
                           Please read the details carefully. Once accepted, cancellations may affect your provider rating.
                         </p>
                       </div>

@@ -52,7 +52,7 @@ export const Logo: React.FC<LogoProps> = ({ className, iconOnly, variant = 'defa
       </div>
 
       {!iconOnly && (
-        <span className={cn("font-black tracking-tight text-slate-900 dark:text-white flex items-center", dimensions.text)}>
+        <span className={cn("font-black tracking-tight text-cream dark:text-cream flex items-center", dimensions.text)}>
           Mistri
           <span className="text-[#FF5A00] italic ml-0.5">GO</span>
           {variant !== 'default' && (

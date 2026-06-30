@@ -121,11 +121,11 @@ export const WalletPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-20">
       {/* Header Visual */}
-      <div className="bg-slate-900 dark:bg-black p-8 pt-12 rounded-b-[48px] relative overflow-hidden">
+      <div className="bg-brand-dark dark:bg-brand-dark p-8 pt-12 rounded-b-[48px] relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary-blue/20 rounded-full -mr-32 -mt-32 blur-3xl" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-action-orange/10 rounded-full -ml-24 -mb-24 blur-3xl" />
         
-        <div className="flex items-center justify-between text-white mb-10 relative z-10">
+        <div className="flex items-center justify-between text-cream mb-10 relative z-10">
           <button onClick={() => navigate(-1)} className="p-2 hover:bg-white/10 rounded-xl transition-all">
             <ArrowLeft className="w-6 h-6" />
           </button>
@@ -136,8 +136,8 @@ export const WalletPage: React.FC = () => {
         </div>
 
         <div className="space-y-2 text-center relative z-10 pb-4">
-          <p className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">Total Liquid Credits</p>
-          <h2 className="text-5xl font-black text-white tracking-tight">{formatCurrency(profile?.walletBalance || 0)}</h2>
+          <p className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-teal">Total Liquid Credits</p>
+          <h2 className="text-5xl font-black text-cream tracking-tight">{formatCurrency(profile?.walletBalance || 0)}</h2>
           <div className="flex justify-center gap-2 pt-2">
             <div className="bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest border border-emerald-500/20 flex items-center gap-1.5">
               <TrendingUp size={12} />
@@ -149,17 +149,17 @@ export const WalletPage: React.FC = () => {
 
       <div className="px-4 -mt-10 space-y-6 relative z-10">
         {/* Quick Recharge */}
-        <div className="bg-white dark:bg-slate-900 rounded-[40px] p-6 shadow-2xl shadow-black/5 border border-white dark:border-slate-800 space-y-6">
+        <div className="bg-brand-slate dark:bg-brand-dark rounded-[40px] p-6 shadow-2xl shadow-black/5 border border-white dark:border-slate-800 space-y-6">
           <div className="flex items-center justify-between">
-            <h3 className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-tight">Top Up Wallet</h3>
-            <CreditCard className="w-4 h-4 text-slate-300" />
+            <h3 className="text-xs font-black text-cream dark:text-cream uppercase tracking-tight">Top Up Wallet</h3>
+            <CreditCard className="w-4 h-4 text-cream" />
           </div>
 
           <div className="space-y-4">
             <select
               value={method}
               onChange={(e) => setMethod(e.target.value)}
-              className="w-full bg-slate-50 dark:bg-slate-800/50 border border-transparent dark:border-slate-700 p-4 rounded-2xl outline-none focus:ring-2 focus:ring-primary-blue text-sm font-bold text-slate-900 dark:text-white transition-all"
+              className="w-full bg-slate-50 dark:bg-brand-surface/50 border border-transparent dark:border-slate-700 p-4 rounded-2xl outline-none focus:ring-2 focus:ring-primary-blue text-sm font-bold text-cream dark:text-cream transition-all"
             >
               <option value="bkash">bKash</option>
               <option value="nagad">Nagad</option>
@@ -171,7 +171,7 @@ export const WalletPage: React.FC = () => {
               value={trxId}
               onChange={(e) => setTrxId(e.target.value)}
               placeholder="Enter Transaction ID (TrxID)"
-              className="w-full bg-slate-50 dark:bg-slate-800/50 border border-transparent dark:border-slate-700 p-4 rounded-2xl outline-none focus:ring-2 focus:ring-primary-blue text-sm font-bold text-slate-900 dark:text-white transition-all"
+              className="w-full bg-slate-50 dark:bg-brand-surface/50 border border-transparent dark:border-slate-700 p-4 rounded-2xl outline-none focus:ring-2 focus:ring-primary-blue text-sm font-bold text-cream dark:text-cream transition-all"
             />
           </div>
 
@@ -182,7 +182,7 @@ export const WalletPage: React.FC = () => {
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="Enter amount (৳)"
-              className="w-full bg-slate-50 dark:bg-slate-800/50 border border-transparent dark:border-slate-700 py-6 pl-16 pr-6 rounded-3xl outline-none focus:ring-2 focus:ring-primary-blue font-black text-xl text-slate-900 dark:text-white transition-all"
+              className="w-full bg-slate-50 dark:bg-brand-surface/50 border border-transparent dark:border-slate-700 py-6 pl-16 pr-6 rounded-3xl outline-none focus:ring-2 focus:ring-primary-blue font-black text-xl text-cream dark:text-cream transition-all"
             />
           </div>
 
@@ -191,7 +191,7 @@ export const WalletPage: React.FC = () => {
               <button 
                 key={val}
                 onClick={() => setAmount(val.toString())}
-                className="py-3 bg-slate-50 dark:bg-slate-800 rounded-2xl text-[10px] font-black text-slate-500 hover:bg-primary-blue hover:text-white transition-all active:scale-95"
+                className="py-3 bg-slate-50 dark:bg-brand-surface rounded-2xl text-[10px] font-black text-gray-teal hover:bg-primary-blue hover:text-cream transition-all active:scale-95"
               >
                 ৳{val}
               </button>
@@ -201,7 +201,7 @@ export const WalletPage: React.FC = () => {
           <button 
             disabled={addingMoney}
             onClick={handleAddMoney}
-            className="w-full h-16 bg-primary-blue text-white rounded-[24px] font-black text-xs uppercase tracking-[0.3em] shadow-xl shadow-primary-blue/20 flex items-center justify-center gap-3 active:scale-[0.98] disabled:opacity-50 transition-all"
+            className="w-full h-16 bg-primary-blue text-cream rounded-[24px] font-black text-xs uppercase tracking-[0.3em] shadow-xl shadow-primary-blue/20 flex items-center justify-center gap-3 active:scale-[0.98] disabled:opacity-50 transition-all"
           >
             {addingMoney ? (
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -217,7 +217,7 @@ export const WalletPage: React.FC = () => {
         {/* Transaction History */}
         <div className="space-y-4">
           <div className="flex justify-between items-center px-2">
-            <h3 className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-tight">Access Logs</h3>
+            <h3 className="text-xs font-black text-cream dark:text-cream uppercase tracking-tight">Access Logs</h3>
             <button className="text-[9px] font-black text-primary-blue uppercase tracking-widest flex items-center gap-1">
               Filter <History size={12} />
             </button>
@@ -225,9 +225,9 @@ export const WalletPage: React.FC = () => {
 
           <div className="space-y-3">
             {loading ? (
-              [1, 2, 3].map(i => <div key={i} className="h-20 bg-white dark:bg-slate-900 rounded-3xl animate-pulse" />)
+              [1, 2, 3].map(i => <div key={i} className="h-20 bg-brand-slate dark:bg-brand-dark rounded-3xl animate-pulse" />)
             ) : transactions.length === 0 ? (
-              <div className="flex flex-col items-center justify-center py-10 opacity-20 bg-white dark:bg-slate-900 rounded-[32px] border border-dashed border-slate-300">
+              <div className="flex flex-col items-center justify-center py-10 opacity-20 bg-brand-slate dark:bg-brand-dark rounded-[32px] border border-dashed border-slate-300">
                 <History size={32} className="mb-2" />
                 <p className="text-[10px] font-black uppercase tracking-widest">No Log History</p>
               </div>
@@ -238,7 +238,7 @@ export const WalletPage: React.FC = () => {
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: idx * 0.05 }}
-                  className="bg-white dark:bg-slate-900 p-4 rounded-[28px] border border-slate-100 dark:border-slate-800 flex items-center gap-4 group"
+                  className="bg-brand-slate dark:bg-brand-dark p-4 rounded-[28px] border border-slate-100 dark:border-slate-800 flex items-center gap-4 group"
                 >
                   <div className={cn(
                     "w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110",
@@ -247,8 +247,8 @@ export const WalletPage: React.FC = () => {
                     {tx.type === 'credit' ? <ArrowDownLeft size={20} /> : <ArrowUpRight size={20} />}
                   </div>
                   <div className="flex-1">
-                    <h5 className="text-[10px] font-black text-slate-800 dark:text-white uppercase tracking-tight">{tx.description}</h5>
-                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">
+                    <h5 className="text-[10px] font-black text-cream dark:text-cream uppercase tracking-tight">{tx.description}</h5>
+                    <p className="text-[9px] font-bold text-gray-teal uppercase tracking-widest mt-0.5">
                       {tx.createdAt?.toDate ? tx.createdAt.toDate().toLocaleDateString() : 'Processing...'}
                     </p>
                   </div>
@@ -259,7 +259,7 @@ export const WalletPage: React.FC = () => {
                     )}>
                       {tx.type === 'credit' ? '+' : '-'}{formatCurrency(tx.amount)}
                     </p>
-                    <p className="text-[8px] font-black text-slate-300 uppercase tracking-widest">Completed</p>
+                    <p className="text-[8px] font-black text-cream uppercase tracking-widest">Completed</p>
                   </div>
                 </motion.div>
               ))
@@ -270,16 +270,16 @@ export const WalletPage: React.FC = () => {
         {/* Bonus Section */}
         <div 
           onClick={() => navigate('/referral')}
-          className="bg-gradient-to-br from-action-orange to-orange-600 rounded-[32px] p-6 text-white relative overflow-hidden group cursor-pointer active:scale-[0.98] transition-all"
+          className="bg-gradient-to-br from-action-orange to-orange-600 rounded-[32px] p-6 text-cream relative overflow-hidden group cursor-pointer active:scale-[0.98] transition-all"
         >
-          <Sparkles className="absolute right-0 top-0 w-32 h-32 text-white/10 -mr-8 -mt-8 rotate-12 group-hover:rotate-45 transition-transform duration-700" />
+          <Sparkles className="absolute right-0 top-0 w-32 h-32 text-cream/10 -mr-8 -mt-8 rotate-12 group-hover:rotate-45 transition-transform duration-700" />
           <div className="space-y-4 relative z-10">
             <div className="w-10 h-10 bg-white/20 backdrop-blur-xl rounded-xl flex items-center justify-center">
               <Gift size={20} />
             </div>
             <div className="space-y-1">
               <h4 className="text-lg font-black uppercase tracking-tight">Expand the Mesh</h4>
-              <p className="text-[11px] font-bold text-white/80 uppercase tracking-widest leading-relaxed">Refer a worker or customer and unlock ৳100 credits for your next engagement.</p>
+              <p className="text-[11px] font-bold text-cream/80 uppercase tracking-widest leading-relaxed">Refer a worker or customer and unlock ৳100 credits for your next engagement.</p>
             </div>
             <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] bg-white/20 w-fit px-4 py-2 rounded-full backdrop-blur-md">
               Initiate Referral <ChevronRight size={14} />

@@ -229,7 +229,7 @@ export const AdminBookings: React.FC = () => {
       case 'ongoing': return 'text-primary-blue bg-primary-blue/10 border-primary-blue/20';
       case 'cancelled': return 'text-red-500 bg-red-50 dark:bg-red-500/10 border-red-100 dark:border-red-500/20';
       case 'rejected': return 'text-red-600 bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/20';
-      default: return 'text-slate-500 bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-800';
+      default: return 'text-gray-teal bg-slate-50 dark:bg-brand-surface border-slate-100 dark:border-slate-800';
     }
   };
 
@@ -237,25 +237,25 @@ export const AdminBookings: React.FC = () => {
     <div className="p-6 space-y-8 pb-24">
       <div className="flex items-center justify-between px-2">
         <div className="space-y-1">
-          <h2 className="text-3xl font-black text-slate-800 dark:text-white tracking-tighter leading-none">Manage Bookings</h2>
-          <p className="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-[0.3em]">All service bookings</p>
+          <h2 className="text-3xl font-black text-cream dark:text-cream tracking-tighter leading-none">Manage Bookings</h2>
+          <p className="text-gray-teal dark:text-gray-teal text-[10px] font-black uppercase tracking-[0.3em]">All service bookings</p>
         </div>
         <motion.button 
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          className="w-14 h-14 glass-card bg-white dark:bg-slate-900 border-none rounded-2xl flex items-center justify-center shadow-glass transition-all"
+          className="w-14 h-14 glass-card bg-brand-slate dark:bg-brand-dark border-none rounded-2xl flex items-center justify-center shadow-glass transition-all"
         >
           <Filter className="text-primary-blue w-6 h-6" />
         </motion.button>
       </div>
 
       {/* Tabs Matrix */}
-      <div className="flex bg-white/50 dark:bg-slate-900/50 backdrop-blur-md p-1.5 rounded-[24px] border border-white/20 dark:border-slate-800 shadow-glass overflow-x-auto no-scrollbar">
+      <div className="flex bg-white/50 dark:bg-brand-dark/50 backdrop-blur-md p-1.5 rounded-[24px] border border-white/20 dark:border-slate-800 shadow-glass overflow-x-auto no-scrollbar">
         {['all', 'pending', 'ongoing', 'completed', 'cancelled'].map((tab) => (
           <button 
             key={tab}
             onClick={() => setActiveTab(tab as any)}
-            className={`flex-1 min-w-[90px] py-3.5 rounded-[18px] text-[9px] font-black uppercase tracking-[0.2em] transition-all flex items-center justify-center ${activeTab === tab ? 'bg-primary-blue text-white shadow-lg shadow-primary-blue/30 scale-[1.02]' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}
+            className={`flex-1 min-w-[90px] py-3.5 rounded-[18px] text-[9px] font-black uppercase tracking-[0.2em] transition-all flex items-center justify-center ${activeTab === tab ? 'bg-primary-blue text-cream shadow-lg shadow-primary-blue/30 scale-[1.02]' : 'text-gray-teal dark:text-gray-teal hover:text-slate-600 dark:hover:text-cream'}`}
           >
             {tab}
           </button>
@@ -270,8 +270,8 @@ export const AdminBookings: React.FC = () => {
           <div className="glass-card p-20 text-center space-y-5 shadow-sm">
             <div className="text-6xl animate-bounce">📋</div>
             <div className="space-y-1">
-              <h4 className="font-black uppercase tracking-widest text-[10px] text-slate-800 dark:text-white leading-none">No Bookings</h4>
-              <p className="text-slate-400 dark:text-slate-500 text-[9px] font-black uppercase tracking-widest">No booking activity found</p>
+              <h4 className="font-black uppercase tracking-widest text-[10px] text-cream dark:text-cream leading-none">No Bookings</h4>
+              <p className="text-gray-teal dark:text-gray-teal text-[9px] font-black uppercase tracking-widest">No booking activity found</p>
             </div>
           </div>
         ) : (
@@ -291,16 +291,16 @@ export const AdminBookings: React.FC = () => {
               }`} />
 
               <div className="flex items-center gap-5">
-                <div className="w-14 h-14 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-800 flex items-center justify-center shadow-inner overflow-hidden shrink-0">
+                <div className="w-14 h-14 rounded-2xl bg-brand-slate dark:bg-brand-surface border border-slate-100 dark:border-slate-800 flex items-center justify-center shadow-inner overflow-hidden shrink-0">
                   {booking.customerName ? (
-                    <span className="text-slate-400 dark:text-slate-500 font-black text-lg">{getInitials(booking.customerName)}</span>
+                    <span className="text-gray-teal dark:text-gray-teal font-black text-lg">{getInitials(booking.customerName)}</span>
                   ) : (
-                    <User className="w-8 h-8 text-slate-300" />
+                    <User className="w-8 h-8 text-cream" />
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <h4 className="font-black text-slate-800 dark:text-white text-base tracking-tight leading-none truncate group-hover:text-primary-blue transition-colors">
+                    <h4 className="font-black text-cream dark:text-cream text-base tracking-tight leading-none truncate group-hover:text-primary-blue transition-colors">
                       {booking.customerName || 'Anonymous Client'}
                     </h4>
                     <span className={`px-2 py-0.5 rounded-full border text-[7px] font-black uppercase tracking-widest ${getStatusColor(booking.status)}`}>
@@ -308,38 +308,38 @@ export const AdminBookings: React.FC = () => {
                     </span>
                   </div>
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-                    <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
+                    <div className="flex items-center gap-1.5 text-gray-teal dark:text-gray-teal">
                       <Briefcase className="w-3.5 h-3.5 text-primary-blue" />
                       <span className="text-[10px] font-black uppercase tracking-widest">{booking.service}</span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 border-l border-slate-100 dark:border-slate-800 pl-4">
+                    <div className="flex items-center gap-1.5 text-gray-teal dark:text-gray-teal border-l border-slate-100 dark:border-slate-800 pl-4">
                       <Phone className="w-3.5 h-3.5 text-primary-light" />
                       <span className="text-[10px] font-bold tracking-widest">{booking.customerPhone}</span>
                     </div>
                   </div>
                 </div>
                 <div className="text-right flex flex-col items-end gap-1">
-                  <div className="text-xl font-black text-slate-800 dark:text-white tracking-tighter leading-none">{formatCurrency(booking.totalAmount)}</div>
-                  <button className="p-2 bg-slate-50 dark:bg-slate-800 text-slate-300 hover:text-primary-blue rounded-xl transition-all">
+                  <div className="text-xl font-black text-cream dark:text-cream tracking-tighter leading-none">{formatCurrency(booking.totalAmount)}</div>
+                  <button className="p-2 bg-slate-50 dark:bg-brand-surface text-cream hover:text-primary-blue rounded-xl transition-all">
                     <MoreVertical className="w-5 h-5" />
                   </button>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="glass-card bg-slate-50 dark:bg-slate-800/50 p-4 space-y-2 border-none">
-                  <div className="flex items-center gap-2 text-slate-400 dark:text-slate-500 text-[9px] font-black uppercase tracking-[0.2em]">
+                <div className="glass-card bg-slate-50 dark:bg-brand-surface/50 p-4 space-y-2 border-none">
+                  <div className="flex items-center gap-2 text-gray-teal dark:text-gray-teal text-[9px] font-black uppercase tracking-[0.2em]">
                     <Calendar className="w-3.5 h-3.5 text-primary-blue" />
                     <span>Scheduled Time</span>
                   </div>
-                  <p className="text-[11px] font-black text-slate-800 dark:text-white tracking-tight">{booking.date} • {booking.time}</p>
+                  <p className="text-[11px] font-black text-cream dark:text-cream tracking-tight">{booking.date} • {booking.time}</p>
                 </div>
-                <div className="glass-card bg-slate-50 dark:bg-slate-800/50 p-4 space-y-2 border-none">
-                  <div className="flex items-center gap-2 text-slate-400 dark:text-slate-500 text-[9px] font-black uppercase tracking-[0.2em]">
+                <div className="glass-card bg-slate-50 dark:bg-brand-surface/50 p-4 space-y-2 border-none">
+                  <div className="flex items-center gap-2 text-gray-teal dark:text-gray-teal text-[9px] font-black uppercase tracking-[0.2em]">
                     <MapPin className="w-3.5 h-3.5 text-primary-light" />
                     <span>Provider Assigned</span>
                   </div>
-                  <p className="text-[11px] font-black text-slate-800 dark:text-white tracking-tight truncate">{booking.providerName || 'Assigning...'}</p>
+                  <p className="text-[11px] font-black text-cream dark:text-cream tracking-tight truncate">{booking.providerName || 'Assigning...'}</p>
                 </div>
               </div>
 
@@ -354,7 +354,7 @@ export const AdminBookings: React.FC = () => {
                           <span className="text-[9px] font-black uppercase tracking-widest">Ledger Sync: Verified & Released</span>
                         </div>
                         {(booking as any).reviewedByAdmin && (
-                          <span className="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Verified & Released by {(booking as any).reviewedByAdmin}</span>
+                          <span className="text-[8px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest">Verified & Released by {(booking as any).reviewedByAdmin}</span>
                         )}
                       </div>
                     ) : booking.paymentStatus === 'submitted' ? (
@@ -380,7 +380,7 @@ export const AdminBookings: React.FC = () => {
                       </div>
                     ) : (
                       <div className="flex flex-col gap-1">
-                        <div className="flex items-center gap-2 py-1.5 px-3 bg-slate-100 dark:bg-slate-800 text-slate-400 rounded-full border border-slate-200 dark:border-slate-800">
+                        <div className="flex items-center gap-2 py-1.5 px-3 bg-slate-100 dark:bg-brand-surface text-gray-teal rounded-full border border-slate-200 dark:border-slate-800">
                           <Clock className="w-3.5 h-3.5" />
                           <span className="text-[9px] font-black uppercase tracking-widest">Ledger Sync: Awaiting Payment Submission</span>
                         </div>
@@ -411,7 +411,7 @@ export const AdminBookings: React.FC = () => {
                             whileTap={{ scale: 0.98 }}
                             onClick={() => handleApprovePayment(booking)}
                             disabled={verifying === booking.id || (booking.paymentStatus === 'submitted' && (!booking.trxId || booking.trxId.trim() === '' || booking.trxId.trim().toUpperCase() === 'N/A'))}
-                            className="px-6 py-3 bg-primary-blue text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-primary-blue/30 active:scale-95 transition-all disabled:opacity-50"
+                            className="px-6 py-3 bg-primary-blue text-cream rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-primary-blue/30 active:scale-95 transition-all disabled:opacity-50"
                           >
                             {verifying === booking.id ? <Loader2 className="w-4 h-4 animate-spin" /> : booking.paymentStatus === 'pending_approval' ? 'Approve Release' : 'Approve'}
                           </motion.button>
@@ -422,7 +422,7 @@ export const AdminBookings: React.FC = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => navigate('/admin/map')}
-                        className="px-6 py-3 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg active:scale-95 transition-all border border-slate-100 dark:border-slate-800"
+                        className="px-6 py-3 bg-brand-slate dark:bg-brand-surface text-slate-600 dark:text-cream rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg active:scale-95 transition-all border border-slate-100 dark:border-slate-800"
                       >
                         Telemetry
                       </motion.button>
@@ -433,16 +433,16 @@ export const AdminBookings: React.FC = () => {
 
               {/* Payment Data Layer */}
               {(booking.paymentStatus === 'submitted' || booking.paymentStatus === 'pending_approval') && (booking.trxId || booking.paymentScreenshotUrl) && (
-                <div className="mt-4 p-5 glass-card bg-slate-900 border-none rounded-3xl space-y-4">
+                <div className="mt-4 p-5 glass-card bg-brand-dark border-none rounded-3xl space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <CreditCard className="w-5 h-5 text-primary-blue" />
                       <div className="flex flex-col">
-                        <span className="text-[8px] font-black text-slate-500 uppercase tracking-[0.2em] leading-none mb-1">Transaction Identity</span>
-                        <span className="text-xs font-black text-white tracking-widest">{booking.trxId || 'EXTERNAL_TRANSF'}</span>
+                        <span className="text-[8px] font-black text-gray-teal uppercase tracking-[0.2em] leading-none mb-1">Transaction Identity</span>
+                        <span className="text-xs font-black text-cream tracking-widest">{booking.trxId || 'EXTERNAL_TRANSF'}</span>
                       </div>
                     </div>
-                    <div className="text-[9px] font-black text-white uppercase tracking-widest bg-primary-blue/30 px-3 py-1.5 rounded-full border border-primary-blue/30">
+                    <div className="text-[9px] font-black text-cream uppercase tracking-widest bg-primary-blue/30 px-3 py-1.5 rounded-full border border-primary-blue/30">
                       {booking.paymentMethod.toUpperCase()}
                     </div>
                   </div>
@@ -450,7 +450,7 @@ export const AdminBookings: React.FC = () => {
                   {booking.paymentScreenshotUrl && (
                     <div 
                       onClick={() => setSelectedBooking(booking)}
-                      className="group/img relative h-24 bg-black/40 rounded-2xl overflow-hidden cursor-pointer border border-white/5 transition-all hover:border-white/20"
+                      className="group/img relative h-24 bg-brand-dark/40 rounded-2xl overflow-hidden cursor-pointer border border-white/5 transition-all hover:border-white/20"
                     >
                       <img 
                         src={booking.paymentScreenshotUrl} 
@@ -458,8 +458,8 @@ export const AdminBookings: React.FC = () => {
                         alt="Payment Screenshot" 
                         referrerPolicy="no-referrer"
                       />
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity bg-black/20">
-                         <PlayCircle className="w-8 h-8 text-white shadow-2xl" />
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity bg-brand-dark/20">
+                         <PlayCircle className="w-8 h-8 text-cream shadow-2xl" />
                       </div>
                     </div>
                   )}
@@ -490,42 +490,42 @@ export const AdminBookings: React.FC = () => {
       {/* Screenshot Modal */}
       <AnimatePresence>
         {selectedBooking && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-md">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-brand-dark/90 backdrop-blur-md">
             <motion.div 
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-[40px] overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
+              className="bg-brand-slate dark:bg-brand-dark w-full max-w-lg rounded-[40px] overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
             >
               <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
-                    <CreditCard className="w-5 h-5 text-slate-400 dark:text-slate-500" />
+                  <div className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-brand-surface flex items-center justify-center">
+                    <CreditCard className="w-5 h-5 text-gray-teal dark:text-gray-teal" />
                   </div>
                   <div>
-                    <h3 className="font-black text-slate-800 dark:text-white text-sm">Payment Verification</h3>
-                    <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Verify Booking Escrow</p>
+                    <h3 className="font-black text-cream dark:text-cream text-sm">Payment Verification</h3>
+                    <p className="text-[10px] font-bold text-gray-teal dark:text-gray-teal uppercase tracking-widest">Verify Booking Escrow</p>
                   </div>
                 </div>
                 <button 
                   onClick={() => setSelectedBooking(null)}
-                  className="p-2 bg-slate-50 dark:bg-slate-800 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+                  className="p-2 bg-slate-50 dark:bg-brand-surface rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
                 >
-                  <X className="w-5 h-5 text-slate-400 dark:text-slate-500" />
+                  <X className="w-5 h-5 text-gray-teal dark:text-gray-teal" />
                 </button>
               </div>
 
-              <div className="p-6 bg-slate-50 dark:bg-slate-800 space-y-4 overflow-y-auto flex-1">
+              <div className="p-6 bg-slate-50 dark:bg-brand-surface space-y-4 overflow-y-auto flex-1">
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 space-y-1 shadow-sm">
-                    <p className="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">METHOD</p>
-                    <p className="text-base font-black text-slate-800 dark:text-white uppercase">
+                  <div className="bg-brand-slate dark:bg-brand-dark rounded-2xl p-4 space-y-1 shadow-sm">
+                    <p className="text-[8px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest">METHOD</p>
+                    <p className="text-base font-black text-cream dark:text-cream uppercase">
                       {selectedBooking.paymentMethod || (selectedBooking as any).method || 'N/A'}
                     </p>
                   </div>
-                  <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 space-y-1 shadow-sm">
-                    <p className="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">ACCOUNT / TRXID</p>
-                    <p className="text-base font-black text-slate-800 dark:text-white truncate">
+                  <div className="bg-brand-slate dark:bg-brand-dark rounded-2xl p-4 space-y-1 shadow-sm">
+                    <p className="text-[8px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest">ACCOUNT / TRXID</p>
+                    <p className="text-base font-black text-cream dark:text-cream truncate">
                       {selectedBooking.trxId || (selectedBooking as any).transactionId || 'N/A'}
                     </p>
                   </div>
@@ -533,8 +533,8 @@ export const AdminBookings: React.FC = () => {
 
                 {selectedBooking.paymentScreenshotUrl && (
                   <div className="space-y-2">
-                    <p className="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest px-2">Payment Receipt Screenshot</p>
-                    <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-inner bg-white dark:bg-slate-900">
+                    <p className="text-[8px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest px-2">Payment Receipt Screenshot</p>
+                    <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-inner bg-brand-slate dark:bg-brand-dark">
                       <img 
                         src={selectedBooking.paymentScreenshotUrl} 
                         className="w-full h-full object-contain cursor-pointer" 
@@ -546,9 +546,9 @@ export const AdminBookings: React.FC = () => {
                         href={selectedBooking.paymentScreenshotUrl} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="absolute bottom-4 right-4 bg-white/90 dark:bg-slate-900/90 p-3 rounded-xl shadow-lg backdrop-blur-sm hover:scale-105 transition-all"
+                        className="absolute bottom-4 right-4 bg-white/90 dark:bg-brand-dark/90 p-3 rounded-xl shadow-lg backdrop-blur-sm hover:scale-105 transition-all"
                       >
-                        <ExternalLink className="w-4 h-4 text-slate-800 dark:text-white" />
+                        <ExternalLink className="w-4 h-4 text-cream dark:text-cream" />
                       </a>
                     </div>
                   </div>
@@ -588,7 +588,7 @@ export const AdminBookings: React.FC = () => {
                           setSelectedBooking(null);
                         }}
                         disabled={!isPendingVerification || isBookingTrxIdMissing}
-                        className="flex-[2] bg-primary-blue hover:bg-primary-blue/90 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-primary-blue/20 active:scale-95 transition-all disabled:opacity-50"
+                        className="flex-[2] bg-primary-blue hover:bg-primary-blue/90 text-cream py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-primary-blue/20 active:scale-95 transition-all disabled:opacity-50"
                       >
                         APPROVE PAYMENT
                       </button>

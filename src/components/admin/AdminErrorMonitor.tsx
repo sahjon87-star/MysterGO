@@ -60,7 +60,7 @@ export const AdminErrorMonitor = () => {
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-black text-white uppercase tracking-tight flex items-center gap-2">
+          <h1 className="text-2xl font-black text-cream uppercase tracking-tight flex items-center gap-2">
             <Bug className="w-6 h-6 text-red-500" />
             Error Monitor
           </h1>
@@ -214,7 +214,7 @@ export const AdminErrorMonitor = () => {
                     {selectedError.status !== 'resolved' && (
                        <button 
                          onClick={() => handleStatusChange(selectedError.errorId!, 'resolved')}
-                         className="flex-1 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 py-2 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-emerald-500 hover:text-white transition-all"
+                         className="flex-1 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 py-2 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-emerald-500 hover:text-cream transition-all"
                        >
                          Mark Resolved
                        </button>

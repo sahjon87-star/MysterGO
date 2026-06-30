@@ -20,14 +20,14 @@ interface LiveMapProps {
 }
 
 const workerIcon = L.divIcon({
-  html: `<div class="w-8 h-8 bg-primary-blue rounded-2xl border-4 border-white shadow-lg flex items-center justify-center text-white"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a2 2 0 0 1 2.83 0l.3.3a2 2 0 0 1 0 2.83l-3.77 3.77a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a2 2 0 0 1 2.83 0l.3.3a2 2 0 0 1 0 2.83l-3.77 3.77a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a2 2 0 0 1 2.83 0l.3.3a2 2 0 0 1 0 2.83l-3.77 3.77a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0"></path><path d="m2 22 1-1"></path><path d="m4.5 15.5-2 2"></path><path d="m15 4.5-2 2"></path><path d="m18.5 7.5-2 2"></path></svg></div>`,
+  html: `<div class="w-8 h-8 bg-primary-blue rounded-2xl border-4 border-white shadow-lg flex items-center justify-center text-cream"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a2 2 0 0 1 2.83 0l.3.3a2 2 0 0 1 0 2.83l-3.77 3.77a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a2 2 0 0 1 2.83 0l.3.3a2 2 0 0 1 0 2.83l-3.77 3.77a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a2 2 0 0 1 2.83 0l.3.3a2 2 0 0 1 0 2.83l-3.77 3.77a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0"></path><path d="m2 22 1-1"></path><path d="m4.5 15.5-2 2"></path><path d="m15 4.5-2 2"></path><path d="m18.5 7.5-2 2"></path></svg></div>`,
   className: '',
   iconSize: [32, 32],
   iconAnchor: [16, 32],
 });
 
 const shopIcon = L.divIcon({
-  html: `<div class="w-8 h-8 bg-action-orange rounded-2xl border-4 border-white shadow-lg flex items-center justify-center text-white"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"></path><path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"></path><path d="M12 3v6"></path></svg></div>`,
+  html: `<div class="w-8 h-8 bg-action-orange rounded-2xl border-4 border-white shadow-lg flex items-center justify-center text-cream"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"></path><path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"></path><path d="M12 3v6"></path></svg></div>`,
   className: '',
   iconSize: [32, 32],
   iconAnchor: [16, 32],
@@ -92,13 +92,13 @@ export const LiveMap: React.FC<LiveMapProps> = ({ height = '300px', filterType =
             >
               <Popup>
                 <div className="p-2 space-y-2">
-                  <h4 className="font-bold text-slate-800">{'shopName' in m ? m.shopName : m.name}</h4>
-                  <p className="text-[10px] text-slate-500">
+                  <h4 className="font-bold text-cream">{'shopName' in m ? m.shopName : m.name}</h4>
+                  <p className="text-[10px] text-gray-teal">
                     {'shopName' in m ? m.shopCategory : m.skill || m.providerType}
                   </p>
                   <button 
                     onClick={() => {}}
-                    className="w-full bg-primary-blue text-white text-[10px] font-bold py-2 rounded-lg"
+                    className="w-full bg-primary-blue text-cream text-[10px] font-bold py-2 rounded-lg"
                   >
                     View Details
                   </button>

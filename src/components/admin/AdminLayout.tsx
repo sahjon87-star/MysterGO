@@ -187,7 +187,7 @@ export const AdminLayout: React.FC = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowSidebar(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] w-full md:hidden"
+              className="fixed inset-0 bg-brand-dark/60 backdrop-blur-sm z-[60] w-full md:hidden"
             />
             <motion.div 
               initial={{ x: '-100%' }}

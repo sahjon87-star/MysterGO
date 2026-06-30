@@ -141,21 +141,21 @@ export const ProviderProfile: React.FC = () => {
       title: 'Security & Verification',
       items: [
         { icon: ShieldCheck, label: 'KYC Verification', path: '/pro/kyc', color: 'text-primary-blue bg-primary-blue/10', sub: profile?.isVerified ? 'Verified' : 'Pending' },
-        { icon: Lock, label: 'Privacy Settings', path: '/pro/settings', color: 'text-slate-400 bg-slate-100 dark:bg-slate-800' },
+        { icon: Lock, label: 'Privacy Settings', path: '/pro/settings', color: 'text-gray-teal bg-slate-100 dark:bg-brand-surface' },
       ]
     },
     {
       title: 'General',
       items: [
-        { icon: Globe, label: 'App Language', path: '/settings', color: 'text-slate-400 bg-slate-100 dark:bg-slate-800' },
-        { icon: Bell, label: 'Notifications', path: '/notifications', color: 'text-slate-400 bg-slate-100 dark:bg-slate-800' },
+        { icon: Globe, label: 'App Language', path: '/settings', color: 'text-gray-teal bg-slate-100 dark:bg-brand-surface' },
+        { icon: Bell, label: 'Notifications', path: '/notifications', color: 'text-gray-teal bg-slate-100 dark:bg-brand-surface' },
         { icon: Share2, label: 'Share Provider ID', onClick: () => {
           navigator.share({
             title: 'MistriGO Provider',
             text: `Check out my profile on MistriGO! Provider ID: ${profile?.uid}`,
             url: window.location.href
           }).catch(console.error);
-        }, color: 'text-slate-400 bg-slate-100 dark:bg-slate-800' },
+        }, color: 'text-gray-teal bg-slate-100 dark:bg-brand-surface' },
       ]
     }
   ];
@@ -163,7 +163,7 @@ export const ProviderProfile: React.FC = () => {
   return (
     <div className="space-y-8 pb-32">
       {/* Profile Header */}
-      <div className="bg-slate-900 border-b border-primary-blue/20 pt-12 pb-24 relative overflow-hidden transition-colors">
+      <div className="bg-brand-dark border-b border-primary-blue/20 pt-12 pb-24 relative overflow-hidden transition-colors">
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary-blue/10 rounded-full -mr-32 -mt-32 blur-3xl" />
         
         <div className="relative z-10 flex flex-col items-center">
@@ -172,15 +172,15 @@ export const ProviderProfile: React.FC = () => {
               {profile?.photoURL ? (
                 <img src={profile.photoURL} className="w-full h-full object-cover" alt="Profile" />
               ) : (
-                <span className="text-4xl font-black text-white">{getInitials(profile?.name || '??')}</span>
+                <span className="text-4xl font-black text-cream">{getInitials(profile?.name || '??')}</span>
               )}
               {uploading && (
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                <div className="absolute inset-0 bg-brand-dark/40 flex items-center justify-center">
                   <Loader2 className="w-6 h-6 text-primary-blue animate-spin" />
                 </div>
               )}
             </div>
-            <label className="absolute bottom-1 right-1 w-10 h-10 bg-primary-blue text-white rounded-2xl shadow-xl flex items-center justify-center border-4 border-slate-900 transition-transform active:scale-90 cursor-pointer">
+            <label className="absolute bottom-1 right-1 w-10 h-10 bg-primary-blue text-cream rounded-2xl shadow-xl flex items-center justify-center border-4 border-brand-dark transition-transform active:scale-90 cursor-pointer">
               <Camera className="w-4 h-4" />
               <input type="file" className="hidden" accept="image/*" onChange={handlePhotoUpload} />
             </label>
@@ -188,10 +188,10 @@ export const ProviderProfile: React.FC = () => {
 
           <div className="mt-6 text-center space-y-1 px-6">
             <div className="flex items-center justify-center gap-2">
-              <h2 className="text-2xl font-black text-white tracking-tight">{profile?.name}</h2>
+              <h2 className="text-2xl font-black text-cream tracking-tight">{profile?.name}</h2>
               {profile?.isVerified && <ShieldCheck className="w-5 h-5 text-primary-blue" />}
             </div>
-            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">{profile?.service}</p>
+            <p className="text-[10px] font-black text-gray-teal uppercase tracking-[0.3em]">{profile?.service}</p>
             <div className="flex items-center justify-center gap-1.5 text-primary-blue mt-2 bg-primary-blue/10 px-4 py-1.5 rounded-full border border-primary-blue/20">
               <Award className="w-3 h-3" />
               <span className="text-[10px] font-black uppercase tracking-widest">{stats.recognition}</span>
@@ -202,18 +202,18 @@ export const ProviderProfile: React.FC = () => {
 
       {/* Stats Dashboard */}
       <div className="px-4 -mt-16 relative z-20">
-        <div className="bg-white dark:bg-slate-900 rounded-[40px] border border-slate-100 dark:border-slate-800 shadow-2xl p-8 grid grid-cols-3 gap-4">
+        <div className="bg-brand-slate dark:bg-brand-dark rounded-[40px] border border-slate-100 dark:border-slate-800 shadow-2xl p-8 grid grid-cols-3 gap-4">
           <div className="text-center space-y-1 border-r border-slate-50 dark:border-slate-800">
-            <div className="text-xl font-black text-slate-800 dark:text-white leading-none">{profile?.rating?.toFixed(1) || '0.0'}</div>
-            <div className="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Rating</div>
+            <div className="text-xl font-black text-cream dark:text-cream leading-none">{profile?.rating?.toFixed(1) || '0.0'}</div>
+            <div className="text-[8px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest">Rating</div>
           </div>
           <div className="text-center space-y-1 border-r border-slate-50 dark:border-slate-800">
-            <div className="text-xl font-black text-slate-800 dark:text-white leading-none">{stats.completedJobs}</div>
-            <div className="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Jobs</div>
+            <div className="text-xl font-black text-cream dark:text-cream leading-none">{stats.completedJobs}</div>
+            <div className="text-[8px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest">Jobs</div>
           </div>
           <div className="text-center space-y-1">
-            <div className="text-xl font-black text-slate-800 dark:text-white leading-none">{profile?.yearsExperience || 0}y</div>
-            <div className="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Ex.</div>
+            <div className="text-xl font-black text-cream dark:text-cream leading-none">{profile?.yearsExperience || 0}y</div>
+            <div className="text-[8px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest">Ex.</div>
           </div>
         </div>
       </div>
@@ -222,24 +222,24 @@ export const ProviderProfile: React.FC = () => {
       <div className="px-4 space-y-8">
         {menuGroups.map((group, i) => (
           <div key={i} className="space-y-4">
-            <h3 className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.3em] px-4">{group.title}</h3>
-            <div className="bg-white dark:bg-slate-900 rounded-[32px] border border-slate-50 dark:border-slate-800 overflow-hidden shadow-sm">
+            <h3 className="text-[10px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-[0.3em] px-4">{group.title}</h3>
+            <div className="bg-brand-slate dark:bg-brand-dark rounded-[32px] border border-slate-50 dark:border-slate-800 overflow-hidden shadow-sm">
               {group.items.map((item, j) => (
                 <button
                   key={j}
                   onClick={item.onClick || (() => navigate(item.path!))}
-                  className={`w-full flex items-center justify-between p-6 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors ${j !== group.items.length - 1 ? 'border-b border-slate-50 dark:border-slate-800' : ''}`}
+                  className={`w-full flex items-center justify-between p-6 hover:bg-slate-50 dark:hover:bg-brand-surface transition-colors ${j !== group.items.length - 1 ? 'border-b border-slate-50 dark:border-slate-800' : ''}`}
                 >
                   <div className="flex items-center gap-4">
                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${item.color}`}>
                       <item.icon className="w-5 h-5" />
                     </div>
                     <div className="text-left">
-                      <span className="text-sm font-bold text-slate-700 dark:text-slate-300">{item.label}</span>
+                      <span className="text-sm font-bold text-slate-700 dark:text-cream">{item.label}</span>
                       {item.sub && <p className="text-[9px] font-black uppercase text-primary-blue tracking-widest mt-0.5">{item.sub}</p>}
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-slate-500 dark:text-slate-400" />
+                  <ChevronRight className="w-5 h-5 text-gray-teal dark:text-gray-teal" />
                 </button>
               ))}
             </div>
@@ -264,8 +264,8 @@ export const ProviderProfile: React.FC = () => {
       </div>
 
       <div className="text-center space-y-1">
-        <p className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-[0.4em]">MistriGO Provider v2.1.0</p>
-        <p className="text-[9px] font-medium text-slate-500 dark:text-slate-400 opacity-60">Crafted with ❤️ in Bangladesh</p>
+        <p className="text-[10px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-[0.4em]">MistriGO Provider v2.1.0</p>
+        <p className="text-[9px] font-medium text-gray-teal dark:text-gray-teal opacity-60">Crafted with ❤️ in Bangladesh</p>
       </div>
 
       {/* Delete Account Modal */}
@@ -277,13 +277,13 @@ export const ProviderProfile: React.FC = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => !deleting && setShowDeleteModal(false)}
-              className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50"
+              className="fixed inset-0 bg-brand-dark/60 backdrop-blur-sm z-50"
             />
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="fixed inset-x-4 top-[10%] bottom-auto max-h-[80vh] overflow-y-auto bg-white dark:bg-slate-900 rounded-[32px] shadow-2xl z-50 p-6 border border-slate-100 dark:border-slate-800"
+              className="fixed inset-x-4 top-[10%] bottom-auto max-h-[80vh] overflow-y-auto bg-brand-slate dark:bg-brand-dark rounded-[32px] shadow-2xl z-50 p-6 border border-slate-100 dark:border-slate-800"
             >
               <div className="flex items-center justify-between mb-6">
                 <div className="w-12 h-12 bg-red-500/10 rounded-2xl flex items-center justify-center text-red-500">
@@ -292,44 +292,44 @@ export const ProviderProfile: React.FC = () => {
                 <button
                   onClick={() => setShowDeleteModal(false)}
                   disabled={deleting}
-                  className="w-10 h-10 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center text-slate-500"
+                  className="w-10 h-10 bg-slate-100 dark:bg-brand-surface rounded-full flex items-center justify-center text-gray-teal"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              <h3 className="text-xl font-black text-slate-900 dark:text-white tracking-tight mb-2">Delete Provider Account?</h3>
-              <p className="text-sm text-slate-500 dark:text-slate-400 mb-8 leading-relaxed">
+              <h3 className="text-xl font-black text-cream dark:text-cream tracking-tight mb-2">Delete Provider Account?</h3>
+              <p className="text-sm text-gray-teal dark:text-gray-teal mb-8 leading-relaxed">
                 This action is permanent and cannot be undone. All your provider data, job history, and earnings will be permanently deleted.
               </p>
 
               <div className="space-y-4 mb-8">
                 <label className="flex items-start gap-3 cursor-pointer group">
                   <div className={`w-6 h-6 rounded flex-shrink-0 flex items-center justify-center border-2 transition-colors mt-0.5 ${confirmOne ? 'bg-red-500 border-red-500' : 'border-slate-300 dark:border-slate-600 group-hover:border-red-400'}`}>
-                    {confirmOne && <CheckCircle2 className="w-4 h-4 text-white" />}
+                    {confirmOne && <CheckCircle2 className="w-4 h-4 text-cream" />}
                   </div>
                   <input type="checkbox" className="hidden" checked={confirmOne} onChange={(e) => setConfirmOne(e.target.checked)} disabled={deleting} />
-                  <span className="text-sm text-slate-600 dark:text-slate-300 font-medium leading-tight">
+                  <span className="text-sm text-slate-600 dark:text-cream font-medium leading-tight">
                     I understand that I will lose all my job history, ratings, and reviews permanently.
                   </span>
                 </label>
 
                 <label className="flex items-start gap-3 cursor-pointer group">
                   <div className={`w-6 h-6 rounded flex-shrink-0 flex items-center justify-center border-2 transition-colors mt-0.5 ${confirmTwo ? 'bg-red-500 border-red-500' : 'border-slate-300 dark:border-slate-600 group-hover:border-red-400'}`}>
-                    {confirmTwo && <CheckCircle2 className="w-4 h-4 text-white" />}
+                    {confirmTwo && <CheckCircle2 className="w-4 h-4 text-cream" />}
                   </div>
                   <input type="checkbox" className="hidden" checked={confirmTwo} onChange={(e) => setConfirmTwo(e.target.checked)} disabled={deleting} />
-                  <span className="text-sm text-slate-600 dark:text-slate-300 font-medium leading-tight">
+                  <span className="text-sm text-slate-600 dark:text-cream font-medium leading-tight">
                     I confirm that I have no pending jobs and have withdrawn all my earnings.
                   </span>
                 </label>
 
                 <label className="flex items-start gap-3 cursor-pointer group">
                   <div className={`w-6 h-6 rounded flex-shrink-0 flex items-center justify-center border-2 transition-colors mt-0.5 ${confirmThree ? 'bg-red-500 border-red-500' : 'border-slate-300 dark:border-slate-600 group-hover:border-red-400'}`}>
-                    {confirmThree && <CheckCircle2 className="w-4 h-4 text-white" />}
+                    {confirmThree && <CheckCircle2 className="w-4 h-4 text-cream" />}
                   </div>
                   <input type="checkbox" className="hidden" checked={confirmThree} onChange={(e) => setConfirmThree(e.target.checked)} disabled={deleting} />
-                  <span className="text-sm text-slate-600 dark:text-slate-300 font-medium leading-tight">
+                  <span className="text-sm text-slate-600 dark:text-cream font-medium leading-tight">
                     I understand this action is irreversible and my account cannot be recovered.
                   </span>
                 </label>
@@ -341,7 +341,7 @@ export const ProviderProfile: React.FC = () => {
                 className={`w-full py-4 rounded-2xl font-black uppercase tracking-widest text-sm flex items-center justify-center transition-all ${
                   confirmOne && confirmTwo && confirmThree && !deleting
                     ? 'bg-red-500 text-white hover:bg-red-600 active:scale-95 shadow-xl shadow-red-500/20'
-                    : 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed'
+                    : 'bg-slate-100 dark:bg-brand-surface text-gray-teal cursor-not-allowed'
                 }`}
               >
                 {deleting ? (

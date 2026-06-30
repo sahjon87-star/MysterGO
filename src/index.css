@@ -150,24 +150,15 @@
   }
 
   /* --- Global High-Contrast Form Inputs and Controls (User Interface Accessibility Fix) --- */
-  input:not(.otp-input), 
-  textarea, 
-  select {
-    color: var(--cream);
+  input, textarea, select {
+    background-color: var(--brand-surface) !important;
+    color: var(--cream) !important;
+    border: 1px solid var(--glass-border) !important;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Placeholder typography color configuration */
-  input:not(.otp-input)::placeholder, 
-  textarea::placeholder {
-    color: #94A3B8; /* Muted Slate-400 for Light Mode */
-    opacity: 1;
-  }
-
-  .dark input:not(.otp-input)::placeholder, 
-  .dark textarea::placeholder {
-    color: rgba(255, 255, 255, 0.5); /* Soft muted white for Dark Mode */
-    opacity: 1;
+  *::placeholder {
+    color: var(--gray-teal) !important;
   }
 
   /* Custom dropdown options styling to prevent browser defaults overrides */
@@ -176,22 +167,13 @@
     color: var(--cream);
   }
 
-  /* Accessible borders and focus outlines against glassmorphic card backgrounds */
-  input:not(.otp-input), select, textarea {
-    border: 1px solid rgba(15, 23, 42, 0.12);
-  }
-
-  .dark input:not(.otp-input), .dark select, .dark textarea {
-    border: 1px solid rgba(255, 255, 255, 0.15);
-  }
-
   /* Focus ring aesthetics matched with high-contrast accessible brand-blue */
-  input:not(.otp-input):focus, 
+  input:focus, 
   textarea:focus, 
   select:focus {
-    border-color: var(--brand-blue);
-    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.25);
-    outline: none;
+    border-color: var(--brand-blue) !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25) !important;
+    outline: none !important;
   }
 
   /* Dedicated high-contrast custom styles for OTP inputs */

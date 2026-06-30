@@ -69,10 +69,10 @@ export const ShopDetailsPage: React.FC = () => {
         
         <div className="absolute top-6 left-4 right-4 flex items-center justify-between">
           <button onClick={() => navigate(-1)} className="w-12 h-12 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl flex items-center justify-center shadow-2xl active:scale-90 transition-all">
-            <ArrowLeft size={24} className="text-white" />
+            <ArrowLeft size={24} className="text-cream" />
           </button>
           <button className="w-12 h-12 bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl flex items-center justify-center shadow-2xl active:scale-90 transition-all">
-            <Share2 size={24} className="text-white" />
+            <Share2 size={24} className="text-cream" />
           </button>
         </div>
       </div>
@@ -85,7 +85,7 @@ export const ShopDetailsPage: React.FC = () => {
               <ShieldCheck className="w-3.5 h-3.5 text-brand-amber" />
               <span className="text-[10px] font-black text-brand-amber uppercase tracking-widest">Certified Node</span>
             </div>
-            <h1 className="text-3xl font-black text-white uppercase tracking-tight">{shop.name}</h1>
+            <h1 className="text-3xl font-black text-cream uppercase tracking-tight">{shop.name}</h1>
             <div className="flex items-center justify-center gap-2 text-gray-teal">
               <MapPin size={14} className="text-brand-amber" />
               <span className="text-[10px] font-black uppercase tracking-widest">{shop.address}</span>
@@ -113,7 +113,7 @@ export const ShopDetailsPage: React.FC = () => {
             { value: '9:00', label: 'Opens' },
           ].map((stat, i) => (
             <div key={i} className="bg-brand-slate p-4 rounded-3xl border border-white/5 text-center shadow-xl">
-              <h4 className="text-lg font-black text-white uppercase leading-none mb-1">{stat.value}</h4>
+              <h4 className="text-lg font-black text-cream uppercase leading-none mb-1">{stat.value}</h4>
               <p className="text-[8px] font-black text-gray-teal uppercase tracking-widest leading-none">{stat.label}</p>
             </div>
           ))}
@@ -121,7 +121,7 @@ export const ShopDetailsPage: React.FC = () => {
 
         {/* Description Section */}
         <section className="space-y-4">
-          <h3 className="px-2 text-xs font-black text-white uppercase tracking-widest flex items-center gap-2">
+          <h3 className="px-2 text-xs font-black text-cream uppercase tracking-widest flex items-center gap-2">
             <Info size={16} className="text-brand-amber" />
             About Our Shop
           </h3>
@@ -135,7 +135,7 @@ export const ShopDetailsPage: React.FC = () => {
         {/* Active Agents (Workers) */}
         <section className="space-y-4 pb-10">
           <div className="flex items-center justify-between px-2">
-            <h3 className="text-xs font-black text-white uppercase tracking-widest flex items-center gap-2">
+            <h3 className="text-xs font-black text-cream uppercase tracking-widest flex items-center gap-2">
               <Store size={16} className="text-brand-amber" />
               Available Technicians
             </h3>
@@ -147,7 +147,7 @@ export const ShopDetailsPage: React.FC = () => {
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide no-scrollbar">
             {workers.length === 0 ? (
               <div className="w-full py-10 flex flex-col items-center justify-center opacity-30 grayscale">
-                <p className="text-xs font-black text-white uppercase tracking-widest">No active agents</p>
+                <p className="text-xs font-black text-cream uppercase tracking-widest">No active agents</p>
               </div>
             ) : (
               workers.map(worker => (

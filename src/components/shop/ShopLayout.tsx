@@ -133,7 +133,7 @@ export const ShopLayout: React.FC = () => {
                   <span>{item.label}</span>
                 </div>
                 {isOrders && activeBookingsCount > 0 && (
-                  <span className="flex h-5 min-w-5 px-1.5 items-center justify-center rounded-full bg-orange-500 text-[10px] font-black text-white shadow-lg animate-pulse shrink-0">
+                  <span className="flex h-5 min-w-5 px-1.5 items-center justify-center rounded-full bg-orange-500 text-[10px] font-black text-cream shadow-lg animate-pulse shrink-0">
                     {activeBookingsCount}
                   </span>
                 )}
@@ -144,7 +144,7 @@ export const ShopLayout: React.FC = () => {
 
         <div className="pt-6 border-t border-brand-surface bg-brand-slate mt-auto space-y-4">
           <div className="flex items-center justify-between px-2">
-            <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Theme</span>
+            <span className="text-[10px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest">Theme</span>
             <ThemeToggle />
           </div>
           <button 
@@ -169,7 +169,7 @@ export const ShopLayout: React.FC = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowSidebar(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] w-full md:hidden"
+              className="fixed inset-0 bg-brand-dark/60 backdrop-blur-sm z-[60] w-full md:hidden"
             />
             <motion.div 
               initial={{ x: '-100%' }}
@@ -208,7 +208,7 @@ export const ShopLayout: React.FC = () => {
                         <span>{item.label}</span>
                       </div>
                       {isOrders && activeBookingsCount > 0 && (
-                        <span className="flex h-5 min-w-5 px-1.5 items-center justify-center rounded-full bg-orange-500 text-[10px] font-black text-white shadow-lg animate-pulse shrink-0">
+                        <span className="flex h-5 min-w-5 px-1.5 items-center justify-center rounded-full bg-orange-500 text-[10px] font-black text-cream shadow-lg animate-pulse shrink-0">
                           {activeBookingsCount}
                         </span>
                       )}
@@ -219,7 +219,7 @@ export const ShopLayout: React.FC = () => {
 
               <div className="pt-6 border-t border-brand-surface bg-brand-slate mt-auto space-y-4">
                 <div className="flex items-center justify-between px-2">
-                  <span className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Theme</span>
+                  <span className="text-[10px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest">Theme</span>
                   <ThemeToggle />
                 </div>
                 <button 
@@ -267,7 +267,7 @@ export const ShopLayout: React.FC = () => {
               )}
             >
               <div className={cn(
-                "absolute top-0.5 w-3 h-3 rounded-full bg-white shadow-sm transition-all",
+                "absolute top-0.5 w-3 h-3 rounded-full bg-brand-slate shadow-sm transition-all",
                 profile?.isOpen ? "right-0.5" : "left-0.5"
               )} />
             </button>

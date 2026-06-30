@@ -93,14 +93,14 @@ export const WorkerDetailsPage: React.FC = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => navigate(-1)} 
-            className="w-14 h-14 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[22px] flex items-center justify-center text-white shadow-2xl active:scale-95 transition-all"
+            className="w-14 h-14 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[22px] flex items-center justify-center text-cream shadow-2xl active:scale-95 transition-all"
           >
             <ArrowLeft size={24} />
           </motion.button>
           <motion.button 
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className="w-14 h-14 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[22px] flex items-center justify-center text-white shadow-2xl active:scale-95 transition-all"
+            className="w-14 h-14 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[22px] flex items-center justify-center text-cream shadow-2xl active:scale-95 transition-all"
           >
             <Share2 size={24} />
           </motion.button>
@@ -120,7 +120,7 @@ export const WorkerDetailsPage: React.FC = () => {
           </div>
 
           <div className="space-y-2">
-            <h1 className="text-4xl font-black text-white leading-[0.8] tracking-tighter uppercase">{worker.name}</h1>
+            <h1 className="text-4xl font-black text-cream leading-[0.8] tracking-tighter uppercase">{worker.name}</h1>
             <p className="text-[10px] font-black text-brand-amber uppercase tracking-[0.4em]">{worker.skill || worker.providerType}</p>
           </div>
 
@@ -128,13 +128,13 @@ export const WorkerDetailsPage: React.FC = () => {
             <div className="text-center space-y-1.5">
               <div className="flex items-center justify-center gap-1.5 text-brand-amber">
                 <Star className="w-4 h-4 fill-current" />
-                <span className="text-lg font-black text-white">{(worker.rating || 0).toFixed(1)}</span>
+                <span className="text-lg font-black text-cream">{(worker.rating || 0).toFixed(1)}</span>
               </div>
               <p className="text-[8px] font-black text-gray-teal uppercase tracking-widest">Rating</p>
             </div>
             <div className="w-[1px] h-10 bg-white/5" />
             <div className="text-center space-y-1.5">
-              <h4 className="text-lg font-black text-white">240+</h4>
+              <h4 className="text-lg font-black text-cream">240+</h4>
               <p className="text-[8px] font-black text-gray-teal uppercase tracking-widest">Jobs Done</p>
             </div>
             <div className="w-[1px] h-10 bg-white/5" />
@@ -155,7 +155,7 @@ export const WorkerDetailsPage: React.FC = () => {
               <Clock size={22} />
             </div>
             <p className="text-[8px] font-black text-gray-teal uppercase tracking-[0.2em] mb-1">Average Response</p>
-            <h5 className="text-[11px] font-black text-white uppercase tracking-widest">Under 15 mins</h5>
+            <h5 className="text-[11px] font-black text-cream uppercase tracking-widest">Under 15 mins</h5>
           </motion.div>
           <motion.div 
             whileHover={{ y: -5 }}

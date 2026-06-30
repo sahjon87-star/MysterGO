@@ -230,107 +230,107 @@ export const AdminSettings: React.FC = () => {
     }
   };
 
-  if (loading) return <div className="p-12 text-center animate-pulse text-sm font-black text-slate-400">Loading settings...</div>;
+  if (loading) return <div className="p-12 text-center animate-pulse text-sm font-black text-gray-teal">Loading settings...</div>;
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       <div className="space-y-1">
-        <h2 className="text-2xl font-black text-slate-800 dark:text-white tracking-tight leading-none uppercase">Platform Settings</h2>
-        <p className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest">Global configuration & rules</p>
+        <h2 className="text-2xl font-black text-cream dark:text-cream tracking-tight leading-none uppercase">Platform Settings</h2>
+        <p className="text-gray-teal dark:text-gray-teal text-xs font-bold uppercase tracking-widest">Global configuration & rules</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Side: Financial Settings, Gateway Numbers, and Referral Program */}
-        <div className="lg:col-span-7 bg-white dark:bg-slate-900 rounded-[32px] p-6 border border-slate-100 dark:border-slate-800 shadow-sm space-y-6">
+        <div className="lg:col-span-7 bg-brand-slate dark:bg-brand-dark rounded-[32px] p-6 border border-slate-100 dark:border-slate-800 shadow-sm space-y-6">
           
           {/* Financial Settings Section */}
           <div className="space-y-4">
             <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800/60 pb-2">
               <Percent className="w-4 h-4 text-primary-blue shrink-0" />
-              <h3 className="font-black text-slate-800 dark:text-white text-xs uppercase tracking-wider">Financial Settings</h3>
+              <h3 className="font-black text-cream dark:text-cream text-xs uppercase tracking-wider">Financial Settings</h3>
             </div>
             
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest px-1">Application Fee</label>
+                <label className="text-[10px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest px-1">Application Fee</label>
                 <div className="relative">
                   <input 
                     type="number" 
                     value={settings.applicationFeeRate}
                     onChange={(e) => setSettings({ ...settings, applicationFeeRate: parseFloat(e.target.value) || 0 })}
-                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 rounded-xl px-3 py-2 text-sm font-black focus:ring-2 focus:ring-primary-blue outline-none text-slate-800 dark:text-white"
+                    className="w-full bg-slate-50 dark:bg-brand-surface border border-slate-100 dark:border-slate-800 rounded-xl px-3 py-2 text-sm font-black focus:ring-2 focus:ring-primary-blue outline-none text-cream dark:text-cream"
                     placeholder="5"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 font-bold text-xs text-slate-400 dark:text-slate-500">%</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 font-bold text-xs text-gray-teal dark:text-gray-teal">%</span>
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest px-1">Payment Charges</label>
+                <label className="text-[10px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest px-1">Payment Charges</label>
                 <div className="relative">
                   <input 
                     type="number" 
                     value={settings.paymentChargeRate}
                     onChange={(e) => setSettings({ ...settings, paymentChargeRate: parseFloat(e.target.value) || 0 })}
-                    className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 rounded-xl px-3 py-2 text-sm font-black focus:ring-2 focus:ring-primary-blue outline-none text-slate-800 dark:text-white"
+                    className="w-full bg-slate-50 dark:bg-brand-surface border border-slate-100 dark:border-slate-800 rounded-xl px-3 py-2 text-sm font-black focus:ring-2 focus:ring-primary-blue outline-none text-cream dark:text-cream"
                     placeholder="2"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 font-bold text-xs text-slate-400 dark:text-slate-500">%</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 font-bold text-xs text-gray-teal dark:text-gray-teal">%</span>
                 </div>
               </div>
             </div>
             
-            <p className="text-[9px] text-slate-400 dark:text-slate-500 font-medium px-1">
+            <p className="text-[9px] text-gray-teal dark:text-gray-teal font-medium px-1">
               Markup percentages applied to the worker's base price when booking.
             </p>
           </div>
 
-          <div className="h-px bg-slate-50 dark:bg-slate-800/60" />
+          <div className="h-px bg-slate-50 dark:bg-brand-surface/60" />
 
           {/* Gateway Numbers Section */}
           <div className="space-y-3">
             <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800/60 pb-2">
               <Phone className="w-4 h-4 text-primary-blue shrink-0" />
-              <h3 className="font-black text-slate-800 dark:text-white text-xs uppercase tracking-wider">Gateway Numbers</h3>
+              <h3 className="font-black text-cream dark:text-cream text-xs uppercase tracking-wider">Gateway Numbers</h3>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest px-1">bKash Number</label>
+                <label className="text-[10px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest px-1">bKash Number</label>
                 <input 
                   type="text" 
                   value={settings.bkashNumber}
                   onChange={(e) => setSettings({ ...settings, bkashNumber: e.target.value })}
-                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 rounded-xl px-3 py-2 text-sm font-bold focus:ring-2 focus:ring-primary-blue outline-none text-slate-800 dark:text-white"
+                  className="w-full bg-slate-50 dark:bg-brand-surface border border-slate-100 dark:border-slate-800 rounded-xl px-3 py-2 text-sm font-bold focus:ring-2 focus:ring-primary-blue outline-none text-cream dark:text-cream"
                   placeholder="017XXXXXXXX"
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest px-1">Nagad Number</label>
+                <label className="text-[10px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest px-1">Nagad Number</label>
                 <input 
                   type="text" 
                   value={settings.nagadNumber}
                   onChange={(e) => setSettings({ ...settings, nagadNumber: e.target.value })}
-                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 rounded-xl px-3 py-2 text-sm font-bold focus:ring-2 focus:ring-primary-blue outline-none text-slate-800 dark:text-white"
+                  className="w-full bg-slate-50 dark:bg-brand-surface border border-slate-100 dark:border-slate-800 rounded-xl px-3 py-2 text-sm font-bold focus:ring-2 focus:ring-primary-blue outline-none text-cream dark:text-cream"
                   placeholder="018XXXXXXXX"
                 />
               </div>
             </div>
           </div>
 
-          <div className="h-px bg-slate-50 dark:bg-slate-800/60" />
+          <div className="h-px bg-slate-50 dark:bg-brand-surface/60" />
 
           {/* Referral Program Section */}
           <div className="space-y-3">
             <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/60 pb-2">
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-primary-blue shrink-0" />
-                <h3 className="font-black text-slate-800 dark:text-white text-xs uppercase tracking-wider">Referral Program</h3>
+                <h3 className="font-black text-cream dark:text-cream text-xs uppercase tracking-wider">Referral Program</h3>
               </div>
               <button 
                 type="button"
                 onClick={() => setSettings({ ...settings, isReferralEnabled: !settings.isReferralEnabled })}
-                className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${settings.isReferralEnabled ? 'bg-green-500 text-white shadow-sm' : 'bg-slate-100 dark:bg-slate-800 text-slate-500'}`}
+                className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${settings.isReferralEnabled ? 'bg-green-500 text-white shadow-sm' : 'bg-slate-100 dark:bg-brand-surface text-gray-teal'}`}
               >
                 {settings.isReferralEnabled ? 'ENABLED' : 'DISABLED'}
               </button>
@@ -338,22 +338,22 @@ export const AdminSettings: React.FC = () => {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest px-1">Reward Amount (৳)</label>
+                <label className="text-[10px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest px-1">Reward Amount (৳)</label>
                 <input 
                   type="number" 
                   value={settings.referralRewardAmount}
                   onChange={(e) => setSettings({ ...settings, referralRewardAmount: parseFloat(e.target.value) || 0 })}
-                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 rounded-xl px-3 py-2 text-sm font-bold focus:ring-2 focus:ring-primary-blue outline-none text-slate-800 dark:text-white"
+                  className="w-full bg-slate-50 dark:bg-brand-surface border border-slate-100 dark:border-slate-800 rounded-xl px-3 py-2 text-sm font-bold focus:ring-2 focus:ring-primary-blue outline-none text-cream dark:text-cream"
                   placeholder="20"
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest px-1">Min. Withdrawal (৳)</label>
+                <label className="text-[10px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest px-1">Min. Withdrawal (৳)</label>
                 <input 
                   type="number" 
                   value={settings.minWithdrawal}
                   onChange={(e) => setSettings({ ...settings, minWithdrawal: parseFloat(e.target.value) || 0 })}
-                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-800 rounded-xl px-3 py-2 text-sm font-bold focus:ring-2 focus:ring-primary-blue outline-none text-slate-800 dark:text-white"
+                  className="w-full bg-slate-50 dark:bg-brand-surface border border-slate-100 dark:border-slate-800 rounded-xl px-3 py-2 text-sm font-bold focus:ring-2 focus:ring-primary-blue outline-none text-cream dark:text-cream"
                   placeholder="100"
                 />
               </div>
@@ -365,7 +365,7 @@ export const AdminSettings: React.FC = () => {
             <AlertCircle className="w-5 h-5 text-action-orange shrink-0 mt-0.5" />
             <div className="space-y-0.5">
               <h4 className="text-[10px] font-black text-action-orange uppercase tracking-wider">Important Notice</h4>
-              <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+              <p className="text-[10px] text-gray-teal dark:text-gray-teal font-medium leading-relaxed">
                 App fee configuration is saved globally. Changes apply only to subsequent orders.
               </p>
             </div>
@@ -376,7 +376,7 @@ export const AdminSettings: React.FC = () => {
             type="button"
             onClick={handleSave}
             disabled={saving}
-            className="w-full bg-slate-900 dark:bg-primary-blue hover:bg-slate-800 dark:hover:bg-primary-blue/90 text-white py-3 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-md shadow-slate-900/10 dark:shadow-primary-blue/10 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+            className="w-full bg-brand-dark dark:bg-primary-blue hover:bg-brand-surface dark:hover:bg-primary-blue/90 text-cream py-3 rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-md shadow-slate-900/10 dark:shadow-primary-blue/10 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
           >
             {saving ? <Loader2 className="w-4 h-4 animate-spin animate-none" /> : <Save className="w-4 h-4" />}
             <span>{saving ? 'SAVING...' : 'SAVE ALL SETTINGS'}</span>
@@ -384,23 +384,23 @@ export const AdminSettings: React.FC = () => {
         </div>
 
         {/* Right Side: Banner Image Slider / Media Uploads */}
-        <div className="lg:col-span-5 bg-white dark:bg-slate-900 rounded-[32px] p-6 border border-slate-100 dark:border-slate-800 shadow-sm space-y-6">
+        <div className="lg:col-span-5 bg-brand-slate dark:bg-brand-dark rounded-[32px] p-6 border border-slate-100 dark:border-slate-800 shadow-sm space-y-6">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-primary-blue/10 dark:bg-primary-blue/20 rounded-xl flex items-center justify-center">
               <ImageIcon className="w-5 h-5 text-primary-blue" />
             </div>
             <div>
-              <h3 className="font-black text-slate-800 dark:text-white text-sm uppercase tracking-tight">Banner Image Slider</h3>
-              <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Home Page Carousel (3 to 4 active slides)</p>
+              <h3 className="font-black text-cream dark:text-cream text-sm uppercase tracking-tight">Banner Image Slider</h3>
+              <p className="text-[10px] font-bold text-gray-teal dark:text-gray-teal uppercase tracking-widest">Home Page Carousel (3 to 4 active slides)</p>
             </div>
           </div>
 
-          <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed font-semibold">
+          <p className="text-[11px] text-gray-teal dark:text-gray-teal leading-relaxed font-semibold">
             Manage your layout banner slides. These loop automatically on the Customer App. Delete slides to clear, or upload files directly.
           </p>
 
           {bannerLoading ? (
-            <div className="py-6 text-center text-xs font-bold text-slate-400 dark:text-slate-500 animate-pulse flex items-center justify-center gap-2">
+            <div className="py-6 text-center text-xs font-bold text-gray-teal dark:text-gray-teal animate-pulse flex items-center justify-center gap-2">
               <Loader2 className="w-4 h-4 animate-spin text-primary-blue" /> Loading Slider Configuration...
             </div>
           ) : (
@@ -432,7 +432,7 @@ export const AdminSettings: React.FC = () => {
                       </button>
 
                       {/* Display Slot Identifier Tag */}
-                      <div className="absolute bottom-1.5 left-1.5 bg-black/60 text-[8px] font-black text-white px-1.5 py-0.5 rounded uppercase tracking-widest select-none z-10">
+                      <div className="absolute bottom-1.5 left-1.5 bg-brand-dark/60 text-[8px] font-black text-cream px-1.5 py-0.5 rounded uppercase tracking-widest select-none z-10">
                         Slot {globalIdx !== -1 ? globalIdx + 1 : idx + 1}
                       </div>
                     </div>
@@ -449,8 +449,8 @@ export const AdminSettings: React.FC = () => {
                       </div>
                     ) : (
                       <div className="flex flex-col items-center gap-1.5 text-center px-1">
-                        <Plus className="w-5 h-5 text-slate-400 dark:text-slate-500" />
-                        <span className="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Upload New</span>
+                        <Plus className="w-5 h-5 text-gray-teal dark:text-gray-teal" />
+                        <span className="text-[8px] font-bold text-gray-teal dark:text-gray-teal uppercase tracking-widest">Upload New</span>
                       </div>
                     )}
                     <input 
@@ -481,10 +481,10 @@ export const AdminSettings: React.FC = () => {
 
                 {showDirectLinks && (
                   <div className="space-y-3 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800/60">
-                    <p className="text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Direct Links for each Slot</p>
+                    <p className="text-[9px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest">Direct Links for each Slot</p>
                     {[0, 1, 2, 3].map((idx) => (
                       <div key={idx} className="flex items-center gap-2">
-                        <span className="text-[10px] font-bold text-slate-400 w-12 shrink-0">Slot {idx + 1}:</span>
+                        <span className="text-[10px] font-bold text-gray-teal w-12 shrink-0">Slot {idx + 1}:</span>
                         <input
                           type="text"
                           placeholder="https://images.unsplash.com/etc..."
@@ -502,7 +502,7 @@ export const AdminSettings: React.FC = () => {
                               updatedAt: serverTimestamp()
                             }, { merge: true });
                           }}
-                          className="flex-1 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-lg px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-primary-blue text-slate-800 dark:text-cream placeholder:text-slate-400 text-ellipsis"
+                          className="flex-1 bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800 rounded-lg px-3 py-1.5 text-xs outline-none focus:ring-1 focus:ring-primary-blue text-cream dark:text-cream placeholder:text-gray-teal text-ellipsis"
                         />
                       </div>
                     ))}

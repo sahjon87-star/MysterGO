@@ -56,7 +56,7 @@ export const ProfilePage: React.FC = () => {
     {
       title: "Identity & Trust",
       items: [
-        { icon: Settings, label: "App Settings", sub: "Privacy, Theme, Lang", path: "/settings", color: "text-slate-500", bg: "bg-slate-500/10" },
+        { icon: Settings, label: "App Settings", sub: "Privacy, Theme, Lang", path: "/settings", color: "text-gray-teal", bg: "bg-slate-500/10" },
         { icon: Shield, label: "Security Settings", sub: "Password, Verification", path: "/security", color: "text-rose-500", bg: "bg-rose-500/10" },
       ]
     }
@@ -65,31 +65,31 @@ export const ProfilePage: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-24">
       {/* Dynamic Header */}
-      <div className="bg-slate-900 border-b border-slate-800 p-8 pt-12 rounded-b-[48px] shadow-2xl relative overflow-hidden">
+      <div className="bg-brand-dark border-b border-slate-800 p-8 pt-12 rounded-b-[48px] shadow-2xl relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary-blue/20 rounded-full -mr-32 -mt-32 blur-3xl" />
         
         <div className="flex flex-col items-center gap-6 relative z-10">
           <div className="relative group">
-            <div className="w-24 h-24 rounded-[32px] bg-slate-800 border-4 border-slate-700 overflow-hidden group-hover:scale-105 transition-transform duration-500">
+            <div className="w-24 h-24 rounded-[32px] bg-brand-surface border-4 border-slate-700 overflow-hidden group-hover:scale-105 transition-transform duration-500">
               {profile?.photoURL ? (
                 <img src={profile.photoURL} className="w-full h-full object-cover" alt="" />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-4xl text-white font-black">
+                <div className="w-full h-full flex items-center justify-center text-4xl text-cream font-black">
                   {profile?.name?.charAt(0)}
                 </div>
               )}
             </div>
-            <button className="absolute -bottom-2 -right-2 w-10 h-10 bg-primary-blue text-white rounded-2xl flex items-center justify-center shadow-lg active:scale-90 transition-all border-4 border-slate-900">
+            <button className="absolute -bottom-2 -right-2 w-10 h-10 bg-primary-blue text-cream rounded-2xl flex items-center justify-center shadow-lg active:scale-90 transition-all border-4 border-brand-dark">
               <Camera size={18} />
             </button>
           </div>
 
           <div className="text-center space-y-2">
-            <h1 className="text-2xl font-black text-white uppercase tracking-tight">{profile?.name}</h1>
+            <h1 className="text-2xl font-black text-cream uppercase tracking-tight">{profile?.name}</h1>
             <div className="flex items-center justify-center gap-4">
               <div className="flex items-center gap-1.5 px-3 py-1 bg-white/5 rounded-full border border-white/10">
                 <Star className="w-3 h-3 text-orange-400 fill-current" />
-                <span className="text-[10px] font-black text-white/80 uppercase">Elite Tier</span>
+                <span className="text-[10px] font-black text-cream/80 uppercase">Elite Tier</span>
               </div>
               <div className="flex items-center gap-1.5 px-3 py-1 bg-primary-blue/20 rounded-full border border-primary-blue/30">
                 <Zap className="w-3 h-3 text-primary-blue fill-current" />
@@ -106,7 +106,7 @@ export const ProfilePage: React.FC = () => {
           <motion.div 
             whileHover={{ y: -5 }}
             onClick={() => navigate('/wallet')}
-            className="bg-emerald-500 p-6 rounded-[32px] text-white shadow-xl shadow-emerald-500/20 group cursor-pointer"
+            className="bg-emerald-500 p-6 rounded-[32px] text-cream shadow-xl shadow-emerald-500/20 group cursor-pointer"
           >
             <BarChart3 className="w-6 h-6 mb-3 opacity-60 group-hover:scale-110 transition-transform" />
             <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-60 leading-none mb-1">Liquid Balance</p>
@@ -114,7 +114,7 @@ export const ProfilePage: React.FC = () => {
           </motion.div>
           <motion.div 
             whileHover={{ y: -5 }}
-            className="bg-primary-blue p-6 rounded-[32px] text-white shadow-xl shadow-primary-blue/20 group cursor-pointer"
+            className="bg-primary-blue p-6 rounded-[32px] text-cream shadow-xl shadow-primary-blue/20 group cursor-pointer"
           >
             <Zap className="w-6 h-6 mb-3 opacity-60 group-hover:scale-110 transition-transform" />
             <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-60 leading-none mb-1">Total Impact</p>
@@ -125,14 +125,14 @@ export const ProfilePage: React.FC = () => {
         {/* Menu Sections */}
         {menuGroups.map((group, gIdx) => (
           <div key={group.title} className="space-y-3">
-            <h3 className="px-2 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em]">{group.title}</h3>
-            <div className="bg-white dark:bg-slate-900 rounded-[40px] p-2 border border-slate-100 dark:border-slate-800 shadow-sm">
+            <h3 className="px-2 text-[10px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-[0.3em]">{group.title}</h3>
+            <div className="bg-brand-slate dark:bg-brand-dark rounded-[40px] p-2 border border-slate-100 dark:border-slate-800 shadow-sm">
               {group.items.map((item, iIdx) => (
                 <button
                   key={item.label}
                   onClick={() => navigate(item.path)}
                   className={cn(
-                    "w-full flex items-center gap-4 p-4 rounded-[32px] hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-all group",
+                    "w-full flex items-center gap-4 p-4 rounded-[32px] hover:bg-slate-50 dark:hover:bg-brand-surface/50 transition-all group",
                     iIdx !== group.items.length - 1 && "mb-1"
                   )}
                 >
@@ -140,10 +140,10 @@ export const ProfilePage: React.FC = () => {
                     <item.icon size={22} />
                   </div>
                   <div className="flex-1 text-left">
-                    <p className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-tight">{item.label}</p>
-                    <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">{item.sub}</p>
+                    <p className="text-xs font-black text-cream dark:text-cream uppercase tracking-tight">{item.label}</p>
+                    <p className="text-[10px] font-bold text-gray-teal dark:text-gray-teal uppercase tracking-widest">{item.sub}</p>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-slate-300 group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight className="w-5 h-5 text-cream group-hover:translate-x-1 transition-transform" />
                 </button>
               ))}
             </div>
@@ -161,7 +161,7 @@ export const ProfilePage: React.FC = () => {
           </button>
           
           <div className="text-center">
-            <p className="text-[9px] font-black text-slate-300 dark:text-slate-600 uppercase tracking-[0.5em]">v2.4.0 Codename: Antigravity</p>
+            <p className="text-[9px] font-black text-cream dark:text-slate-600 uppercase tracking-[0.5em]">v2.4.0 Codename: Antigravity</p>
           </div>
         </div>
       </div>

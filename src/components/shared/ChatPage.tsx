@@ -129,9 +129,9 @@ export const ChatPage: React.FC = () => {
   return (
     <div className="h-screen flex flex-col w-full relative overflow-hidden bg-slate-50 dark:bg-slate-950 transition-colors">
       {/* Header */}
-      <header className="bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 h-20 flex items-center px-4 gap-4 sticky top-0 z-40 transition-colors">
-        <button onClick={() => navigate(-1)} className="p-2 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-full transition-colors">
-          <ArrowLeft className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+      <header className="bg-brand-slate dark:bg-brand-dark border-b border-slate-100 dark:border-slate-800 h-20 flex items-center px-4 gap-4 sticky top-0 z-40 transition-colors">
+        <button onClick={() => navigate(-1)} className="p-2 hover:bg-slate-50 dark:hover:bg-brand-surface rounded-full transition-colors">
+          <ArrowLeft className="w-5 h-5 text-slate-600 dark:text-gray-teal" />
         </button>
         <div className="flex items-center gap-3">
           <div className="relative">
@@ -143,18 +143,18 @@ export const ChatPage: React.FC = () => {
               )}
             </div>
             {otherUser?.isOnline && (
-              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-primary-blue border-4 border-white dark:border-slate-900 rounded-full shadow-sm" />
+              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-primary-blue border-4 border-white dark:border-brand-dark rounded-full shadow-sm" />
             )}
           </div>
           <div>
-            <h2 className="font-bold text-slate-800 dark:text-white leading-none">{otherUser?.name}</h2>
-            <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">
+            <h2 className="font-bold text-cream dark:text-cream leading-none">{otherUser?.name}</h2>
+            <p className="text-[10px] font-bold text-gray-teal dark:text-gray-teal uppercase tracking-widest mt-1">
               {otherUser?.isOnline ? 'Active Now' : 'Last seen recently'}
             </p>
           </div>
         </div>
         <div className="ml-auto flex gap-2">
-          <a href={`tel:${otherUser?.phone}`} className="p-3 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-2xl border border-slate-100 dark:border-slate-800 active:scale-90 transition-transform">
+          <a href={`tel:${otherUser?.phone}`} className="p-3 bg-slate-50 dark:bg-brand-surface text-slate-600 dark:text-gray-teal rounded-2xl border border-slate-100 dark:border-slate-800 active:scale-90 transition-transform">
             <Phone className="w-5 h-5" />
           </a>
         </div>
@@ -164,8 +164,8 @@ export const ChatPage: React.FC = () => {
       <div className="flex-1 overflow-y-auto p-4 space-y-6 scrollbar-hide">
         {messages.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-center space-y-4 opacity-30 px-10">
-            <div className="w-16 h-16 bg-slate-200 dark:bg-slate-800 rounded-3xl flex items-center justify-center">
-              <MessageSquare className="w-8 h-8 text-slate-400" />
+            <div className="w-16 h-16 bg-slate-200 dark:bg-brand-surface rounded-3xl flex items-center justify-center">
+              <MessageSquare className="w-8 h-8 text-gray-teal" />
             </div>
             <div>
               <p className="font-black text-xs uppercase tracking-widest">Start a Conversation</p>
@@ -184,8 +184,8 @@ export const ChatPage: React.FC = () => {
               >
                 <div className={`max-w-[85%] rounded-[24px] p-4 text-sm font-medium shadow-sm relative ${
                   isMe 
-                    ? 'bg-primary-blue text-white rounded-br-none' 
-                    : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 rounded-bl-none border border-slate-100 dark:border-slate-800'
+                    ? 'bg-primary-blue text-cream rounded-br-none' 
+                    : 'bg-brand-slate dark:bg-brand-dark text-slate-700 dark:text-cream rounded-bl-none border border-slate-100 dark:border-slate-800'
                 }`}>
                   {m.type === 'image' ? (
                     <img src={m.fileUrl!} className="rounded-xl w-full max-w-[200px]" alt="Sent image" referrerPolicy="no-referrer" />
@@ -194,11 +194,11 @@ export const ChatPage: React.FC = () => {
                   )}
                 </div>
                 <div className="flex items-center gap-1.5 mt-1.5 px-1">
-                  <span className="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+                  <span className="text-[9px] font-bold text-gray-teal dark:text-gray-teal uppercase tracking-widest">
                     {formatTime(m.createdAt)}
                   </span>
                   {isMe && (
-                    m.seen ? <CheckCheck className="w-3 h-3 text-primary-blue" /> : <Check className="w-3 h-3 text-slate-300 dark:text-slate-600" />
+                    m.seen ? <CheckCheck className="w-3 h-3 text-primary-blue" /> : <Check className="w-3 h-3 text-cream dark:text-slate-600" />
                   )}
                 </div>
               </motion.div>
@@ -209,10 +209,10 @@ export const ChatPage: React.FC = () => {
       </div>
 
       {/* Input */}
-      <div className="p-4 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 pb-8 transition-colors">
-        <div className="flex items-center gap-3 bg-slate-50 dark:bg-slate-800 p-2 rounded-3xl border border-slate-100 dark:border-slate-700">
+      <div className="p-4 bg-brand-slate dark:bg-brand-dark border-t border-slate-100 dark:border-slate-800 pb-8 transition-colors">
+        <div className="flex items-center gap-3 bg-slate-50 dark:bg-brand-surface p-2 rounded-3xl border border-slate-100 dark:border-slate-700">
           <div className="relative">
-            <button className="p-3 text-slate-400 hover:text-primary-blue transition-colors rounded-2xl">
+            <button className="p-3 text-gray-teal hover:text-primary-blue transition-colors rounded-2xl">
               <ImageIcon className="w-5 h-5" />
             </button>
             <input 
@@ -228,13 +228,13 @@ export const ChatPage: React.FC = () => {
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-            className="flex-1 bg-transparent border-none outline-none text-sm font-medium text-slate-800 dark:text-white py-3"
+            className="flex-1 bg-transparent border-none outline-none text-sm font-medium text-cream dark:text-cream py-3"
             placeholder="Type your message..."
           />
           <button 
             onClick={() => handleSendMessage()}
             disabled={sending || (!inputMessage.trim() && !uploading)}
-            className="w-12 h-12 bg-primary-blue hover:bg-primary-blue/90 text-white rounded-2xl flex items-center justify-center transition-all active:scale-90 shadow-lg shadow-primary-blue/20 disabled:opacity-50 disabled:grayscale"
+            className="w-12 h-12 bg-primary-blue hover:bg-primary-blue/90 text-cream rounded-2xl flex items-center justify-center transition-all active:scale-90 shadow-lg shadow-primary-blue/20 disabled:opacity-50 disabled:grayscale"
           >
             {sending || uploading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
           </button>

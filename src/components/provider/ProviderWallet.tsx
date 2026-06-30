@@ -279,7 +279,7 @@ export const ProviderWallet: React.FC = () => {
             <button 
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 py-3.5 rounded-[18px] text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === tab.id ? 'bg-brand-amber text-brand-dark shadow-lg shadow-brand-amber/20 scale-[1.02]' : 'text-gray-teal hover:text-white'}`}
+              className={`flex-1 py-3.5 rounded-[18px] text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === tab.id ? 'bg-brand-amber text-brand-dark shadow-lg shadow-brand-amber/20 scale-[1.02]' : 'text-gray-teal hover:text-cream'}`}
             >
               <tab.icon className="w-4 h-4" />
               <span className="hidden sm:inline">{tab.label}</span>
@@ -412,13 +412,13 @@ export const ProviderWallet: React.FC = () => {
                 <div className="flex gap-2">
                   <button 
                     onClick={() => setMethod('bkash')}
-                    className={`flex-1 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest border transition-all ${method === 'bkash' ? 'bg-pink-600 border-pink-600 text-white shadow-lg shadow-pink-600/20' : 'bg-brand-surface border-white/5 text-gray-teal'}`}
+                    className={`flex-1 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest border transition-all ${method === 'bkash' ? 'bg-pink-600 border-pink-600 text-cream shadow-lg shadow-pink-600/20' : 'bg-brand-surface border-white/5 text-gray-teal'}`}
                   >
                     bKash
                   </button>
                   <button 
                     onClick={() => setMethod('nagad')}
-                    className={`flex-1 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest border transition-all ${method === 'nagad' ? 'bg-orange-600 border-orange-600 text-white shadow-lg shadow-orange-600/20' : 'bg-brand-surface border-white/5 text-gray-teal'}`}
+                    className={`flex-1 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest border transition-all ${method === 'nagad' ? 'bg-orange-600 border-orange-600 text-cream shadow-lg shadow-orange-600/20' : 'bg-brand-surface border-white/5 text-gray-teal'}`}
                   >
                     Nagad
                   </button>

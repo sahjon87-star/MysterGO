@@ -207,18 +207,18 @@ export const ShopWallet: React.FC = () => {
   return (
     <div className="space-y-6 pb-20">
       {/* Wallet Hero */}
-      <div className="glass-card mx-4 mt-4 p-8 bg-slate-900 border-none shadow-2xl relative overflow-hidden group">
+      <div className="glass-card mx-4 mt-4 p-8 bg-brand-dark border-none shadow-2xl relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-80 h-80 bg-primary-blue/20 rounded-full -mr-40 -mt-40 blur-3xl group-hover:bg-primary-blue/30 transition-all duration-700" />
         
         <div className="relative z-10 text-center space-y-6">
           <div className="space-y-2">
-            <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em]">Business Capital</p>
-            <div className="text-5xl font-black text-white tracking-tighter">
+            <p className="text-gray-teal text-[10px] font-black uppercase tracking-[0.3em]">Business Capital</p>
+            <div className="text-5xl font-black text-cream tracking-tighter">
               {formatCurrency(profile?.walletBalance || 0)}
             </div>
           </div>
           
-          <div className="flex items-center justify-center gap-2 text-slate-500 text-[9px] font-black uppercase tracking-widest bg-white/5 py-1 px-3 rounded-full w-fit mx-auto">
+          <div className="flex items-center justify-center gap-2 text-gray-teal text-[9px] font-black uppercase tracking-widest bg-white/5 py-1 px-3 rounded-full w-fit mx-auto">
             <RefreshCw className="w-3 h-3 animate-spin-slow" />
             <span>Automatic Settlements Enabled</span>
           </div>
@@ -227,7 +227,7 @@ export const ShopWallet: React.FC = () => {
              <motion.button 
               whileTap={{ scale: 0.95 }}
               onClick={() => setShowWithdraw(true)}
-              className="px-12 py-5 bg-primary-blue hover:bg-primary-light text-white rounded-3xl shadow-xl shadow-primary-blue/30 transition-all flex items-center gap-3 mx-auto border border-white/10"
+              className="px-12 py-5 bg-primary-blue hover:bg-primary-light text-cream rounded-3xl shadow-xl shadow-primary-blue/30 transition-all flex items-center gap-3 mx-auto border border-white/10"
             >
               <ArrowUpRight className="w-6 h-6" />
               <span className="text-[10px] font-black uppercase tracking-widest">Withdraw Funds</span>
@@ -243,8 +243,8 @@ export const ShopWallet: React.FC = () => {
                <TrendingUp className="w-6 h-6" />
             </div>
             <div>
-               <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Gross Sales</p>
-               <h4 className="text-xl font-black text-slate-800 dark:text-white truncate tracking-tight">{formatCurrency(salesRevenue)}</h4>
+               <p className="text-[9px] font-black text-gray-teal uppercase tracking-widest leading-none mb-1">Gross Sales</p>
+               <h4 className="text-xl font-black text-cream dark:text-cream truncate tracking-tight">{formatCurrency(salesRevenue)}</h4>
             </div>
          </div>
          <div className="glass-card p-6 border-none shadow-xl space-y-4">
@@ -252,28 +252,28 @@ export const ShopWallet: React.FC = () => {
                <ShoppingBag className="w-6 h-6" />
             </div>
             <div>
-               <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Total Orders</p>
-               <h4 className="text-xl font-black text-slate-800 dark:text-white tracking-tight">{profile?.totalOrders || 0}</h4>
+               <p className="text-[9px] font-black text-gray-teal uppercase tracking-widest leading-none mb-1">Total Orders</p>
+               <h4 className="text-xl font-black text-cream dark:text-cream tracking-tight">{profile?.totalOrders || 0}</h4>
             </div>
          </div>
       </div>
 
       {/* Merchant Fee Info */}
       <div className="px-4">
-         <div className="glass-card p-6 flex items-center gap-5 border-none shadow-glass bg-slate-50 dark:bg-slate-900/50">
-            <div className="w-14 h-14 bg-white dark:bg-slate-800 rounded-2xl flex items-center justify-center text-primary-blue shadow-inner shrink-0 border border-slate-100 dark:border-slate-800">
+         <div className="glass-card p-6 flex items-center gap-5 border-none shadow-glass bg-slate-50 dark:bg-brand-dark/50">
+            <div className="w-14 h-14 bg-brand-slate dark:bg-brand-surface rounded-2xl flex items-center justify-center text-primary-blue shadow-inner shrink-0 border border-slate-100 dark:border-slate-800">
                <AlertCircle className="w-7 h-7" />
             </div>
             <div className="space-y-1">
-               <h4 className="text-[10px] font-black text-slate-800 dark:text-white uppercase tracking-widest">Settlement Policy</h4>
-               <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 leading-relaxed">System applies <span className="text-primary-blue">5% commission</span> on all successful product disbursements.</p>
+               <h4 className="text-[10px] font-black text-cream dark:text-cream uppercase tracking-widest">Settlement Policy</h4>
+               <p className="text-[10px] font-bold text-gray-teal dark:text-gray-teal leading-relaxed">System applies <span className="text-primary-blue">5% commission</span> on all successful product disbursements.</p>
             </div>
          </div>
       </div>
 
       {/* Referral Card */}
       <div className="px-4">
-        <div className="glass-card p-6 bg-gradient-to-br from-indigo-600 to-primary-blue border-none text-white shadow-xl relative overflow-hidden group">
+        <div className="glass-card p-6 bg-gradient-to-br from-indigo-600 to-primary-blue border-none text-cream shadow-xl relative overflow-hidden group">
           <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:scale-110 transition-transform duration-700" />
           <div className="relative z-10 space-y-5">
             <div className="flex items-center gap-4">
@@ -281,12 +281,12 @@ export const ShopWallet: React.FC = () => {
                 <Gift className="w-7 h-7" />
               </div>
               <div className="space-y-0.5">
-                <h3 className="font-black text-base uppercase tracking-tight text-white leading-none">Capital Reward</h3>
-                <p className="text-white/70 text-[10px] font-bold uppercase tracking-widest">Earn ৳{settings?.referralRewardAmount ?? 20} per successful referral</p>
+                <h3 className="font-black text-base uppercase tracking-tight text-cream leading-none">Capital Reward</h3>
+                <p className="text-cream/70 text-[10px] font-bold uppercase tracking-widest">Earn ৳{settings?.referralRewardAmount ?? 20} per successful referral</p>
               </div>
             </div>
             <div className="flex gap-3">
-              <div className="flex-1 bg-black/30 backdrop-blur-md rounded-2xl px-5 py-4 font-mono font-black text-sm tracking-[0.2em] flex items-center border border-white/10">
+              <div className="flex-1 bg-brand-dark/30 backdrop-blur-md rounded-2xl px-5 py-4 font-mono font-black text-sm tracking-[0.2em] flex items-center border border-white/10">
                 {profile?.referralCode || 'MGO-XXXXXX'}
               </div>
               <button 
@@ -294,7 +294,7 @@ export const ShopWallet: React.FC = () => {
                   navigator.clipboard.writeText(profile?.referralCode || '');
                   toast.success('Reward code copied!');
                 }}
-                className="bg-white text-primary-blue px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl active:scale-95 transition-all"
+                className="bg-brand-slate text-primary-blue px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl active:scale-95 transition-all"
               >
                 COPY
               </button>
@@ -305,7 +305,7 @@ export const ShopWallet: React.FC = () => {
 
       {/* Tabs */}
       <div className="px-4">
-        <div className="flex gap-2 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md p-1.5 rounded-[24px] border border-white/20 dark:border-slate-800 shadow-glass">
+        <div className="flex gap-2 bg-white/50 dark:bg-brand-dark/50 backdrop-blur-md p-1.5 rounded-[24px] border border-white/20 dark:border-slate-800 shadow-glass">
           {([
             { id: 'history', label: 'Sales History', icon: History },
             { id: 'withdrawals', label: 'Payout Logs', icon: Banknote },
@@ -313,7 +313,7 @@ export const ShopWallet: React.FC = () => {
             <button 
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 py-3.5 rounded-[18px] text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === tab.id ? 'bg-primary-blue text-white shadow-lg shadow-primary-blue/30 scale-[1.02]' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}
+              className={`flex-1 py-3.5 rounded-[18px] text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${activeTab === tab.id ? 'bg-primary-blue text-cream shadow-lg shadow-primary-blue/30 scale-[1.02]' : 'text-gray-teal dark:text-gray-teal hover:text-slate-600 dark:hover:text-cream'}`}
             >
               <tab.icon className="w-4 h-4" />
               <span className="hidden sm:inline">{tab.label}</span>
@@ -338,11 +338,11 @@ export const ShopWallet: React.FC = () => {
               ) : transactions.length === 0 ? (
                 <div className="glass-card p-16 text-center space-y-4 shadow-sm border-none">
                   <div className="text-5xl animate-bounce">📖</div>
-                  <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest">No Sales Recorded</p>
+                  <p className="text-gray-teal text-[10px] font-black uppercase tracking-widest">No Sales Recorded</p>
                 </div>
               ) : (
                 transactions.map((tx) => (
-                  <div key={tx.id} className="glass-card p-5 flex items-center gap-5 hover:bg-white dark:hover:bg-slate-900 transition-all relative overflow-hidden group">
+                  <div key={tx.id} className="glass-card p-5 flex items-center gap-5 hover:bg-brand-slate dark:hover:bg-brand-dark transition-all relative overflow-hidden group">
                     <div className={`absolute left-0 top-0 bottom-0 w-1 ${tx.status === 'approved' ? 'bg-emerald-500' : tx.status === 'rejected' ? 'bg-red-500' : 'bg-amber-500'}`} />
                     
                     <div className={`w-12 h-12 rounded-[18px] flex items-center justify-center shadow-inner transition-transform group-hover:scale-110 ${tx.type === 'credit' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-red-500/10 text-red-500'}`}>
@@ -350,14 +350,14 @@ export const ShopWallet: React.FC = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
-                        <h4 className="text-sm font-black text-slate-800 dark:text-white truncate tracking-tight">{tx.description}</h4>
+                        <h4 className="text-sm font-black text-cream dark:text-cream truncate tracking-tight">{tx.description}</h4>
                         {tx.reviewedByAdmin && (
                            <span className="px-2 py-0.5 bg-primary-blue/10 text-primary-blue text-[7px] font-black rounded-full uppercase tracking-tighter border border-primary-blue/10">Verified by {tx.reviewedByAdmin}</span>
                         )}
                       </div>
                       <div className="flex items-center gap-1.5 mt-1.5">
-                        <Clock className="w-3 h-3 text-slate-300 dark:text-slate-600" />
-                        <p className="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+                        <Clock className="w-3 h-3 text-cream dark:text-slate-600" />
+                        <p className="text-[9px] font-bold text-gray-teal dark:text-gray-teal uppercase tracking-widest">
                           {tx.createdAt?.toDate?.().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                         </p>
                       </div>
@@ -366,7 +366,7 @@ export const ShopWallet: React.FC = () => {
                       <div className={`text-base font-black tracking-tighter ${tx.type === 'credit' ? 'text-emerald-500' : 'text-red-500'}`}>
                         {tx.type === 'credit' ? '+' : '-'}{formatCurrency(tx.amount)}
                       </div>
-                      <p className="text-[7px] font-black text-slate-300 dark:text-slate-600 uppercase tracking-tighter">Sales Revenue</p>
+                      <p className="text-[7px] font-black text-cream dark:text-slate-600 uppercase tracking-tighter">Sales Revenue</p>
                     </div>
                   </div>
                 ))
@@ -385,11 +385,11 @@ export const ShopWallet: React.FC = () => {
               ) : withdrawals.length === 0 ? (
                 <div className="glass-card p-16 text-center space-y-4 shadow-sm">
                   <div className="text-5xl animate-bounce">🏧</div>
-                  <p className="text-slate-400 text-[10px] font-black uppercase tracking-widest">No Withdrawal Requests</p>
+                  <p className="text-gray-teal text-[10px] font-black uppercase tracking-widest">No Withdrawal Requests</p>
                 </div>
               ) : (
                 withdrawals.map((w) => (
-                  <div key={w.id} className="glass-card p-6 flex items-center gap-5 hover:bg-white dark:hover:bg-slate-900 transition-all relative overflow-hidden">
+                  <div key={w.id} className="glass-card p-6 flex items-center gap-5 hover:bg-brand-slate dark:hover:bg-brand-dark transition-all relative overflow-hidden">
                     <div className={`absolute left-0 top-0 bottom-0 w-1 ${w.status === 'approved' ? 'bg-emerald-500' : w.status === 'rejected' ? 'bg-red-500' : 'bg-amber-500'}`} />
                     
                     <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner ${w.status === 'approved' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-amber-500/10 text-amber-500'}`}>
@@ -397,22 +397,22 @@ export const ShopWallet: React.FC = () => {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                        <h4 className="text-lg font-black text-slate-800 dark:text-white tracking-tighter leading-none">{formatCurrency(w.amount)}</h4>
+                        <h4 className="text-lg font-black text-cream dark:text-cream tracking-tighter leading-none">{formatCurrency(w.amount)}</h4>
                         <span className={`text-[8px] font-black uppercase px-2.5 py-1 rounded-full border ${w.status === 'approved' ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' : 'bg-amber-500/10 text-amber-600 border-amber-500/20'}`}>
                           {w.status}
                         </span>
                         {w.reviewedByAdmin && (
-                           <span className="text-[7px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Verified by {w.reviewedByAdmin}</span>
+                           <span className="text-[7px] font-black text-gray-teal dark:text-gray-teal uppercase tracking-widest">Verified by {w.reviewedByAdmin}</span>
                         )}
                       </div>
                       <div className="flex items-center gap-3">
                         <div className="flex items-center gap-1">
-                          <CreditCard className="w-3.5 h-3.5 text-slate-400" />
-                          <p className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">{w.method} • {w.accountNumber}</p>
+                          <CreditCard className="w-3.5 h-3.5 text-gray-teal" />
+                          <p className="text-[10px] font-bold text-gray-teal dark:text-gray-teal uppercase tracking-widest">{w.method} • {w.accountNumber}</p>
                         </div>
                       </div>
                     </div>
-                    <div className="text-[9px] font-black text-slate-400 dark:text-slate-500 text-right uppercase tracking-widest">
+                    <div className="text-[9px] font-black text-gray-teal dark:text-gray-teal text-right uppercase tracking-widest">
                       {w.createdAt?.toDate?.().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                     </div>
                   </div>
@@ -426,21 +426,21 @@ export const ShopWallet: React.FC = () => {
       {/* Withdraw Modal */}
       <AnimatePresence>
         {showWithdraw && (
-          <div className="fixed inset-0 z-[100] flex items-end justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+          <div className="fixed inset-0 z-[100] flex items-end justify-center p-4 bg-brand-dark/60 backdrop-blur-sm">
             <motion.div 
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
-              className="bg-white dark:bg-slate-900 w-full max-w-md rounded-t-[40px] p-8 space-y-6 shadow-2xl relative overflow-hidden"
+              className="bg-brand-slate dark:bg-brand-dark w-full max-w-md rounded-t-[40px] p-8 space-y-6 shadow-2xl relative overflow-hidden"
             >
               <div className="absolute top-0 right-0 p-8 opacity-5">
                 <Wallet className="w-32 h-32" />
               </div>
 
               <div className="flex justify-between items-center relative z-10">
-                <h3 className="text-2xl font-black tracking-tight text-slate-800 dark:text-white uppercase">Withdraw Shop Funds</h3>
-                <button onClick={() => setShowWithdraw(false)} className="p-3 bg-slate-50 dark:bg-slate-800 rounded-2xl">
-                  <X className="w-5 h-5 text-slate-400" />
+                <h3 className="text-2xl font-black tracking-tight text-cream dark:text-cream uppercase">Withdraw Shop Funds</h3>
+                <button onClick={() => setShowWithdraw(false)} className="p-3 bg-slate-50 dark:bg-brand-surface rounded-2xl">
+                  <X className="w-5 h-5 text-gray-teal" />
                 </button>
               </div>
 
@@ -448,40 +448,40 @@ export const ShopWallet: React.FC = () => {
                 <div className="flex gap-2">
                   <button 
                     onClick={() => setMethod('bkash')}
-                    className={`flex-1 py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest border-2 transition-all ${method === 'bkash' ? 'bg-pink-500 border-pink-500 text-white shadow-xl shadow-pink-500/20' : 'bg-slate-50 dark:bg-slate-800 border-transparent text-slate-400'}`}
+                    className={`flex-1 py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest border-2 transition-all ${method === 'bkash' ? 'bg-pink-500 border-pink-500 text-cream shadow-xl shadow-pink-500/20' : 'bg-slate-50 dark:bg-brand-surface border-transparent text-gray-teal'}`}
                   >
                     bKash
                   </button>
                   <button 
                     onClick={() => setMethod('nagad')}
-                    className={`flex-1 py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest border-2 transition-all ${method === 'nagad' ? 'bg-orange-500 border-orange-500 text-white shadow-xl shadow-orange-500/20' : 'bg-slate-50 dark:bg-slate-800 border-transparent text-slate-400'}`}
+                    className={`flex-1 py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest border-2 transition-all ${method === 'nagad' ? 'bg-orange-500 border-orange-500 text-cream shadow-xl shadow-orange-500/20' : 'bg-slate-50 dark:bg-brand-surface border-transparent text-gray-teal'}`}
                   >
                     Nagad
                   </button>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] px-4">Amount to Cash Out (৳)</label>
+                  <label className="text-[9px] font-black text-gray-teal uppercase tracking-[0.2em] px-4">Amount to Cash Out (৳)</label>
                   <input 
                     type="number" 
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
-                    className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-800 rounded-3xl p-6 outline-none focus:border-primary-blue text-2xl font-black text-slate-800 dark:text-white shadow-inner"
+                    className="w-full bg-slate-50 dark:bg-brand-surface border-2 border-slate-100 dark:border-slate-800 rounded-3xl p-6 outline-none focus:border-primary-blue text-2xl font-black text-cream dark:text-cream shadow-inner"
                     placeholder="Min ৳100"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] px-4">Merchant Phone Number</label>
+                  <label className="text-[9px] font-black text-gray-teal uppercase tracking-[0.2em] px-4">Merchant Phone Number</label>
                   <div className="relative">
-                    <div className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400">
+                    <div className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-teal">
                        <CreditCard className="w-5 h-5" />
                     </div>
                     <input 
                       type="text" 
                       value={accountNumber}
                       onChange={(e) => setAccountNumber(e.target.value)}
-                      className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-800 rounded-2xl pl-16 pr-6 p-5 outline-none focus:border-primary-blue text-sm font-bold text-slate-800 dark:text-white shadow-inner"
+                      className="w-full bg-slate-50 dark:bg-brand-surface border-2 border-slate-100 dark:border-slate-800 rounded-2xl pl-16 pr-6 p-5 outline-none focus:border-primary-blue text-sm font-bold text-cream dark:text-cream shadow-inner"
                       placeholder="01XXXXXXXXX"
                     />
                   </div>
@@ -490,7 +490,7 @@ export const ShopWallet: React.FC = () => {
                 <button 
                   onClick={handleWithdraw}
                   disabled={processing || !amount || !accountNumber}
-                  className="w-full bg-primary-blue hover:bg-primary-blue/90 text-white py-6 rounded-3xl font-black text-xs uppercase tracking-widest shadow-2xl shadow-primary-blue/30 flex items-center justify-center gap-3 active:scale-95 transition-all"
+                  className="w-full bg-primary-blue hover:bg-primary-blue/90 text-cream py-6 rounded-3xl font-black text-xs uppercase tracking-widest shadow-2xl shadow-primary-blue/30 flex items-center justify-center gap-3 active:scale-95 transition-all"
                 >
                   {processing ? <Loader2 className="w-5 h-5 animate-spin" /> : <ArrowUpRight className="w-5 h-5" />}
                   Submit Withdrawal Request

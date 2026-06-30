@@ -91,14 +91,14 @@ export const ShopInventory: React.FC = () => {
       <div className="px-4 pt-6 space-y-4">
         <div className="flex items-center justify-between">
            <div className="flex items-center gap-2">
-              <button onClick={() => navigate('/')} className="p-2 -ml-2 text-slate-400 hover:text-slate-600 transition-colors">
+              <button onClick={() => navigate('/')} className="p-2 -ml-2 text-gray-teal hover:text-slate-600 transition-colors">
                 <ChevronLeft className="w-7 h-7" />
               </button>
-              <h2 className="text-2xl font-black text-slate-800 dark:text-white uppercase tracking-tight">Inventory</h2>
+              <h2 className="text-2xl font-black text-cream dark:text-cream uppercase tracking-tight">Inventory</h2>
            </div>
            <button 
              onClick={() => navigate('/add-product')}
-             className="w-12 h-12 bg-primary-blue text-white rounded-2xl flex items-center justify-center shadow-lg shadow-primary-blue/20 active:scale-95 transition-all"
+             className="w-12 h-12 bg-primary-blue text-cream rounded-2xl flex items-center justify-center shadow-lg shadow-primary-blue/20 active:scale-95 transition-all"
            >
               <Plus className="w-6 h-6" />
            </button>
@@ -106,7 +106,7 @@ export const ShopInventory: React.FC = () => {
 
         <div className="flex gap-2">
             <div className="relative flex-1 group">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-blue transition-colors">
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-teal group-focus-within:text-primary-blue transition-colors">
                 <Search className="w-4 h-4" />
               </div>
               <input 
@@ -114,12 +114,12 @@ export const ShopInventory: React.FC = () => {
                 placeholder="Search inventory..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl pl-12 pr-4 py-4 text-xs font-bold outline-none focus:ring-2 focus:ring-primary-blue shadow-sm dark:text-white"
+                className="w-full bg-brand-slate dark:bg-brand-dark border border-slate-100 dark:border-slate-800 rounded-2xl pl-12 pr-4 py-4 text-xs font-bold outline-none focus:ring-2 focus:ring-primary-blue shadow-sm dark:text-cream"
               />
             </div>
             <button 
               onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
-              className="w-12 h-12 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl flex items-center justify-center text-slate-400 shadow-sm"
+              className="w-12 h-12 bg-brand-slate dark:bg-brand-dark border border-slate-100 dark:border-slate-800 rounded-2xl flex items-center justify-center text-gray-teal shadow-sm"
             >
               {viewMode === 'grid' ? <List className="w-5 h-5" /> : <LayoutGrid className="w-5 h-5" />}
             </button>
@@ -130,7 +130,7 @@ export const ShopInventory: React.FC = () => {
             <button 
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${selectedCategory === cat ? 'bg-primary-blue text-white shadow-lg shadow-primary-blue/20' : 'bg-white dark:bg-slate-900 text-slate-400 dark:text-slate-500 border border-slate-100 dark:border-slate-800'}`}
+              className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${selectedCategory === cat ? 'bg-primary-blue text-cream shadow-lg shadow-primary-blue/20' : 'bg-brand-slate dark:bg-brand-dark text-gray-teal dark:text-gray-teal border border-slate-100 dark:border-slate-800'}`}
             >
               {cat}
             </button>
@@ -142,14 +142,14 @@ export const ShopInventory: React.FC = () => {
         {loading ? (
           <div className="grid grid-cols-2 gap-4">
             {[1, 2, 3, 4].map(i => (
-              <div key={i} className="aspect-square bg-white dark:bg-slate-900 rounded-[32px] animate-pulse h-48" />
+              <div key={i} className="aspect-square bg-brand-slate dark:bg-brand-dark rounded-[32px] animate-pulse h-48" />
             ))}
           </div>
         ) : filteredProducts.length === 0 ? (
           <div className="text-center py-24 space-y-4">
              <div className="text-6xl opacity-10">📦</div>
-             <h3 className="text-lg font-black text-slate-800 dark:text-white uppercase tracking-tight">Inventory is Empty</h3>
-             <p className="text-slate-400 dark:text-slate-500 text-xs font-medium max-w-[200px] mx-auto">Start adding products to your shop to see them here.</p>
+             <h3 className="text-lg font-black text-cream dark:text-cream uppercase tracking-tight">Inventory is Empty</h3>
+             <p className="text-gray-teal dark:text-gray-teal text-xs font-medium max-w-[200px] mx-auto">Start adding products to your shop to see them here.</p>
              <button 
                onClick={() => navigate('/add-product')}
                className="text-primary-blue font-black tracking-widest text-[10px] uppercase pt-4"
@@ -165,9 +165,9 @@ export const ShopInventory: React.FC = () => {
                 layout
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className={`bg-white dark:bg-slate-900 rounded-[32px] border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden flex group transition-all hover:border-primary-blue/30 ${viewMode === 'grid' ? 'flex-col' : 'flex-row p-4 gap-4'}`}
+                className={`bg-brand-slate dark:bg-brand-dark rounded-[32px] border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden flex group transition-all hover:border-primary-blue/30 ${viewMode === 'grid' ? 'flex-col' : 'flex-row p-4 gap-4'}`}
               >
-                <div className={`${viewMode === 'grid' ? 'aspect-square w-full' : 'w-24 h-24'} bg-slate-50 dark:bg-slate-800 relative overflow-hidden shrink-0`}>
+                <div className={`${viewMode === 'grid' ? 'aspect-square w-full' : 'w-24 h-24'} bg-slate-50 dark:bg-brand-surface relative overflow-hidden shrink-0`}>
                    <img src={p.image} className="w-full h-full object-cover transition-transform group-hover:scale-110" alt={p.name} />
                    <div className="absolute top-2 right-2 flex gap-1 transform translate-x-10 group-hover:translate-x-0 transition-transform">
                       <button 
@@ -187,10 +187,10 @@ export const ShopInventory: React.FC = () => {
                 <div className={`${viewMode === 'grid' ? 'p-5' : 'flex-1 py-1'} flex flex-col justify-between`}>
                    <div>
                       <div className="flex items-center justify-between gap-2">
-                        <h4 className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-tight truncate pr-2">{p.name}</h4>
+                        <h4 className="text-xs font-black text-cream dark:text-cream uppercase tracking-tight truncate pr-2">{p.name}</h4>
                         {viewMode === 'grid' && <span className="text-[10px] font-black text-primary-blue leading-none">{formatCurrency(p.price)}</span>}
                       </div>
-                      <p className="text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-0.5">{p.category}</p>
+                      <p className="text-[9px] font-bold text-gray-teal dark:text-gray-teal uppercase tracking-widest mt-0.5">{p.category}</p>
                       {viewMode === 'list' && (
                         <div className="text-lg font-black text-primary-blue mt-2">{formatCurrency(p.price)}</div>
                       )}
@@ -198,19 +198,19 @@ export const ShopInventory: React.FC = () => {
 
                    <div className={`flex items-center justify-between ${viewMode === 'grid' ? 'mt-6 pt-4 border-t border-slate-50 dark:border-slate-800' : 'mt-2'}`}>
                       <div className="space-y-0.5">
-                        <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">In Stock</p>
-                        <p className={`text-sm font-black ${p.stock < 5 ? 'text-red-500' : 'text-slate-800 dark:text-white'}`}>{p.stock}</p>
+                        <p className="text-[8px] font-black text-gray-teal uppercase tracking-widest leading-none">In Stock</p>
+                        <p className={`text-sm font-black ${p.stock < 5 ? 'text-red-500' : 'text-cream dark:text-cream'}`}>{p.stock}</p>
                       </div>
                       <div className="flex items-center gap-1">
                          <button 
                           onClick={() => updateStock(p.id!, p.stock - 1)}
-                          className="w-8 h-8 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex items-center justify-center text-slate-400 active:scale-90 transition-all hover:bg-slate-100"
+                          className="w-8 h-8 rounded-lg bg-slate-50 dark:bg-brand-surface border border-slate-100 dark:border-slate-700 flex items-center justify-center text-gray-teal active:scale-90 transition-all hover:bg-slate-100"
                         >
                            <Minus className="w-3.5 h-3.5" />
                          </button>
                          <button 
                           onClick={() => updateStock(p.id!, p.stock + 1)}
-                          className="w-8 h-8 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 flex items-center justify-center text-slate-400 active:scale-90 transition-all hover:bg-slate-100"
+                          className="w-8 h-8 rounded-lg bg-slate-50 dark:bg-brand-surface border border-slate-100 dark:border-slate-700 flex items-center justify-center text-gray-teal active:scale-90 transition-all hover:bg-slate-100"
                         >
                            <Plus className="w-3.5 h-3.5" />
                          </button>

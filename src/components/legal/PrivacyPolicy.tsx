@@ -11,7 +11,7 @@ export const PrivacyPolicy: React.FC = () => {
       <div className="max-w-3xl mx-auto space-y-8">
         <button 
           onClick={() => navigate(-1)} 
-          className="p-4 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/50 text-slate-700 dark:text-slate-300 transition-colors shadow-sm"
+          className="p-4 bg-brand-slate dark:bg-brand-dark border border-slate-100 dark:border-slate-800 rounded-2xl hover:bg-slate-50 dark:hover:bg-brand-surface/50 text-slate-700 dark:text-cream transition-colors shadow-sm"
         >
           <ArrowLeft size={20} />
         </button>
@@ -21,13 +21,13 @@ export const PrivacyPolicy: React.FC = () => {
             <Shield size={24} />
           </div>
           <div className="space-y-1">
-            <h1 className="text-4xl font-black text-slate-950 dark:text-white tracking-tighter uppercase">Privacy Protocol</h1>
-            <p className="text-slate-400 dark:text-slate-500 font-bold uppercase text-[10px] tracking-[0.3em]">Final Production Version • Last Updated June 2026</p>
+            <h1 className="text-4xl font-black text-slate-950 dark:text-cream tracking-tighter uppercase">Privacy Protocol</h1>
+            <p className="text-gray-teal dark:text-gray-teal font-bold uppercase text-[10px] tracking-[0.3em]">Final Production Version • Last Updated June 2026</p>
           </div>
         </div>
         
         <div className="prose prose-slate dark:prose-invert max-w-none space-y-8">
-          <p className="text-lg text-slate-600 dark:text-slate-400 font-medium leading-relaxed border-l-4 border-primary-blue pl-4 py-1 bg-primary-blue/5 dark:bg-primary-blue/10 rounded-r-xl">
+          <p className="text-lg text-slate-600 dark:text-gray-teal font-medium leading-relaxed border-l-4 border-primary-blue pl-4 py-1 bg-primary-blue/5 dark:bg-primary-blue/10 rounded-r-xl">
             MistriGO is committed to the absolute integrity and security of your personal and professional data.
             This protocol outlines how we harvest, process, and protect information within our network.
           </p>
@@ -41,15 +41,15 @@ export const PrivacyPolicy: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   key={index} 
-                  className="bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/50 p-6 sm:p-8 rounded-[30px] shadow-sm space-y-4"
+                  className="bg-brand-slate dark:bg-brand-dark border border-slate-100 dark:border-slate-800/50 p-6 sm:p-8 rounded-[30px] shadow-sm space-y-4"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-xl bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center text-primary-blue">
+                    <div className="w-8 h-8 rounded-xl bg-slate-50 dark:bg-brand-surface/50 flex items-center justify-center text-primary-blue">
                       <Icon className="w-4 h-4" />
                     </div>
-                    <h3 className="font-black text-slate-900 dark:text-white text-base uppercase tracking-tight">{section.title}</h3>
+                    <h3 className="font-black text-cream dark:text-cream text-base uppercase tracking-tight">{section.title}</h3>
                   </div>
-                  <div className="text-sm leading-relaxed text-slate-600 dark:text-slate-400 whitespace-pre-line pl-11">
+                  <div className="text-sm leading-relaxed text-slate-600 dark:text-gray-teal whitespace-pre-line pl-11">
                     {section.content}
                   </div>
                 </motion.div>
