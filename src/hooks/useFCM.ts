@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getToken, onMessage } from 'firebase/messaging';
 import { messaging, db, firebaseConfig } from '../lib/firebase';
 import { doc, setDoc, serverTimestamp, query, where, collection, onSnapshot } from 'firebase/firestore';
@@ -10,6 +10,7 @@ const VAPID_KEY = "BJ9d7iomVPfSVs-o5uu2h3FF84bW2XHUYT7hM_5PpoUY3I4O9bmOOerNR7ZkS
 export const useFCM = () => {
   const [token, setToken] = useState<string | null>(null);
   const { user, profile } = useAuth();
+  const lastSyncedRef = useRef<string>('');
 
   useEffect(() => {
     // 1. Explicitly register FCM Service Worker for maximum reliability on Cloud Run domains
@@ -64,10 +65,18 @@ export const useFCM = () => {
           const currentToken = await getToken(messaging, { vapidKey: VAPID_KEY });
           if (currentToken) {
             setToken(currentToken);
-            console.log('Generated local FCM token:', currentToken);
-            
+
             // Update user/provider profile with FCM token if logged in
-            if (user) {
+            if (user?.uid) {
+              const userRole = profile?.role;
+              const syncKey = `${user.uid}_${userRole || 'user'}_${currentToken}`;
+              
+              // Only call Firestore update if we have not synced this exact combination yet in this component session
+              if (lastSyncedRef.current === syncKey) {
+                return;
+              }
+              lastSyncedRef.current = syncKey;
+
               let collectionName = 'users';
               if (profile) {
                 if (profile.role === 'provider') {
@@ -117,7 +126,7 @@ export const useFCM = () => {
 
     requestPermission();
 
-  }, [user, profile]);
+  }, [user?.uid, profile?.role]);
 
   useEffect(() => {
     if (messaging) {

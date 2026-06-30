@@ -83,18 +83,29 @@ const MapController: React.FC<{
 }> = ({ center, points, recenterCounter }) => {
   const map = useMap();
   const hasFittedRef = useRef<string>('');
+  const lastCenterRef = useRef<[number, number] | null>(null);
+  const lastRecenterCounterRef = useRef<number>(0);
 
   useEffect(() => {
+    const centerChanged = !lastCenterRef.current || 
+      Math.abs(center[0] - lastCenterRef.current[0]) > 0.0001 || 
+      Math.abs(center[1] - lastCenterRef.current[1]) > 0.0001;
+
+    const recenterClicked = recenterCounter !== undefined && recenterCounter !== lastRecenterCounterRef.current;
+
     if (points && points.length > 1) {
       const pointsKey = JSON.stringify(points);
       // Auto fit on initial load of both points or on clicking Recenter
-      if (hasFittedRef.current !== pointsKey || (recenterCounter && recenterCounter > 0)) {
+      if (hasFittedRef.current !== pointsKey || recenterClicked) {
         hasFittedRef.current = pointsKey;
+        if (recenterCounter !== undefined) lastRecenterCounterRef.current = recenterCounter;
         const bounds = L.latLngBounds(points);
         map.fitBounds(bounds, { padding: [50, 50], maxZoom: 16 });
       }
-    } else {
-      map.panTo(center, { animate: true, duration: 1 });
+    } else if (centerChanged || recenterClicked) {
+      lastCenterRef.current = center;
+      if (recenterCounter !== undefined) lastRecenterCounterRef.current = recenterCounter;
+      map.panTo(center, { animate: true, duration: 0.5 });
     }
   }, [center, points, recenterCounter, map]);
   return null;
@@ -143,16 +154,21 @@ export const TrackingMap: React.FC<TrackingMapProps> = ({
   const defaultCenter = customerLocation;
   const [viewCenter, setViewCenter] = useState<[number, number]>(defaultCenter);
 
-  // Automatically track and follow moving coordinates on the map
+  // Automatically track and follow moving coordinates on the map, with threshold checks
   useEffect(() => {
-    if (providerLocation) {
-      setViewCenter(providerLocation);
-    } else if (deliveryLocation) {
-      setViewCenter(deliveryLocation);
-    } else {
-      setViewCenter(customerLocation);
-    }
-  }, [customerLocation, providerLocation, deliveryLocation]);
+    const target = providerLocation || deliveryLocation || customerLocation;
+    if (!target) return;
+    
+    setViewCenter(prev => {
+      if (!prev) return target;
+      const delta = Math.max(Math.abs(target[0] - prev[0]), Math.abs(target[1] - prev[1]));
+      // Only set a new view center if it changes by > 11 meters to prevent constant visual panning
+      if (delta > 0.0001) {
+        return target;
+      }
+      return prev;
+    });
+  }, [customerLocation?.[0], customerLocation?.[1], providerLocation?.[0], providerLocation?.[1], deliveryLocation?.[0], deliveryLocation?.[1]]);
 
   // Determine active target and tracker source for measuring distance
   let trackingSource: [number, number] | null = null;
@@ -169,11 +185,14 @@ export const TrackingMap: React.FC<TrackingMapProps> = ({
     trackingTarget = customerLocation;
   }
 
-  // Dual positions for map auto-zoom/bounds
-  const activePoints: [number, number][] = [customerLocation];
-  if (trackingSource) {
-    activePoints.push(trackingSource);
-  }
+  // Dual positions for map auto-zoom/bounds - memoized to prevent infinite ref-triggers
+  const activePoints = React.useMemo<[number, number][]>(() => {
+    const points: [number, number][] = [customerLocation];
+    if (trackingSource) {
+      points.push(trackingSource);
+    }
+    return points;
+  }, [customerLocation?.[0], customerLocation?.[1], trackingSource?.[0], trackingSource?.[1]]);
 
   // Calculate Haversine distance and estimated travel times
   const getDistanceAndEta = () => {

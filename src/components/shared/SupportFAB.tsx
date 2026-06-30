@@ -12,7 +12,7 @@ export const SupportFAB = () => {
   const [hasActiveTicket, setHasActiveTicket] = useState(false);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user?.uid) return;
     
     // Only fetch for customers, providers and shop owners
     if (!isCustomer && !isProvider && !isShopOwner) return;
@@ -28,7 +28,7 @@ export const SupportFAB = () => {
     });
 
     return () => unsubscribe();
-  }, [user, isCustomer, isProvider, isShopOwner]);
+  }, [user?.uid, isCustomer, isProvider, isShopOwner]);
 
   // Don't show for admins or unauthenticated users
   if (!user || (!isCustomer && !isProvider && !isShopOwner)) return null;

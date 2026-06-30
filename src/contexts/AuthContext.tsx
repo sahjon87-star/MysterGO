@@ -166,12 +166,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     };
 
+    let active = true;
     let unsubscribe: (() => void) | undefined;
     checkProfile().then(unsub => {
-      if (unsub) unsubscribe = unsub;
+      if (active) {
+        unsubscribe = unsub;
+      } else {
+        unsub?.();
+      }
     });
 
     return () => {
+      active = false;
       if (unsubscribe) unsubscribe();
     };
   }, [user]);

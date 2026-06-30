@@ -34,6 +34,9 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, [profile]);
 
   const lastUpdateRef = useRef(0);
+  const lastGeocodeTimeRef = useRef(0);
+  const lastGeocodeLocRef = useRef<{ lat: number, lng: number } | null>(null);
+  const lastStateLocationRef = useRef<{ lat: number, lng: number } | null>(null);
 
   // Keep manual frequency and active state ref current to avoid state closure issues in timers/handlers
   const hasActiveTrackingRef = useRef(false);
@@ -126,9 +129,9 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const currentProfile = profileRef.current as any;
     if (!user?.uid || !currentProfile || !currentProfile.onboardingComplete) return;
 
-    // Rate limit updates based on tracking state (High frequency: 3 seconds, normal: 120 seconds)
+    // Rate limit updates based on tracking state (High frequency: 10 seconds, normal: 120 seconds)
     const now = Date.now();
-    const intervalThreshold = hasActiveTrackingRef.current ? 3000 : 120000;
+    const intervalThreshold = hasActiveTrackingRef.current ? 10000 : 120000;
     if (lastUpdateRef.current && (now - lastUpdateRef.current < intervalThreshold)) {
       return;
     }
@@ -148,18 +151,28 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
       const userRef = doc(db, collectionName, user.uid);
 
-      // Perform Nominatim reverse-geocoding to get the exact localized local Bangladeshi address string
+      // Perform Nominatim reverse-geocoding only if necessary (First time, or 60s passed AND moved > 200 meters/0.002 deg)
       let localizedAddress = '';
-      try {
-        const geoResponse = await fetch(`/api/geocode?lat=${lat}&lon=${lng}`);
-        if (geoResponse.ok) {
-          const geoData = await geoResponse.json();
-          if (geoData && geoData.display_name) {
-            localizedAddress = geoData.display_name;
+      const timeSinceLastGeocode = now - lastGeocodeTimeRef.current;
+      const lastGeocodeLoc = lastGeocodeLocRef.current;
+      const distanceSinceLastGeocode = lastGeocodeLoc 
+        ? Math.max(Math.abs(lat - lastGeocodeLoc.lat), Math.abs(lng - lastGeocodeLoc.lng))
+        : Infinity;
+
+      if (!lastGeocodeLoc || (timeSinceLastGeocode > 60000 && distanceSinceLastGeocode > 0.002)) {
+        try {
+          const geoResponse = await fetch(`/api/geocode?lat=${lat}&lon=${lng}`);
+          if (geoResponse.ok) {
+            const geoData = await geoResponse.json();
+            if (geoData && geoData.display_name) {
+              localizedAddress = geoData.display_name;
+              lastGeocodeTimeRef.current = now;
+              lastGeocodeLocRef.current = { lat, lng };
+            }
           }
+        } catch (geoErr) {
+          console.warn('Nominatim reverse-geocoding failed, continuing anyway:', geoErr);
         }
-      } catch (geoErr) {
-        console.warn('Nominatim reverse-geocoding failed, continuing anyway:', geoErr);
       }
       
       const profileUpdates: any = {
@@ -222,6 +235,7 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude, accuracy } = position.coords;
+        lastStateLocationRef.current = { lat: latitude, lng: longitude };
         setLocation({ lat: latitude, lng: longitude, accuracy });
         setStatus('granted');
         updateProfileLocation(latitude, longitude);
@@ -241,9 +255,19 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       watchId = navigator.geolocation.watchPosition(
         (position) => {
           const { latitude, longitude, accuracy } = position.coords;
-          setLocation({ lat: latitude, lng: longitude, accuracy });
-          setStatus('granted');
-          updateProfileLocation(latitude, longitude);
+          
+          const prevLoc = lastStateLocationRef.current;
+          const delta = prevLoc 
+            ? Math.max(Math.abs(latitude - prevLoc.lat), Math.abs(longitude - prevLoc.lng))
+            : Infinity;
+
+          // Only update state if moved significantly (> 11 meters) to avoid high frequency render storms
+          if (delta > 0.0001) {
+            lastStateLocationRef.current = { lat: latitude, lng: longitude };
+            setLocation({ lat: latitude, lng: longitude, accuracy });
+            setStatus('granted');
+            updateProfileLocation(latitude, longitude);
+          }
         },
         (err) => {
           // Only set error if we don't have a location yet or if it's a permanent denial
