@@ -39,11 +39,43 @@ service cloud.firestore {
       );
     }
 
+    // Secure Referral Validation and Increments Helpers
+    function isValidReferrerWalletIncrement(userId) {
+      return isAuthenticated() && 
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['walletBalance']) &&
+        request.resource.data.walletBalance > resource.data.walletBalance &&
+        request.resource.data.walletBalance - resource.data.walletBalance <= 100 &&
+        (
+          (existsAfter(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+           getAfter(/databases/$(database)/documents/users/$(request.auth.uid)).data.referredBy == userId) ||
+          (existsAfter(/databases/$(database)/documents/providers/$(request.auth.uid)) && 
+           getAfter(/databases/$(database)/documents/providers/$(request.auth.uid)).data.referredBy == userId) ||
+          (existsAfter(/databases/$(database)/documents/shops/$(request.auth.uid)) && 
+           getAfter(/databases/$(database)/documents/shops/$(request.auth.uid)).data.referredBy == userId)
+        );
+    }
+
+    function isValidReferralTransaction() {
+      return isAuthenticated() && 
+        request.resource.data.type == 'credit' && 
+        request.resource.data.status == 'approved' && 
+        request.resource.data.amount > 0 && 
+        request.resource.data.amount <= 100 && 
+        (
+          (existsAfter(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+           getAfter(/databases/$(database)/documents/users/$(request.auth.uid)).data.referredBy == request.resource.data.userId) ||
+          (existsAfter(/databases/$(database)/documents/providers/$(request.auth.uid)) && 
+           getAfter(/databases/$(database)/documents/providers/$(request.auth.uid)).data.referredBy == request.resource.data.userId) ||
+          (existsAfter(/databases/$(database)/documents/shops/$(request.auth.uid)) && 
+           getAfter(/databases/$(database)/documents/shops/$(request.auth.uid)).data.referredBy == request.resource.data.userId)
+        );
+    }
+
     // 1. Users Accounts Schema
     match /users/{userId} {
       allow read: if true;
       allow create: if isOwner(userId);
-      allow update: if isOwner(userId) || isAdmin();
+      allow update: if isOwner(userId) || isAdmin() || isValidReferrerWalletIncrement(userId);
       allow delete: if isOwner(userId) || isAdmin();
     }
 
@@ -51,7 +83,7 @@ service cloud.firestore {
     match /providers/{providerId} {
       allow read: if true;
       allow create: if isOwner(providerId);
-      allow update: if isOwner(providerId) || isAdmin();
+      allow update: if isOwner(providerId) || isAdmin() || isValidReferrerWalletIncrement(providerId);
       allow delete: if isOwner(providerId) || isAdmin();
     }
 
@@ -65,7 +97,7 @@ service cloud.firestore {
     match /shops/{shopId} {
       allow read: if true;
       allow create: if isOwner(shopId);
-      allow update: if isOwner(shopId) || isAdmin();
+      allow update: if isOwner(shopId) || isAdmin() || isValidReferrerWalletIncrement(shopId);
       allow delete: if isOwner(shopId) || isAdmin();
     }
 
@@ -93,6 +125,7 @@ service cloud.firestore {
       allow read: if isAdmin() || (isAuthenticated() && resource.data.userId == request.auth.uid);
       allow create: if isAuthenticated() && (
         request.resource.data.userId == request.auth.uid || 
+        isValidReferralTransaction() ||
         isAdmin()
       );
       allow update, delete: if isAdmin();
