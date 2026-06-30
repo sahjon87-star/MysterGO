@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
 import { auth, db } from '../../lib/firebase';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
@@ -38,6 +38,36 @@ export const CustomerProfile: React.FC = () => {
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [bookingsCount, setBookingsCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (profile?.name) setName(profile.name);
+    if (profile?.phone) setPhone(profile.phone);
+  }, [profile?.name, profile?.phone]);
+
+  useEffect(() => {
+    if (!profile?.uid) return;
+
+    let field = 'customerId';
+    if (profile?.role === 'provider') {
+      field = 'providerId';
+    } else if (profile?.role === 'shop') {
+      field = 'shopId';
+    }
+
+    const q = query(
+      collection(db, 'bookings'),
+      where(field, '==', profile.uid)
+    );
+
+    const unsub = onSnapshot(q, (snap) => {
+      setBookingsCount(snap.size);
+    }, (err) => {
+      console.warn('Error listening to bookings count in profile:', err);
+    });
+
+    return () => unsub();
+  }, [profile?.uid, profile?.role]);
 
   const handleLogout = async () => {
     try {
@@ -197,15 +227,21 @@ export const CustomerProfile: React.FC = () => {
       <div className="px-4 -mt-10 relative z-20">
         <div className="bg-brand-slate rounded-[32px] shadow-2xl border border-slate-200 dark:border-white/5 p-6 grid grid-cols-3 gap-4">
           <div className="text-center space-y-1 border-r border-slate-200 dark:border-white/5">
-            <div className="text-lg font-black text-cream italic">12</div>
+            <div className="text-lg font-black text-cream italic">
+              {bookingsCount !== null ? bookingsCount : (profile?.bookingsCount || profile?.bookings?.length || 0)}
+            </div>
             <div className="text-[10px] font-bold text-gray-teal uppercase tracking-tighter">Bookings</div>
           </div>
           <div className="text-center space-y-1 border-r border-slate-200 dark:border-white/5">
-            <div className="text-lg font-black text-cream italic">৳4.2k</div>
+            <div className="text-lg font-black text-cream italic">
+              {formatCurrency(profile?.totalSpent || profile?.spent || 0)}
+            </div>
             <div className="text-[10px] font-bold text-gray-teal uppercase tracking-tighter">Spent</div>
           </div>
           <div className="text-center space-y-1">
-            <div className="text-lg font-black text-brand-amber italic">3</div>
+            <div className="text-lg font-black text-brand-amber italic">
+              {profile?.referralCount || 0}
+            </div>
             <div className="text-[10px] font-bold text-gray-teal uppercase tracking-tighter">Referrals</div>
           </div>
         </div>
