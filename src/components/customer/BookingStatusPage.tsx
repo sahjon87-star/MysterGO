@@ -10,11 +10,13 @@ import { Booking } from '../../types';
 import { formatCurrency, getInitials } from '../../lib/utils';
 import { handleFirestoreError, OperationType } from '../../lib/firestore-errors';
 import { TrackingMap } from '../shared/TrackingMap';
+import { useAuth } from '../../contexts/AuthContext';
 
 export const BookingStatusPage: React.FC = () => {
   const { bookingId } = useParams();
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const { user: authUser, loading: authLoading } = useAuth();
   const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState(true);
   const [trxId, setTrxId] = useState('');
@@ -29,6 +31,7 @@ export const BookingStatusPage: React.FC = () => {
   const [providerLoc, setProviderLoc] = useState<[number, number] | null>(null);
 
   useEffect(() => {
+    if (authLoading || !authUser) return;
     if (!booking?.providerId || !['accepted', 'ongoing'].includes(booking.status)) {
       setProviderLoc(null);
       return;
@@ -44,7 +47,7 @@ export const BookingStatusPage: React.FC = () => {
     }, (err) => console.warn('Failed to listen to provider location:', err));
 
     return () => unsubProvider();
-  }, [booking?.providerId, booking?.status]);
+  }, [booking?.providerId, booking?.status, authLoading, authUser]);
 
   // Sync providerLoc with direct booking.providerLocation changes
   useEffect(() => {
@@ -54,18 +57,23 @@ export const BookingStatusPage: React.FC = () => {
   }, [booking?.providerLocation]);
 
   useEffect(() => {
+    if (authLoading || !authUser) return;
     // Fetch platform settings for numbers
     const fetchSettings = async () => {
-      const snap = await getDocs(collection(db, 'settings'));
-      if (!snap.empty) {
-        setSettings(snap.docs[0].data());
+      try {
+        const snap = await getDocs(collection(db, 'settings'));
+        if (!snap.empty) {
+          setSettings(snap.docs[0].data());
+        }
+      } catch (err) {
+        console.warn('Failed to fetch settings:', err);
       }
     };
     fetchSettings();
-  }, []);
+  }, [authLoading, authUser]);
 
   useEffect(() => {
-    if (!bookingId) return;
+    if (authLoading || !authUser || !bookingId) return;
     const unsubscribe = onSnapshot(doc(db, 'bookings', bookingId), (snap) => {
       if (snap.exists()) {
         const data = { id: snap.id, ...snap.data() } as Booking;
@@ -77,7 +85,7 @@ export const BookingStatusPage: React.FC = () => {
       handleFirestoreError(error, OperationType.GET, `bookings/${bookingId}`);
     });
     return () => unsubscribe();
-  }, [bookingId]);
+  }, [bookingId, authLoading, authUser]);
 
   const handleCancel = async () => {
     if (!bookingId) return;
@@ -130,6 +138,7 @@ export const BookingStatusPage: React.FC = () => {
         trxId: trxId.trim(),
         paymentScreenshotUrl: screenshotUrl,
         paymentStatus: 'submitted',
+        hasSubmittedTrx: true,
         updatedAt: serverTimestamp(),
       });
       setFeedback({ type: 'success', message: 'Payment details submitted!' });
@@ -194,8 +203,14 @@ export const BookingStatusPage: React.FC = () => {
     }
   };
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (authLoading || loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   if (!booking) return <div className="min-h-screen flex items-center justify-center">Booking not found</div>;
+
+  const isOTPVerified = booking.status === 'completed';
+  const hasSubmittedTrx = booking.paymentMethod === 'cash' || 
+    booking.paymentMethod === 'wallet' || 
+    booking.hasSubmittedTrx === true || 
+    ['submitted', 'paid', 'pending_approval'].includes(booking.paymentStatus);
 
   const steps = [
     { id: 'pending', label: 'Requested', icon: Clock, color: 'text-brand-amber', bg: 'bg-brand-amber/10' },
@@ -214,8 +229,10 @@ export const BookingStatusPage: React.FC = () => {
           <ArrowLeft className="w-5 h-5 text-gray-teal" />
         </button>
         <div className="flex flex-col">
-           <h1 className="font-black text-cream uppercase tracking-tighter text-[10px] leading-none">Security Protocol</h1>
-           <span className="text-[8px] font-black text-brand-amber uppercase tracking-[0.3em] mt-1">Status: {booking.status.toUpperCase()}</span>
+           <h1 className="font-black text-cream uppercase tracking-tighter text-[10px] leading-none">Booking Verification</h1>
+           <span className="text-[8px] font-black text-brand-amber uppercase tracking-[0.3em] mt-1">
+             Status: {isOTPVerified && !hasSubmittedTrx ? 'PAYMENT REQUIRED' : booking.status.toUpperCase()}
+           </span>
         </div>
         <button 
           onClick={() => navigate(`/chat/${booking.providerId}`)}
@@ -259,10 +276,10 @@ export const BookingStatusPage: React.FC = () => {
             
             <div className="space-y-2">
               <h3 className={`text-2xl font-black uppercase tracking-tighter leading-none ${ booking.isRequestingStartOtp ? 'text-brand-dark' : 'text-slate-900 dark:text-white'}`}>
-                {booking.isRequestingStartOtp ? 'SIGNAL REQUESTED' : 'Access Key Ready'}
+                {booking.isRequestingStartOtp ? 'OTP Required' : 'Start Code'}
               </h3>
               <p className={`text-[9px] font-black uppercase tracking-[0.3em] ${ booking.isRequestingStartOtp ? 'text-brand-dark/80' : 'text-gray-teal'}`}>
-                {booking.isRequestingStartOtp ? 'PROVIDER READY TO START - TRANSMIT CODE' : 'Transference ID for Authentication'}
+                {booking.isRequestingStartOtp ? 'Provider is ready to start - Share this OTP' : 'Share this OTP with provider to start work'}
               </p>
             </div>
 
@@ -397,8 +414,8 @@ export const BookingStatusPage: React.FC = () => {
 
         {/* Booking Info (Contrast fix) */}
         <div className="flex justify-between items-center px-4 text-[9px] font-black text-gray-teal uppercase tracking-[0.3em]">
-          <span>Deployment: <span className="text-cream">#{booking.id.slice(-8).toUpperCase()}</span></span>
-          <span className="text-brand-amber border-b border-brand-amber/20 pb-0.5">{formatCurrency(booking.totalAmount)} Settlement</span>
+          <span>Booking: <span className="text-cream">#{booking.id.slice(-8).toUpperCase()}</span></span>
+          <span className="text-brand-amber border-b border-brand-amber/20 pb-0.5">{formatCurrency(booking.totalAmount)} Payment</span>
         </div>
 
         {/* Status Tracker (Themed) */}
@@ -407,16 +424,46 @@ export const BookingStatusPage: React.FC = () => {
             <div className="text-center py-6 space-y-4">
               <XCircle className="w-20 h-20 text-red-500 mx-auto opacity-50" />
               <div className="space-y-1">
-                 <h3 className="text-xl font-black text-cream uppercase tracking-tighter">Engagement Terminated</h3>
-                 <p className="text-red-500/60 text-[10px] font-black uppercase tracking-widest">Protocol Nullified</p>
+                 <h3 className="text-xl font-black text-cream uppercase tracking-tighter">Booking Cancelled</h3>
+                 <p className="text-red-500/60 text-[10px] font-black uppercase tracking-widest">This booking has been cancelled</p>
               </div>
             </div>
           ) : (
             <div className="space-y-0">
               {steps.map((step, index) => {
-                const isDone = index <= currentStepIndex;
-                const isActive = index === currentStepIndex;
+                let isDone = index <= currentStepIndex;
+                let isActive = index === currentStepIndex;
                 const isLast = index === steps.length - 1;
+
+                let label = step.label;
+                let subtext = isActive ? 'In Progress' : isDone ? 'Completed' : 'Upcoming';
+                let stepIcon = step.icon;
+                let customBg = '';
+                let customText = '';
+
+                if (step.id === 'completed') {
+                  if (isOTPVerified) {
+                    if (!hasSubmittedTrx) {
+                      label = "⚠️ PAYMENT REQUIRED";
+                      subtext = "Action Needed";
+                      customBg = "bg-brand-amber/20 text-brand-amber border-brand-amber";
+                      customText = "text-brand-amber font-black";
+                      stepIcon = AlertCircle;
+                      isDone = true;
+                      isActive = true;
+                    } else {
+                      label = "COMPLETED";
+                      subtext = "Job Fully Completed";
+                      customBg = "bg-emerald-500 text-brand-dark border-emerald-500";
+                      stepIcon = CheckCircle2;
+                      isDone = true;
+                      isActive = false;
+                    }
+                  } else {
+                    isDone = false;
+                    isActive = false;
+                  }
+                }
 
                 return (
                   <div key={step.id} className="flex gap-8 relative">
@@ -425,15 +472,15 @@ export const BookingStatusPage: React.FC = () => {
                     )}
                     
                     <div className="relative z-10">
-                      <div className={`w-10 h-10 rounded-[14px] flex items-center justify-center border-4 border-brand-slate shadow-2xl transition-all duration-700 ${isDone ? 'bg-brand-amber text-brand-dark' : 'bg-brand-surface text-gray-teal/30'}`}>
-                        {isDone && !isActive ? <CheckCircle2 className="w-5 h-5" /> : <step.icon className="w-4 h-4" />}
+                      <div className={`w-10 h-10 rounded-[14px] flex items-center justify-center border-4 border-brand-slate shadow-2xl transition-all duration-700 ${customBg ? customBg : isDone ? 'bg-brand-amber text-brand-dark' : 'bg-brand-surface text-gray-teal/30'}`}>
+                        {isDone && !isActive && step.id !== 'completed' ? <CheckCircle2 className="w-5 h-5" /> : React.createElement(stepIcon, { className: "w-4 h-4" })}
                       </div>
                     </div>
 
                     <div className={`pb-12 transition-all duration-700 ${isActive ? 'translate-x-1' : 'opacity-30'}`}>
-                      <h4 className={`text-xs font-black uppercase tracking-widest ${isActive ? 'text-cream' : 'text-gray-teal'}`}>{step.label}</h4>
-                      <p className={`text-[8px] font-black uppercase tracking-[0.2em] mt-1.5 ${isActive ? 'text-brand-amber' : 'text-gray-teal'}`}>
-                        {isActive ? 'Current active coordinate' : isDone ? 'Protocol finalized' : 'Sequential Queue'}
+                      <h4 className={`text-xs font-black uppercase tracking-widest ${customText ? customText : isActive ? 'text-cream' : 'text-gray-teal'}`}>{label}</h4>
+                      <p className={`text-[8px] font-black uppercase tracking-[0.2em] mt-1.5 ${customText ? customText : isActive ? 'text-brand-amber' : 'text-gray-teal'}`}>
+                        {subtext}
                       </p>
                     </div>
                   </div>
@@ -444,15 +491,15 @@ export const BookingStatusPage: React.FC = () => {
         </div>
 
         {/* Rating Section (Themed) */}
-        {booking.status === 'completed' && !booking.reviewSubmitted && (
+        {booking.status === 'completed' && !booking.reviewSubmitted && hasSubmittedTrx && (
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             className="bg-brand-slate rounded-[40px] p-8 border border-white/5 shadow-3xl space-y-8"
           >
             <div className="text-center space-y-1">
-              <h3 className="text-xl font-black text-cream uppercase tracking-tighter">Efficiency Audit</h3>
-              <p className="text-[9px] font-black text-gray-teal uppercase tracking-[0.3em]">Rate operational performance by {booking.providerName}</p>
+              <h3 className="text-xl font-black text-cream uppercase tracking-tighter">Rate Your Experience</h3>
+              <p className="text-[9px] font-black text-gray-teal uppercase tracking-[0.3em]">How was your work with {booking.providerName}?</p>
             </div>
 
             <div className="flex justify-center gap-4">
@@ -476,11 +523,11 @@ export const BookingStatusPage: React.FC = () => {
             </div>
 
             <div className="space-y-3">
-              <label className="text-[9px] font-black text-gray-teal uppercase tracking-[0.3em] px-2">Operational Feedback</label>
+              <label className="text-[9px] font-black text-gray-teal uppercase tracking-[0.3em] px-2">Your Feedback</label>
               <textarea
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                placeholder="Log detailed performance data..."
+                placeholder="Write your review here..."
                 className="w-full bg-brand-dark border border-brand-surface rounded-[28px] px-6 py-5 text-sm font-bold focus:ring-2 focus:ring-brand-amber outline-none text-cream min-h-[120px] resize-none shadow-inner placeholder:text-gray-teal/50"
               />
             </div>
@@ -490,7 +537,7 @@ export const BookingStatusPage: React.FC = () => {
               disabled={userRating === 0 || reviewSubmitting}
               className="w-full bg-brand-amber text-brand-dark font-black py-5 rounded-[28px] shadow-2xl hover:shadow-brand-amber/20 active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-3 uppercase tracking-[0.3em] text-[10px]"
             >
-              {reviewSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Transmit Audit'}
+              {reviewSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Submit Review'}
             </button>
           </motion.div>
         )}
@@ -511,8 +558,8 @@ export const BookingStatusPage: React.FC = () => {
               ))}
             </div>
             <div className="space-y-1">
-               <h4 className="font-black text-brand-amber text-sm uppercase tracking-widest">Audit Transmitted</h4>
-               <p className="text-[9px] text-gray-teal font-black uppercase tracking-[0.2em] opacity-80 leading-relaxed">Thank you for updating the network quality metrics.</p>
+               <h4 className="font-black text-brand-amber text-sm uppercase tracking-widest">Review Submitted</h4>
+               <p className="text-[9px] text-gray-teal font-black uppercase tracking-[0.2em] opacity-80 leading-relaxed">Thank you for sharing your experience!</p>
             </div>
           </div>
         )}
@@ -520,7 +567,7 @@ export const BookingStatusPage: React.FC = () => {
         {/* Details Card (Contrast fix) */}
         <div className="bg-brand-slate rounded-[40px] p-8 border border-brand-surface shadow-2xl space-y-6">
           <div className="space-y-2">
-            <label className="text-[10px] font-black text-gray-teal uppercase tracking-[0.4em] px-2">Deployment Zone</label>
+            <label className="text-[10px] font-black text-gray-teal uppercase tracking-[0.4em] px-2">Work Address / ঠিকানা</label>
             <div className="flex items-start gap-3 bg-brand-dark rounded-2xl p-4 border border-brand-surface">
                <MapPin className="text-brand-amber w-4 h-4 mt-0.5 shrink-0" />
                <p className="text-xs font-bold text-cream tracking-tight leading-relaxed">{booking.address}</p>
@@ -528,11 +575,11 @@ export const BookingStatusPage: React.FC = () => {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-gray-teal uppercase tracking-[0.4em] px-2">Matrix Date</label>
+              <label className="text-[10px] font-black text-gray-teal uppercase tracking-[0.4em] px-2">Service Date</label>
               <p className="bg-brand-dark rounded-xl px-4 py-3 text-xs font-black text-cream border border-brand-surface uppercase tracking-tighter">{booking.date}</p>
             </div>
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-gray-teal uppercase tracking-[0.4em] px-2">Activation</label>
+              <label className="text-[10px] font-black text-gray-teal uppercase tracking-[0.4em] px-2">Preferred Time</label>
               <p className="bg-brand-dark rounded-xl px-4 py-3 text-xs font-black text-cream border border-brand-surface uppercase tracking-tighter">{booking.time}</p>
             </div>
           </div>
@@ -546,8 +593,8 @@ export const BookingStatusPage: React.FC = () => {
                 <CreditCard className="w-6 h-6 text-brand-amber" />
               </div>
               <div className="space-y-1">
-                <h3 className="font-black text-cream text-base uppercase tracking-tighter leading-none">Settlement Required</h3>
-                <p className="text-[9px] font-black text-gray-teal uppercase tracking-[0.2em]">Protocol: {booking.paymentMethod.toUpperCase()}</p>
+                <h3 className="font-black text-cream text-base uppercase tracking-tighter leading-none">Payment Verification</h3>
+                <p className="text-[9px] font-black text-gray-teal uppercase tracking-[0.2em]">Method: {booking.paymentMethod.toUpperCase()}</p>
               </div>
             </div>
 
@@ -557,36 +604,36 @@ export const BookingStatusPage: React.FC = () => {
                   <div className="bg-red-500/10 border border-red-500/20 rounded-3xl p-5 flex items-start gap-4">
                     <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
                     <div className="space-y-1">
-                      <h4 className="text-[10px] font-black text-red-500 uppercase tracking-widest">SIGNAL REJECTED</h4>
-                      <p className="text-[9px] text-red-500/80 font-bold uppercase tracking-widest leading-relaxed">The Transference ID was invalid. Initiate re-entry below.</p>
+                      <h4 className="text-[10px] font-black text-red-500 uppercase tracking-widest">PAYMENT REJECTED</h4>
+                      <p className="text-[9px] text-red-500/80 font-bold uppercase tracking-widest leading-relaxed">The Transaction ID was invalid. Please double check and resubmit.</p>
                     </div>
                   </div>
                 )}
 
                 <div className="bg-brand-dark rounded-[32px] p-6 space-y-4 border border-brand-surface shadow-inner">
-                  <p className="text-[10px] font-black text-gray-teal uppercase tracking-widest opacity-60 leading-relaxed px-1">Transmit <span className="text-cream bg-brand-amber/20 px-2 py-0.5 rounded-lg border border-brand-amber/20">{formatCurrency(booking.totalAmount)}</span> to official gateway:</p>
+                  <p className="text-[10px] font-black text-gray-teal uppercase tracking-widest opacity-60 leading-relaxed px-1">Send <span className="text-cream bg-brand-amber/20 px-2 py-0.5 rounded-lg border border-brand-amber/20">{formatCurrency(booking.totalAmount)}</span> to Official {booking.paymentMethod === 'bkash' ? 'bKash' : 'Nagad'} Number:</p>
                   <div className="flex items-center justify-between bg-brand-surface p-5 rounded-2xl border border-white/5 group active:scale-95 transition-all">
                      <p className="text-2xl font-black text-brand-amber tracking-tighter leading-none">
                         {booking.paymentMethod === 'bkash' ? (settings?.bkashNumber || '017XXXXXXXX') : (settings?.nagadNumber || '018XXXXXXXX')}
                      </p>
-                     <span className="text-[8px] font-black text-gray-teal uppercase tracking-[0.3em] opacity-40">Copy ID</span>
+                     <span className="text-[8px] font-black text-gray-teal uppercase tracking-[0.3em] opacity-40">Copy Number</span>
                   </div>
-                  <p className="text-[8px] text-gray-teal font-black uppercase tracking-[0.3em] text-center italic">Institutional Deployment Reference: PAYMENT</p>
+                  <p className="text-[8px] text-gray-teal font-black uppercase tracking-[0.3em] text-center italic">Please complete the payment on bKash/Nagad first</p>
                 </div>
 
                 <div className="space-y-3">
-                  <label className="text-[9px] font-black text-gray-teal uppercase tracking-[0.4em] px-2">Transference ID (TrxID)</label>
+                  <label className="text-[9px] font-black text-gray-teal uppercase tracking-[0.4em] px-2">{booking.paymentMethod === 'bkash' ? 'bKash Transaction ID (TrxID)' : 'Nagad Transaction ID (TrxID)'}</label>
                   <input 
                     type="text"
                     value={trxId}
                     onChange={(e) => setTrxId(e.target.value)}
-                    placeholder="ENTER LEDGER ID"
+                    placeholder={booking.paymentMethod === 'bkash' ? 'bKash Transaction ID (TrxID)' : 'Nagad Transaction ID (TrxID)'}
                     className="w-full bg-brand-dark border border-brand-surface rounded-[28px] px-6 py-5 text-base font-black focus:ring-2 focus:ring-brand-amber outline-none text-cream tracking-widest shadow-inner placeholder:text-gray-teal/50"
                   />
                 </div>
 
                 <div className="space-y-3">
-                  <label className="text-[9px] font-black text-gray-teal uppercase tracking-[0.4em] px-2">Gateway Screenshot</label>
+                  <label className="text-[9px] font-black text-gray-teal uppercase tracking-[0.4em] px-2">Upload Payment Screenshot</label>
                   <div className="relative h-48 bg-brand-dark border-2 border-dashed border-white/5 rounded-[32px] overflow-hidden group flex flex-col items-center justify-center gap-3 shadow-inner hover:border-brand-amber/20 transition-all">
                     {screenshotPreview || booking?.paymentScreenshotUrl ? (
                       <img 
@@ -600,7 +647,7 @@ export const BookingStatusPage: React.FC = () => {
                         <div className="w-14 h-14 rounded-2xl bg-brand-surface flex items-center justify-center text-gray-teal/30 border border-white/5 group-hover:text-brand-amber transition-colors">
                            <Camera className="w-7 h-7" />
                         </div>
-                        <span className="text-[9px] font-black text-gray-teal uppercase tracking-[0.3em] opacity-40">Load Sensor Capture</span>
+                        <span className="text-[9px] font-black text-gray-teal uppercase tracking-[0.3em] opacity-40">Upload Payment Screenshot</span>
                       </>
                     )}
                     <input 
@@ -617,7 +664,7 @@ export const BookingStatusPage: React.FC = () => {
                   disabled={!trxId || submitting}
                   className="w-full bg-brand-amber text-brand-dark font-black py-5 rounded-[28px] shadow-2xl hover:shadow-brand-amber/20 active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-3 uppercase tracking-[0.4em] text-[10px]"
                 >
-                  {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Verify Settlement'}
+                  {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Confirm Payment'}
                 </button>
               </div>
             ) : booking.paymentStatus === 'submitted' ? (
@@ -626,16 +673,16 @@ export const BookingStatusPage: React.FC = () => {
                    <Clock className="w-8 h-8 text-brand-amber animate-pulse" />
                 </div>
                 <div className="space-y-1">
-                   <h4 className="font-black text-brand-amber text-sm uppercase tracking-widest">Protocol Syncing</h4>
-                   <p className="text-[9px] text-gray-teal font-black uppercase tracking-[0.2em] leading-relaxed">Network administrators are verifying Ledger ID: <span className="text-white border-b border-white/20 pb-0.5">{booking.trxId}</span></p>
+                   <h4 className="font-black text-brand-amber text-sm uppercase tracking-widest">Verifying Payment</h4>
+                   <p className="text-[9px] text-gray-teal font-black uppercase tracking-[0.2em] leading-relaxed">Our team is verifying your Transaction ID: <span className="text-white border-b border-white/20 pb-0.5">{booking.trxId}</span></p>
                 </div>
               </div>
             ) : (
               <div className="bg-emerald-500/10 border-2 border-emerald-500/20 rounded-[32px] p-8 text-center space-y-4">
                 <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto drop-shadow-[0_0_8px_rgba(16,185,129,0.3)]" />
                 <div className="space-y-1">
-                   <h4 className="font-black text-emerald-500 text-sm uppercase tracking-widest leading-none">Settlement Verified</h4>
-                   <p className="text-[9px] text-gray-teal font-black uppercase tracking-[0.2em]">Matrix Ledger Synchronization Complete.</p>
+                   <h4 className="font-black text-emerald-500 text-sm uppercase tracking-widest leading-none">Payment Confirmed</h4>
+                   <p className="text-[9px] text-gray-teal font-black uppercase tracking-[0.2em]">Your payment has been successfully verified!</p>
                 </div>
               </div>
             )}
@@ -670,7 +717,7 @@ export const BookingStatusPage: React.FC = () => {
             onClick={handleCancel}
             className="w-full bg-brand-surface text-red-500 font-black py-5 rounded-[24px] border border-red-500/10 active:scale-[0.98] transition-all uppercase tracking-[0.4em] text-[10px] shadow-lg"
           >
-            Abort Protocol
+            Cancel Booking
           </motion.button>
         </div>
       )}

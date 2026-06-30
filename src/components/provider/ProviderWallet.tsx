@@ -208,7 +208,7 @@ export const ProviderWallet: React.FC = () => {
         
         <div className="relative z-10 text-center space-y-6">
           <div className="space-y-2">
-            <p className="text-gray-teal text-[10px] font-black uppercase tracking-[0.3em]">Available Capital</p>
+            <p className="text-gray-teal text-[10px] font-black uppercase tracking-[0.3em]">Wallet Balance</p>
             <div className="text-5xl font-black text-cream tracking-tighter">
               {formatCurrency(profile?.walletBalance || 0)}
             </div>
@@ -216,7 +216,7 @@ export const ProviderWallet: React.FC = () => {
           
           <div className="flex items-center justify-center gap-2 text-gray-teal text-[9px] font-black uppercase tracking-widest bg-white/5 py-1 px-3 rounded-full w-fit mx-auto border border-white/5">
             <RefreshCw className="w-3 h-3 animate-spin-slow text-brand-amber" />
-            <span>Synced Live with Ledger</span>
+            <span>Updated Live</span>
           </div>
 
           <div className="flex gap-4 pt-4 max-w-sm mx-auto">
@@ -226,7 +226,7 @@ export const ProviderWallet: React.FC = () => {
               className="flex-1 bg-brand-amber text-brand-dark p-5 rounded-3xl shadow-xl shadow-brand-amber/20 transition-all flex flex-col items-center gap-2"
             >
               <ArrowUpRight className="w-6 h-6" />
-              <span className="text-[10px] font-black uppercase tracking-widest">Payout Request</span>
+              <span className="text-[10px] font-black uppercase tracking-widest">Withdraw Funds</span>
             </motion.button>
           </div>
         </div>
@@ -273,8 +273,8 @@ export const ProviderWallet: React.FC = () => {
       <div className="px-4">
         <div className="flex gap-2 bg-brand-slate p-1.5 rounded-[24px] border border-white/5 shadow-2xl">
           {([
-            { id: 'history', label: 'Financial History', icon: History },
-            { id: 'withdrawals', label: 'Payout Logs', icon: Banknote },
+            { id: 'history', label: 'Transaction History', icon: History },
+            { id: 'withdrawals', label: 'Withdrawal History', icon: Banknote },
           ] as const).map((tab) => (
             <button 
               key={tab.id}
@@ -318,7 +318,7 @@ export const ProviderWallet: React.FC = () => {
                       <div className="flex flex-wrap items-center gap-2">
                         <h4 className="text-sm font-black text-cream truncate tracking-tight uppercase">{tx.description}</h4>
                         {tx.reviewedByAdmin && (
-                           <span className="px-2 py-0.5 bg-brand-amber/10 text-brand-amber text-[7px] font-black rounded-full uppercase tracking-tighter border border-brand-amber/10">Verified Root</span>
+                           <span className="px-2 py-0.5 bg-brand-amber/10 text-brand-amber text-[7px] font-black rounded-full uppercase tracking-tighter border border-brand-amber/10">Verified</span>
                         )}
                       </div>
                       <div className="flex items-center gap-1.5 mt-1.5">
@@ -332,7 +332,7 @@ export const ProviderWallet: React.FC = () => {
                       <div className={`text-base font-black tracking-tighter ${tx.type === 'credit' ? 'text-emerald-400' : 'text-red-500'}`}>
                         {tx.type === 'credit' ? '+' : '-'}{formatCurrency(tx.amount)}
                       </div>
-                      <p className="text-[7px] font-black text-gray-teal uppercase tracking-tighter">Settled</p>
+                      <p className="text-[7px] font-black text-gray-teal uppercase tracking-tighter">Completed</p>
                     </div>
                   </div>
                 ))

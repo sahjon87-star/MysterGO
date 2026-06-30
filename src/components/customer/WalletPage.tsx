@@ -151,7 +151,7 @@ export const WalletPage: React.FC = () => {
         {/* Quick Recharge */}
         <div className="bg-white dark:bg-slate-900 rounded-[40px] p-6 shadow-2xl shadow-black/5 border border-white dark:border-slate-800 space-y-6">
           <div className="flex items-center justify-between">
-            <h3 className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-tight">Injection Protocol</h3>
+            <h3 className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-tight">Top Up Wallet</h3>
             <CreditCard className="w-4 h-4 text-slate-300" />
           </div>
 

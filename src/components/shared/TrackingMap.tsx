@@ -14,42 +14,42 @@ L.Icon.Default.mergeOptions({
 
 // Create custom styling markers
 const customerIcon = L.divIcon({
-  html: `<div class="relative flex items-center justify-center w-10 h-10 bg-primary-blue rounded-full border-4 border-brand-slate shadow-2xl animate-pulse">
+  html: `<div class="relative flex items-center justify-center w-10 h-10 bg-primary-blue rounded-full border-4 border-cyan-400 dark:border-cyan-300 shadow-2xl animate-pulse z-[10000]">
            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-white">
              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
              <polyline points="9 22 9 12 15 12 15 22"></polyline>
            </svg>
-           <div class="absolute -bottom-1 w-2 md:w-2.5 h-2 md:h-2.5 bg-primary-blue rounded-full border border-brand-slate"></div>
+           <div class="absolute -bottom-1 w-2 md:w-2.5 h-2 md:h-2.5 bg-primary-blue rounded-full border border-cyan-400 dark:border-cyan-300"></div>
          </div>`,
-  className: '',
+  className: 'custom-customer-marker',
   iconSize: [40, 40],
   iconAnchor: [20, 20],
 });
 
 const providerIcon = L.divIcon({
-  html: `<div class="relative flex items-center justify-center w-10 h-10 bg-orange-500 rounded-full border-4 border-brand-slate shadow-2xl">
+  html: `<div class="relative flex items-center justify-center w-10 h-10 bg-orange-500 rounded-full border-4 border-amber-400 dark:border-amber-300 shadow-2xl z-[10000]">
            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-white animate-bounce"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a2 2 0 0 1 2.83 0l.3.3a2 2 0 0 1 0 2.83l-3.77 3.77a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a2 2 0 0 1 2.83 0l.3.3a2 2 0 0 1 0 2.83l-3.77 3.77a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a2 2 0 0 1 2.83 0l.3.3a2 2 0 0 1 0 2.83l-3.77 3.77a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0"></path><path d="m2 22 1-1"></path><path d="m4.5 15.5-2 2"></path><path d="m15 4.5-2 2"></path><path d="m18.5 7.5-2 2"></path></svg>
-           <div class="absolute -bottom-1 w-2 md:w-2.5 h-2 md:h-2.5 bg-orange-500 rounded-full border border-brand-slate"></div>
+           <div class="absolute -bottom-1 w-2 md:w-2.5 h-2 md:h-2.5 bg-orange-500 rounded-full border border-amber-400 dark:border-amber-300"></div>
          </div>`,
-  className: '',
+  className: 'custom-provider-marker',
   iconSize: [40, 40],
   iconAnchor: [20, 20],
 });
 
 const deliveryIcon = L.divIcon({
-  html: `<div class="relative flex items-center justify-center w-10 h-10 bg-emerald-500 rounded-full border-4 border-brand-slate shadow-2xl">
+  html: `<div class="relative flex items-center justify-center w-10 h-10 bg-emerald-500 rounded-full border-4 border-emerald-400 dark:border-emerald-300 shadow-2xl z-[10000]">
            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-brand-dark animate-bounce"><rect x="1" y="3" width="15" height="13" rx="2" ry="2"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
          </div>`,
-  className: '',
+  className: 'custom-delivery-marker',
   iconSize: [40, 40],
   iconAnchor: [20, 20],
 });
 
 const shopIcon = L.divIcon({
-  html: `<div class="relative flex items-center justify-center w-8 h-8 bg-action-orange rounded-xl border-2 border-brand-slate shadow-xl">
+  html: `<div class="relative flex items-center justify-center w-8 h-8 bg-action-orange rounded-xl border-2 border-orange-400 dark:border-orange-300 shadow-xl z-[10000]">
            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"></path><path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"></path><path d="M12 3v6"></path></svg>
          </div>`,
-  className: '',
+  className: 'custom-shop-marker',
   iconSize: [32, 32],
   iconAnchor: [16, 16],
 });
@@ -261,6 +261,7 @@ export const TrackingMap: React.FC<TrackingMapProps> = ({
         <TileLayer
           url={tileLayerUrl}
           attribution='&copy; <a href="https://carto.com/attributions">CARTO</a>'
+          className={mapTheme === 'dark' ? 'no-invert' : ''}
         />
 
         {/* Customer Marker - Blue Pin */}

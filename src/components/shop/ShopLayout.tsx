@@ -19,7 +19,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { signOut } from 'firebase/auth';
 import { auth, db } from '../../lib/firebase';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { cn } from '../../lib/utils';
@@ -47,6 +47,22 @@ export const ShopLayout: React.FC = () => {
   const profile = authProfile as any;
   const { t } = useLanguage();
   const [showSidebar, setShowSidebar] = useState(false);
+  const [activeBookingsCount, setActiveBookingsCount] = useState(0);
+
+  React.useEffect(() => {
+    if (!profile?.uid) return;
+    const q = query(
+      collection(db, 'bookings'),
+      where('providerId', '==', profile.uid),
+      where('status', 'in', ['pending', 'accepted', 'ongoing'])
+    );
+    const unsubscribe = onSnapshot(q, (snap) => {
+      setActiveBookingsCount(snap.size);
+    }, (error) => {
+      console.warn('Error listening to active bookings count for shop:', error);
+    });
+    return () => unsubscribe();
+  }, [profile?.uid]);
 
   const toggleOpen = async () => {
     if (!user || !profile) return;
@@ -95,24 +111,35 @@ export const ShopLayout: React.FC = () => {
         </div>
 
         <div className="flex-1 space-y-1 pr-2 overflow-y-auto no-scrollbar">
-          {menuItems.map((item, idx) => (
-            <button
-              key={idx}
-              onClick={() => {
-                if (item.onClick) item.onClick();
-                else if (item.path) navigate(item.path);
-              }}
-              className={cn(
-                "w-full flex items-center gap-4 p-4 rounded-2xl transition-all font-bold text-sm uppercase tracking-widest",
-                item.path && location.pathname === item.path 
-                  ? "bg-brand-amber text-brand-dark shadow-lg shadow-brand-amber/20" 
-                  : "text-gray-teal hover:bg-brand-surface"
-              )}
-            >
-              <item.icon className="w-5 h-5" />
-              <span>{item.label}</span>
-            </button>
-          ))}
+          {menuItems.map((item, idx) => {
+            const isActive = item.path && location.pathname === item.path;
+            const isOrders = item.label === 'Incoming Orders';
+            return (
+              <button
+                key={idx}
+                onClick={() => {
+                  if (item.onClick) item.onClick();
+                  else if (item.path) navigate(item.path);
+                }}
+                className={cn(
+                  "w-full flex items-center justify-between p-4 rounded-2xl transition-all font-bold text-sm uppercase tracking-widest",
+                  isActive 
+                    ? "bg-brand-amber text-brand-dark shadow-lg shadow-brand-amber/20" 
+                    : "text-gray-teal hover:bg-brand-surface"
+                )}
+              >
+                <div className="flex items-center gap-4">
+                  <item.icon className="w-5 h-5" />
+                  <span>{item.label}</span>
+                </div>
+                {isOrders && activeBookingsCount > 0 && (
+                  <span className="flex h-5 min-w-5 px-1.5 items-center justify-center rounded-full bg-orange-500 text-[10px] font-black text-white shadow-lg animate-pulse shrink-0">
+                    {activeBookingsCount}
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
 
         <div className="pt-6 border-t border-brand-surface bg-brand-slate mt-auto space-y-4">
@@ -158,25 +185,36 @@ export const ShopLayout: React.FC = () => {
               </div>
 
               <div className="flex-1 space-y-1 pr-2 overflow-y-auto no-scrollbar">
-                {menuItems.map((item, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => {
-                      if (item.onClick) item.onClick();
-                      else if (item.path) navigate(item.path);
-                      setShowSidebar(false);
-                    }}
-                    className={cn(
-                      "w-full flex items-center gap-4 p-4 rounded-2xl transition-all font-bold text-sm uppercase tracking-widest",
-                      item.path && location.pathname === item.path 
-                        ? "bg-brand-amber text-brand-dark shadow-lg shadow-brand-amber/20" 
-                        : "text-gray-teal hover:bg-brand-surface"
-                    )}
-                  >
-                    <item.icon className="w-5 h-5" />
-                    <span>{item.label}</span>
-                  </button>
-                ))}
+                {menuItems.map((item, idx) => {
+                  const isActive = item.path && location.pathname === item.path;
+                  const isOrders = item.label === 'Incoming Orders';
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => {
+                        if (item.onClick) item.onClick();
+                        else if (item.path) navigate(item.path);
+                        setShowSidebar(false);
+                      }}
+                      className={cn(
+                        "w-full flex items-center justify-between p-4 rounded-2xl transition-all font-bold text-sm uppercase tracking-widest",
+                        isActive 
+                          ? "bg-brand-amber text-brand-dark shadow-lg shadow-brand-amber/20" 
+                          : "text-gray-teal hover:bg-brand-surface"
+                      )}
+                    >
+                      <div className="flex items-center gap-4">
+                        <item.icon className="w-5 h-5" />
+                        <span>{item.label}</span>
+                      </div>
+                      {isOrders && activeBookingsCount > 0 && (
+                        <span className="flex h-5 min-w-5 px-1.5 items-center justify-center rounded-full bg-orange-500 text-[10px] font-black text-white shadow-lg animate-pulse shrink-0">
+                          {activeBookingsCount}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
 
               <div className="pt-6 border-t border-brand-surface bg-brand-slate mt-auto space-y-4">

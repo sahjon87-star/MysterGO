@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { collection, query, onSnapshot, orderBy, limit, where, doc, updateDoc, serverTimestamp, increment, addDoc } from 'firebase/firestore';
+import { collection, query, onSnapshot, orderBy, limit, where, doc, updateDoc, serverTimestamp, increment, addDoc, runTransaction, getDocs } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import { 
   Briefcase, 
@@ -17,7 +17,8 @@ import {
   User,
   Phone,
   X,
-  Loader2
+  Loader2,
+  ExternalLink
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAuth } from '../../contexts/AuthContext';
@@ -67,43 +68,94 @@ export const AdminBookings: React.FC = () => {
       const earning = booking.providerEarning || 0;
       const collectionName = booking.providerCollection || 'providers';
       
-      // 1. Update booking payment status
-      await updateDoc(doc(db, 'bookings', booking.id), {
-        paymentStatus: 'paid',
-        reviewedByAdmin: adminProfile?.name || 'Admin',
-        reviewedAt: serverTimestamp(),
-        updatedAt: serverTimestamp()
+      await runTransaction(db, async (transaction) => {
+        const bookingRef = doc(db, 'bookings', booking.id);
+        const bookingSnap = await transaction.get(bookingRef);
+        if (!bookingSnap.exists()) {
+          throw new Error("Booking not found");
+        }
+        const bData = bookingSnap.data();
+
+        // Enforce a strict server-side calculation check before releasing funds
+        const validationBooking = {
+          totalPayout: bData.totalPayout ?? (bData.basePrice || 0),
+          providerBaseRate: bData.providerBaseRate ?? (bData.basePrice || 0),
+          helperCount: bData.helperCount ?? 0,
+          helperUnitRate: bData.helperUnitRate ?? 600
+        };
+        if (validationBooking.totalPayout !== (validationBooking.providerBaseRate + (validationBooking.helperCount * validationBooking.helperUnitRate))) {
+          throw new Error("Financial Ledger Tampering Detected! Aborting Payout System.");
+        }
+
+        // Ensure we are indeed in a state that can be approved
+        if (bData.paymentStatus !== 'submitted' && bData.paymentStatus !== 'pending_approval') {
+          throw new Error(`Booking payment status is already ${bData.paymentStatus}`);
+        }
+
+        // 1. Update booking payment status and release status
+        transaction.update(bookingRef, {
+          paymentStatus: 'paid',
+          paymentReleased: true,
+          reviewedByAdmin: adminProfile?.name || 'Admin',
+          reviewedAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        });
+
+        // 2. Add funds to provider/shop wallet securely
+        const providerRef = doc(db, collectionName, booking.providerId);
+        transaction.update(providerRef, {
+          walletBalance: increment(earning),
+          totalEarnings: increment(earning),
+          updatedAt: serverTimestamp()
+        });
+
+        // 3. Create or update transaction record for provider
+        const txRef = doc(collection(db, 'transactions'));
+        transaction.set(txRef, {
+          userId: booking.providerId,
+          userName: booking.providerName,
+          amount: earning,
+          type: 'credit',
+          status: 'approved',
+          description: `Job Payment Released: ${booking.service} (#${booking.id.slice(-6).toUpperCase()})`,
+          reviewedByAdmin: adminProfile?.name || 'Admin',
+          reviewedAt: serverTimestamp(),
+          createdAt: serverTimestamp(),
+          bookingId: booking.id
+        });
+
+        // 4. Notify provider
+        const notifRef = doc(collection(db, 'notifications'));
+        transaction.set(notifRef, {
+          userId: booking.providerId,
+          title: 'Payment Released',
+          message: `Payment of ${formatCurrency(earning)} has been released to your wallet for job #${booking.id.slice(-6).toUpperCase()}`,
+          type: 'payment',
+          read: false,
+          createdAt: serverTimestamp()
+        });
       });
 
-      // 2. Add funds to provider/shop wallet
-      await updateDoc(doc(db, collectionName, booking.providerId), {
-        walletBalance: increment(earning),
-        totalEarnings: increment(earning)
-      });
-
-      // 3. Create transaction record for provider
-      await addDoc(collection(db, 'transactions'), {
-        userId: booking.providerId,
-        userName: booking.providerName,
-        userPhone: '', // Not easily available here, but transaction record should have it if possible
-        amount: earning,
-        type: 'credit',
-        status: 'approved',
-        description: `Job Payment: ${booking.service} (#${booking.id.slice(-6).toUpperCase()})`,
-        reviewedByAdmin: adminProfile?.name || 'Admin',
-        reviewedAt: serverTimestamp(),
-        createdAt: serverTimestamp()
-      });
-
-      // 4. Notify provider
-      await addDoc(collection(db, 'notifications'), {
-        userId: booking.providerId,
-        title: 'Payment Received',
-        message: `You received ${formatCurrency(earning)} for job #${booking.id.slice(-6).toUpperCase()}`,
-        type: 'payment',
-        read: false,
-        createdAt: serverTimestamp()
-      });
+      // Synchronize any matching transaction document that was pending_approval or pending
+      try {
+        const txQuery = query(
+          collection(db, 'transactions'),
+          where('bookingId', '==', booking.id),
+          where('status', 'in', ['pending', 'pending_approval']),
+          limit(1)
+        );
+        const txSnap = await getDocs(txQuery);
+        if (!txSnap.empty) {
+          await updateDoc(doc(db, 'transactions', txSnap.docs[0].id), {
+            status: 'approved',
+            reviewedByAdmin: adminProfile?.name || 'Admin',
+            reviewedAt: serverTimestamp(),
+            approvedAt: serverTimestamp()
+          });
+        }
+      } catch (txErr) {
+        console.warn("Could not sync transaction status on approval:", txErr);
+      }
 
       setFeedback({ type: 'success', message: 'Payment verified and funds released!' });
       setTimeout(() => setFeedback(null), 3000);
@@ -123,6 +175,7 @@ export const AdminBookings: React.FC = () => {
       // 1. Update booking payment status
       await updateDoc(doc(db, 'bookings', booking.id), {
         paymentStatus: 'rejected',
+        paymentReleased: 'rejected',
         reviewedByAdmin: adminProfile?.name || 'Admin',
         reviewedAt: serverTimestamp(),
         updatedAt: serverTimestamp()
@@ -132,11 +185,32 @@ export const AdminBookings: React.FC = () => {
       await addDoc(collection(db, 'notifications'), {
         userId: booking.customerId,
         title: 'Payment Rejected',
-        message: `Your payment for job #${booking.id.slice(-6).toUpperCase()} was rejected. Please check the TrxID and resubmit.`,
+        message: `Your payment/release for job #${booking.id.slice(-6).toUpperCase()} was rejected. Please check the details and resubmit.`,
         type: 'payment',
         read: false,
         createdAt: serverTimestamp()
       });
+
+      // Synchronize any matching transaction document to rejected
+      try {
+        const txQuery = query(
+          collection(db, 'transactions'),
+          where('bookingId', '==', booking.id),
+          where('status', 'in', ['pending', 'pending_approval']),
+          limit(1)
+        );
+        const txSnap = await getDocs(txQuery);
+        if (!txSnap.empty) {
+          await updateDoc(doc(db, 'transactions', txSnap.docs[0].id), {
+            status: 'rejected',
+            reviewedByAdmin: adminProfile?.name || 'Admin',
+            reviewedAt: serverTimestamp(),
+            rejectedAt: serverTimestamp()
+          });
+        }
+      } catch (txErr) {
+        console.warn("Could not sync transaction status on rejection:", txErr);
+      }
 
       setFeedback({ type: 'success', message: 'Payment rejected and customer notified.' });
       setTimeout(() => setFeedback(null), 3000);
@@ -163,8 +237,8 @@ export const AdminBookings: React.FC = () => {
     <div className="p-6 space-y-8 pb-24">
       <div className="flex items-center justify-between px-2">
         <div className="space-y-1">
-          <h2 className="text-3xl font-black text-slate-800 dark:text-white tracking-tighter leading-none">Booking Matrix</h2>
-          <p className="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-[0.3em]">Operational Service Oversight</p>
+          <h2 className="text-3xl font-black text-slate-800 dark:text-white tracking-tighter leading-none">Manage Bookings</h2>
+          <p className="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-[0.3em]">All service bookings</p>
         </div>
         <motion.button 
           whileHover={{ scale: 1.1 }}
@@ -196,8 +270,8 @@ export const AdminBookings: React.FC = () => {
           <div className="glass-card p-20 text-center space-y-5 shadow-sm">
             <div className="text-6xl animate-bounce">📋</div>
             <div className="space-y-1">
-              <h4 className="font-black uppercase tracking-widest text-[10px] text-slate-800 dark:text-white leading-none">Ledger Empty</h4>
-              <p className="text-slate-400 dark:text-slate-500 text-[9px] font-black uppercase tracking-widest">No activity in this quadrant</p>
+              <h4 className="font-black uppercase tracking-widest text-[10px] text-slate-800 dark:text-white leading-none">No Bookings</h4>
+              <p className="text-slate-400 dark:text-slate-500 text-[9px] font-black uppercase tracking-widest">No booking activity found</p>
             </div>
           </div>
         ) : (
@@ -256,14 +330,14 @@ export const AdminBookings: React.FC = () => {
                 <div className="glass-card bg-slate-50 dark:bg-slate-800/50 p-4 space-y-2 border-none">
                   <div className="flex items-center gap-2 text-slate-400 dark:text-slate-500 text-[9px] font-black uppercase tracking-[0.2em]">
                     <Calendar className="w-3.5 h-3.5 text-primary-blue" />
-                    <span>Deployment</span>
+                    <span>Scheduled Time</span>
                   </div>
                   <p className="text-[11px] font-black text-slate-800 dark:text-white tracking-tight">{booking.date} • {booking.time}</p>
                 </div>
                 <div className="glass-card bg-slate-50 dark:bg-slate-800/50 p-4 space-y-2 border-none">
                   <div className="flex items-center gap-2 text-slate-400 dark:text-slate-500 text-[9px] font-black uppercase tracking-[0.2em]">
                     <MapPin className="w-3.5 h-3.5 text-primary-light" />
-                    <span>Asset Allocated</span>
+                    <span>Provider Assigned</span>
                   </div>
                   <p className="text-[11px] font-black text-slate-800 dark:text-white tracking-tight truncate">{booking.providerName || 'Assigning...'}</p>
                 </div>
@@ -271,51 +345,78 @@ export const AdminBookings: React.FC = () => {
 
               {/* Payment Oversight */}
               {booking.status === 'completed' && booking.paymentMethod !== 'cash' && (
-                <div className="pt-4 border-t border-slate-50 dark:border-slate-800 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    {booking.paymentStatus === 'submitted' ? (
-                      <div className="flex items-center gap-2 py-1.5 px-3 bg-amber-500/10 text-amber-600 rounded-full border border-amber-500/10">
-                        <Clock className="w-3.5 h-3.5" />
-                        <span className="text-[9px] font-black uppercase tracking-widest">Payment Audit Pending</span>
+                <div className="pt-4 border-t border-slate-50 dark:border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div className="flex flex-wrap items-center gap-3">
+                    {booking.paymentStatus === 'paid' ? (
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2 py-1.5 px-3 bg-emerald-500/10 text-emerald-600 rounded-full border border-emerald-500/10">
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          <span className="text-[9px] font-black uppercase tracking-widest">Ledger Sync: Verified & Released</span>
+                        </div>
+                        {(booking as any).reviewedByAdmin && (
+                          <span className="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Verified & Released by {(booking as any).reviewedByAdmin}</span>
+                        )}
                       </div>
-                    ) : booking.paymentStatus === 'paid' ? (
-                      <div className="flex items-center gap-2 py-1.5 px-3 bg-emerald-500/10 text-emerald-600 rounded-full border border-emerald-500/10">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        <span className="text-[9px] font-black uppercase tracking-widest">Ledger Settled</span>
+                    ) : booking.paymentStatus === 'submitted' ? (
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2 py-1.5 px-3 bg-amber-500/10 text-amber-600 rounded-full border border-amber-500/10">
+                          <Clock className="w-3.5 h-3.5" />
+                          <span className="text-[9px] font-black uppercase tracking-widest">Ledger Sync: Pending Verification (Escrow Held)</span>
+                        </div>
+                      </div>
+                    ) : booking.paymentStatus === 'pending_approval' ? (
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2 py-1.5 px-3 bg-amber-500/10 text-amber-600 rounded-full border border-amber-500/10 animate-pulse">
+                          <Clock className="w-3.5 h-3.5 text-brand-amber" />
+                          <span className="text-[9px] font-black uppercase tracking-widest text-brand-amber">Ledger Sync: Escrow Release Requested</span>
+                        </div>
+                      </div>
+                    ) : booking.paymentStatus === 'rejected' ? (
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2 py-1.5 px-3 bg-red-500/10 text-red-600 rounded-full border border-red-500/10">
+                          <XCircle className="w-3.5 h-3.5" />
+                          <span className="text-[9px] font-black uppercase tracking-widest">Ledger Sync: Payment Rejected</span>
+                        </div>
                       </div>
                     ) : (
-                      <div className="flex items-center gap-2 py-1.5 px-3 bg-slate-100 dark:bg-slate-800 text-slate-400 rounded-full border border-slate-200 dark:border-slate-800">
-                        <Clock className="w-3.5 h-3.5" />
-                        <span className="text-[9px] font-black uppercase tracking-widest">Awaiting Capital</span>
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2 py-1.5 px-3 bg-slate-100 dark:bg-slate-800 text-slate-400 rounded-full border border-slate-200 dark:border-slate-800">
+                          <Clock className="w-3.5 h-3.5" />
+                          <span className="text-[9px] font-black uppercase tracking-widest">Ledger Sync: Awaiting Payment Submission</span>
+                        </div>
                       </div>
-                    )}
-                    {booking.paymentStatus === 'paid' && (booking as any).reviewedByAdmin && (
-                       <span className="text-[8px] font-black text-slate-300 dark:text-slate-600 uppercase tracking-widest">Verified by {(booking as any).reviewedByAdmin}</span>
                     )}
                   </div>
 
-                  <div className="flex gap-2">
-                    {booking.paymentStatus === 'submitted' ? (
-                      <>
-                        <motion.button 
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          onClick={() => handleRejectPayment(booking)}
-                          disabled={verifying === booking.id}
-                          className="px-6 py-3 bg-red-500 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-red-500/20 active:scale-95 transition-all disabled:opacity-50"
-                        >
-                          Reject
-                        </motion.button>
-                        <motion.button 
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          onClick={() => handleApprovePayment(booking)}
-                          disabled={verifying === booking.id}
-                          className="px-6 py-3 bg-primary-blue text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-primary-blue/30 active:scale-95 transition-all disabled:opacity-50"
-                        >
-                          {verifying === booking.id ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Approve'}
-                        </motion.button>
-                      </>
+                  <div className="flex flex-col items-end gap-2 shrink-0">
+                    {booking.paymentStatus === 'submitted' || booking.paymentStatus === 'pending_approval' ? (
+                      <div className="flex flex-col items-end gap-2">
+                        {booking.paymentStatus === 'submitted' && (!booking.trxId || booking.trxId.trim() === '' || booking.trxId.trim().toUpperCase() === 'N/A') && (
+                          <p className="text-red-500 text-[9px] font-bold uppercase tracking-wider text-right max-w-[250px]">
+                            Cannot approve: Customer has not provided a valid Transaction ID.
+                          </p>
+                        )}
+                        <div className="flex gap-2">
+                          <motion.button 
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => handleRejectPayment(booking)}
+                            disabled={verifying === booking.id}
+                            className="px-6 py-3 bg-red-500 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-red-500/20 active:scale-95 transition-all disabled:opacity-50"
+                          >
+                            Reject
+                          </motion.button>
+                          <motion.button 
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            onClick={() => handleApprovePayment(booking)}
+                            disabled={verifying === booking.id || (booking.paymentStatus === 'submitted' && (!booking.trxId || booking.trxId.trim() === '' || booking.trxId.trim().toUpperCase() === 'N/A'))}
+                            className="px-6 py-3 bg-primary-blue text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl shadow-primary-blue/30 active:scale-95 transition-all disabled:opacity-50"
+                          >
+                            {verifying === booking.id ? <Loader2 className="w-4 h-4 animate-spin" /> : booking.paymentStatus === 'pending_approval' ? 'Approve Release' : 'Approve'}
+                          </motion.button>
+                        </div>
+                      </div>
                     ) : (
                       <motion.button 
                         whileHover={{ scale: 1.05 }}
@@ -331,7 +432,7 @@ export const AdminBookings: React.FC = () => {
               )}
 
               {/* Payment Data Layer */}
-              {booking.paymentStatus === 'submitted' && (booking.trxId || booking.paymentScreenshotUrl) && (
+              {(booking.paymentStatus === 'submitted' || booking.paymentStatus === 'pending_approval') && (booking.trxId || booking.paymentScreenshotUrl) && (
                 <div className="mt-4 p-5 glass-card bg-slate-900 border-none rounded-3xl space-y-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -394,16 +495,16 @@ export const AdminBookings: React.FC = () => {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-[40px] overflow-hidden shadow-2xl"
+              className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-[40px] overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
             >
-              <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
                     <CreditCard className="w-5 h-5 text-slate-400 dark:text-slate-500" />
                   </div>
                   <div>
                     <h3 className="font-black text-slate-800 dark:text-white text-sm">Payment Verification</h3>
-                    <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">TrxID: {selectedBooking.trxId}</p>
+                    <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Verify Booking Escrow</p>
                   </div>
                 </div>
                 <button 
@@ -414,37 +515,87 @@ export const AdminBookings: React.FC = () => {
                 </button>
               </div>
 
-              <div className="p-6 bg-slate-50 dark:bg-slate-800">
-                <div className="aspect-[3/4] rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-inner bg-white dark:bg-slate-900">
-                  <img 
-                    src={selectedBooking.paymentScreenshotUrl} 
-                    className="w-full h-full object-contain" 
-                    alt="Payment Screenshot Full" 
-                    referrerPolicy="no-referrer"
-                  />
+              <div className="p-6 bg-slate-50 dark:bg-slate-800 space-y-4 overflow-y-auto flex-1">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 space-y-1 shadow-sm">
+                    <p className="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">METHOD</p>
+                    <p className="text-base font-black text-slate-800 dark:text-white uppercase">
+                      {selectedBooking.paymentMethod || (selectedBooking as any).method || 'N/A'}
+                    </p>
+                  </div>
+                  <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 space-y-1 shadow-sm">
+                    <p className="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">ACCOUNT / TRXID</p>
+                    <p className="text-base font-black text-slate-800 dark:text-white truncate">
+                      {selectedBooking.trxId || (selectedBooking as any).transactionId || 'N/A'}
+                    </p>
+                  </div>
                 </div>
+
+                {selectedBooking.paymentScreenshotUrl && (
+                  <div className="space-y-2">
+                    <p className="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest px-2">Payment Receipt Screenshot</p>
+                    <div className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-inner bg-white dark:bg-slate-900">
+                      <img 
+                        src={selectedBooking.paymentScreenshotUrl} 
+                        className="w-full h-full object-contain cursor-pointer" 
+                        alt="Payment Screenshot Full" 
+                        referrerPolicy="no-referrer"
+                        onClick={() => window.open(selectedBooking.paymentScreenshotUrl, '_blank')}
+                      />
+                      <a 
+                        href={selectedBooking.paymentScreenshotUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="absolute bottom-4 right-4 bg-white/90 dark:bg-slate-900/90 p-3 rounded-xl shadow-lg backdrop-blur-sm hover:scale-105 transition-all"
+                      >
+                        <ExternalLink className="w-4 h-4 text-slate-800 dark:text-white" />
+                      </a>
+                    </div>
+                  </div>
+                )}
               </div>
 
-              <div className="p-6 flex gap-3">
-                <button 
-                  onClick={() => {
-                    handleRejectPayment(selectedBooking);
-                    setSelectedBooking(null);
-                  }}
-                  className="flex-1 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 py-4 rounded-2xl font-black text-xs uppercase tracking-widest border border-red-100 dark:border-red-500/20 active:scale-95 transition-all"
-                >
-                  REJECT
-                </button>
-                <button 
-                  onClick={() => {
-                    handleApprovePayment(selectedBooking);
-                    setSelectedBooking(null);
-                  }}
-                  className="flex-[2] bg-primary-blue hover:bg-primary-blue/90 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-primary-blue/20 active:scale-95 transition-all"
-                >
-                  APPROVE PAYMENT
-                </button>
-              </div>
+              {(() => {
+                const bookingTrxId = selectedBooking.trxId || '';
+                const isBookingTrxIdMissing = !bookingTrxId || bookingTrxId.trim() === '' || bookingTrxId.trim().toUpperCase() === 'N/A';
+                const isPendingVerification = selectedBooking.paymentStatus === 'submitted';
+
+                return (
+                  <div className="p-6 border-t border-slate-100 dark:border-slate-800 shrink-0 flex flex-col gap-3">
+                    {!isPendingVerification ? (
+                      <p className="text-emerald-500 text-[10px] font-bold text-center uppercase tracking-wider">
+                        Payment status is already {selectedBooking.paymentStatus.toUpperCase()}
+                      </p>
+                    ) : isBookingTrxIdMissing ? (
+                      <p className="text-red-500 text-[10px] font-bold text-center uppercase tracking-wider">
+                        Cannot approve: Customer has not provided a valid Transaction ID.
+                      </p>
+                    ) : null}
+                    <div className="flex gap-3">
+                      <button 
+                        onClick={() => {
+                          handleRejectPayment(selectedBooking);
+                          setSelectedBooking(null);
+                        }}
+                        disabled={!isPendingVerification}
+                        className="flex-1 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 py-4 rounded-2xl font-black text-xs uppercase tracking-widest border border-red-100 dark:border-red-500/20 active:scale-95 transition-all disabled:opacity-50"
+                      >
+                        REJECT
+                      </button>
+                      <button 
+                        onClick={() => {
+                          handleApprovePayment(selectedBooking);
+                          setSelectedBooking(null);
+                        }}
+                        disabled={!isPendingVerification || isBookingTrxIdMissing}
+                        className="flex-[2] bg-primary-blue hover:bg-primary-blue/90 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-primary-blue/20 active:scale-95 transition-all disabled:opacity-50"
+                      >
+                        APPROVE PAYMENT
+                      </button>
+                    </div>
+                  </div>
+                );
+              })()}
             </motion.div>
           </div>
         )}

@@ -309,7 +309,7 @@ export const ReferralPage: React.FC = () => {
 
             {/* 4. Mission Path */}
             <div className="space-y-4 pt-4">
-              <h3 className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-widest">System Protocol</h3>
+              <h3 className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-widest">How it works</h3>
               <div className="space-y-3">
                 {[
                   { title: 'Spread the word', desc: 'Blast your code to friends & family.', icon: Zap, step: '01', color: 'bg-primary-blue' },
@@ -401,7 +401,7 @@ export const ReferralPage: React.FC = () => {
             className="px-5 space-y-6"
           >
             <div className="flex items-center justify-between">
-              <h3 className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-widest">Reward Ledger</h3>
+              <h3 className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-widest">Reward History</h3>
               <div className="px-2 py-1 bg-emerald-500 text-white text-[8px] font-black uppercase tracking-widest rounded-full">LIVE DATA</div>
             </div>
 
@@ -448,11 +448,11 @@ export const ReferralPage: React.FC = () => {
             <AlertCircle className="w-5 h-5 text-action-orange" />
           </div>
           <div className="space-y-1">
-            <h4 className="text-[9px] font-black text-action-orange uppercase tracking-widest">Protocol Rules</h4>
+            <h4 className="text-[9px] font-black text-action-orange uppercase tracking-widest">Referral Rules</h4>
             <p className="text-[8px] font-bold text-action-orange/70 uppercase tracking-widest leading-relaxed">
               1. Multi-accounting results in permanent ban. <br />
               2. Rewards only valid for verified new users. <br />
-              3. System reserves right to audit all referrals.
+              3. System reserves right to verify all referrals.
             </p>
           </div>
         </div>

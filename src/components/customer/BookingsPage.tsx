@@ -55,7 +55,7 @@ export const BookingsPage: React.FC = () => {
         
         <div className="relative z-10 space-y-6">
           <div className="flex items-center justify-between text-white">
-            <h1 className="text-xl font-black uppercase tracking-[0.2em]">Operational Logs</h1>
+            <h1 className="text-xl font-black uppercase tracking-[0.2em]">My Bookings</h1>
             <div className="w-10 h-10 bg-white/10 rounded-2xl flex items-center justify-center">
               <Calendar size={20} />
             </div>
@@ -89,13 +89,13 @@ export const BookingsPage: React.FC = () => {
             <div className="w-20 h-20 bg-slate-200 dark:bg-slate-800 rounded-3xl flex items-center justify-center mb-6">
               <History size={40} className="text-slate-400" />
             </div>
-            <h3 className="text-xs font-black uppercase tracking-[0.4em]">No deployment history</h3>
-            <p className="text-[10px] font-medium text-slate-500 uppercase mt-2">Initiate your first engagement from the port.</p>
+            <h3 className="text-xs font-black uppercase tracking-[0.4em]">No booking history</h3>
+            <p className="text-[10px] font-medium text-slate-500 uppercase mt-2">Book your first service from the home screen.</p>
             <button 
               onClick={() => navigate('/')}
               className="mt-8 px-6 py-3 bg-primary-blue text-white rounded-2xl font-black text-[10px] uppercase tracking-widest flex items-center gap-2 active:scale-95 transition-all"
             >
-              Access Port <Search size={14} />
+              Explore Services <Search size={14} />
             </button>
           </div>
         ) : (

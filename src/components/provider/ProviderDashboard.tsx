@@ -184,17 +184,17 @@ export const ProviderDashboard: React.FC = () => {
       <div className="bg-brand-slate rounded-[40px] p-8 text-cream relative overflow-hidden shadow-2xl border border-white/5 group">
         <div className="absolute right-0 top-0 w-64 h-64 bg-brand-amber/10 blur-[100px] rounded-full translate-x-32 -translate-y-32 group-hover:scale-110 transition-transform duration-1000" />
         <div className="relative z-10">
-          <p className="text-[10px] font-black uppercase tracking-[0.4em] text-brand-amber mb-2">Institutional Credit Pool</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.4em] text-brand-amber mb-2">My Wallet Balance</p>
           <div className="flex items-baseline gap-2 mb-8">
             <h3 className="text-5xl font-black tracking-tighter">{formatCurrency(profile?.walletBalance || 0)}</h3>
             <span className="text-[10px] font-black text-gray-teal uppercase tracking-widest">Available</span>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <button className="bg-brand-amber text-brand-dark px-6 py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] active:scale-95 transition-all shadow-xl hover:shadow-brand-amber/20">
-              Extraction
+              Withdraw
             </button>
             <button className="bg-brand-surface text-cream px-6 py-5 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] active:scale-95 transition-all border border-white/5 hover:bg-white/10">
-              Audit Logs
+              Transactions
             </button>
           </div>
         </div>
@@ -204,7 +204,7 @@ export const ProviderDashboard: React.FC = () => {
         <div className="flex items-center justify-between px-2">
           <h3 className="text-[10px] font-black text-gray-teal uppercase tracking-[0.3em] flex items-center gap-3">
              <div className="w-5 h-[1px] bg-brand-amber" />
-             Linkage Queue
+             My Jobs
           </h3>
           <div className="w-8 h-8 rounded-xl bg-brand-surface flex items-center justify-center text-[10px] font-black text-brand-amber border border-white/5">
             {bookings.length}
@@ -258,11 +258,11 @@ export const ProviderDashboard: React.FC = () => {
 
                 <div className="grid grid-cols-2 gap-6 py-5 border-y border-white/5">
                   <div className="space-y-1">
-                    <p className="text-[8px] font-black text-gray-teal uppercase tracking-widest opacity-50">Deployment</p>
+                    <p className="text-[8px] font-black text-gray-teal uppercase tracking-widest opacity-50">Scheduled Time</p>
                     <p className="text-[11px] font-bold text-cream uppercase tracking-tighter">{booking.date} • {booking.time}</p>
                   </div>
                   <div className="space-y-1">
-                    <p className="text-[8px] font-black text-gray-teal uppercase tracking-widest opacity-50">Expected Credit</p>
+                    <p className="text-[8px] font-black text-gray-teal uppercase tracking-widest opacity-50">Earnings</p>
                     <p className="text-base font-black text-brand-amber tracking-tighter leading-none">{formatCurrency(booking.totalAmount)}</p>
                   </div>
                 </div>

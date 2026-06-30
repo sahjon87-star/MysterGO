@@ -28,18 +28,16 @@
   :root {
     color-scheme: light;
     
-    /* Global White Light Theme with Premium Glassmorphism */
-    --brand-dark: #F8FAFC;         /* Airy, pristine, minimalist light gray background */
-    --brand-slate: #FFFFFF;        /* Crisp, vibrant solid white cards & drawers */
-    --brand-surface: #E2E8F0;      /* Slate 200 for high-contrast input/inner surfaces */
-    --cream: #0F172A;              /* Slate 900 for ultra-clear readability text */
-    --gray-teal: #475569;          /* Slate 600 for clean subtle informational descriptions */
+    --brand-dark: #F8FAFC;
+    --brand-slate: #FFFFFF;
+    --brand-surface: #E2E8F0;
+    --cream: #0F172A;
+    --gray-teal: #475569;
     
-    /* Vibrant, high-contrast, accessible primary-action colors */
-    --brand-blue: #0284C7;         /* Radiant, legible Sky Blue */
-    --brand-blue-light: #0369A1;   /* Rich Royal Blue */
-    --brand-amber: #EA580C;        /* Warm Dark Orange/Amber for accessible branding */
-    --brand-amber-light: #F97316;  /* Punchy Orange/Amber light hover state */
+    --brand-blue: #4F46E5;        /* Royal Indigo 600 — secondary accent */
+    --brand-blue-light: #6366F1;  /* Indigo 500 — hover state */
+    --brand-amber: #F59E0B;       /* Amber 500 — CTA / brand highlight */
+    --brand-amber-light: #FBBF24; /* Amber 400 — hover state */
     
     --glass-bg: rgba(255, 255, 255, 0.75);
     --glass-border: rgba(15, 23, 42, 0.08);
@@ -50,21 +48,20 @@
   .dark {
     color-scheme: dark;
     
-    /* Global Midnight Slate Dark Theme */
-    --brand-dark: #122329;         /* Original rich deep dark canvas background */
-    --brand-slate: #1F4756;        /* Original stylish teal/slate cards & containers */
-    --brand-surface: #2A5C6F;      /* Original nested surface color */
-    --cream: #F5F5DC;              /* Original warm light cream primary text */
-    --gray-teal: #B0C4DE;          /* Original readable gray-teal secondary text */
+    --brand-dark: #020617;
+    --brand-slate: rgba(15, 23, 42, 0.85);
+    --brand-surface: rgba(30, 41, 59, 0.9);
+    --cream: #FFFFFF;
+    --gray-teal: #E2E8F0;
     
-    --brand-blue: #003366;         /* Original dark navy brand blue */
-    --brand-blue-light: #004080;   /* Original lighter navy blue accent */
-    --brand-amber: #FFB300;        /* Original bright glow yellow-amber accent */
-    --brand-amber-light: #FFC107;  /* Original bright gold hover accent */
+    --brand-blue: #6366F1;        /* Royal Indigo 500 — secondary accent */
+    --brand-blue-light: #818CF8;  /* Indigo 400 — hover state */
+    --brand-amber: #F59E0B;       /* Amber 500 — CTA / brand highlight */
+    --brand-amber-light: #FBBF24; /* Amber 400 — hover state */
     
-    --glass-bg: rgba(42, 92, 111, 0.8);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --shadow-glass-var: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    --glass-bg: rgba(15, 23, 42, 0.7);
+    --glass-border: rgba(99, 102, 241, 0.18);
+    --shadow-glass-var: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
     --radius-glass-var: 24px;
   }
   
@@ -75,6 +72,11 @@
 
   html {
     @apply bg-brand-dark;
+  }
+
+  .bg-brand-slate, .bg-brand-surface {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 
   .glass-card {
@@ -93,6 +95,33 @@
     border-bottom: 1px solid var(--glass-border);
   }
 
+  /* Premium Button Standardization */
+  button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  button:not(.nav-button):not(.icon-only-button) {
+    border-radius: 16px; /* uniform border-radii */
+  }
+
+  button.bg-brand-amber:hover, button.bg-brand-blue:hover {
+    box-shadow: 0 0 20px -5px currentColor; /* shadow-glow hover states */
+    transform: translateY(-1px);
+  }
+
+  button:active {
+    transform: scale(0.97);
+  }
+
+  /* Headings standardization for dark mode */
+  .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+    color: #FFFFFF;
+  }
+  
+  .dark p, .dark span, .dark div {
+    /* Set default fallback to readable slate */
+  }
+
   .leaflet-container {
     width: 100%;
     height: 100%;
@@ -101,8 +130,15 @@
     background: #f8fafc;
   }
 
-  .dark .leaflet-tile {
+  .dark .leaflet-tile:not(.no-invert) {
     filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+  }
+
+  .leaflet-marker-icon.custom-customer-marker,
+  .leaflet-marker-icon.custom-provider-marker,
+  .leaflet-marker-icon.custom-delivery-marker,
+  .leaflet-marker-icon.custom-shop-marker {
+    z-index: 10000 !important;
   }
 
   .dark .leaflet-container {
@@ -130,7 +166,7 @@
 
   .dark input:not(.otp-input)::placeholder, 
   .dark textarea::placeholder {
-    color: rgba(245, 245, 220, 0.45); /* Soft muted cream for Dark Mode */
+    color: rgba(255, 255, 255, 0.5); /* Soft muted white for Dark Mode */
     opacity: 1;
   }
 
@@ -160,16 +196,28 @@
 
   /* Dedicated high-contrast custom styles for OTP inputs */
   .otp-input {
-    background-color: #e2e8f0 !important; /* Shaded background for high visibility */
+    background-color: #f1f5f9 !important; /* Shaded light slate-100 background for high visibility */
     border: 3px solid #0f172a !important;   /* Extremely clear high-contrast dark border */
-    color: #ff5722 !important;            /* Bold orange contrast typography */
+    color: #0f172a !important;            /* Bold slate-900 contrast typography */
     font-weight: 900 !important;
   }
 
   .dark .otp-input {
-    background-color: #1e293b !important; /* Shaded dark brand color */
-    border: 3px solid #ffb300 !important;   /* Glow amber border */
-    color: #ffb300 !important;            /* Glow amber text */
+    background-color: rgba(30, 41, 59, 0.9) !important; /* bg-slate-800/90 high-visibility background */
+    border: 3px solid #F59E0B !important;   /* Bright high-contrast border matching requested brand-amber */
+    color: #ffffff !important;            /* Bright text-white so it never bleeds */
+  }
+
+  .otp-input:focus {
+    border-color: var(--brand-blue) !important;
+    box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.3) !important;
+    outline: none !important;
+  }
+
+  .dark .otp-input:focus {
+    border-color: #F59E0B !important;
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.35) !important;
+    outline: none !important;
   }
 
   /* Native Date and Time calendar icons visibility fix across modes */
@@ -183,3 +231,4 @@
     filter: invert(1) !important;
   }
 }
+

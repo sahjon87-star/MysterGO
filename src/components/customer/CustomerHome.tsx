@@ -29,8 +29,8 @@ export const CustomerHome: React.FC = () => {
   const [promoOffer, setPromoOffer] = useState({
     text: '৳100 off your first booking! Special offer for new users. Limited time only.',
     isActive: true,
-    backgroundColor: '#003366',
-    textColor: '#F5F5DC'
+    backgroundColor: 'var(--brand-blue)',
+    textColor: '#FFFFFF'
   });
   const [settings, setSettings] = useState({
     applicationFeeRate: 5,
@@ -217,7 +217,7 @@ export const CustomerHome: React.FC = () => {
                 >
                   Welcome to <span className="text-brand-blue dark:text-brand-amber text-nowrap">MistriGO</span>
                 </motion.h2>
-                <p className="text-[9px] font-extrabold text-[#5E6D6D] uppercase tracking-widest mt-1">
+                <p className="text-[9px] font-extrabold text-gray-teal uppercase tracking-widest mt-1">
                   Your Premium Service Matrix
                 </p>
               </div>
@@ -226,10 +226,10 @@ export const CustomerHome: React.FC = () => {
               <motion.div 
                 initial={{ opacity: 0, x: 10 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="flex items-center gap-2 bg-[#F3F4ED]/85 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 px-3 py-1.5 rounded-2xl"
+                className="flex items-center gap-2 bg-brand-surface/85 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 px-3 py-1.5 rounded-2xl"
               >
                 <MapPin className="w-4 h-4 text-brand-blue animate-pulse" />
-                <span className="text-[9px] font-black tracking-wider text-[#5E6D6D] uppercase">
+                <span className="text-[9px] font-black tracking-wider text-gray-teal uppercase">
                   {locationStatus === 'granted' ? t('loc.tracking_active') : 'DHAKA'}
                 </span>
               </motion.div>
@@ -257,7 +257,7 @@ export const CustomerHome: React.FC = () => {
             animate={{ opacity: 1, scale: 1 }}
             className="px-6"
           >
-            <div className="relative w-full aspect-[21/9] sm:aspect-[24/9] rounded-[32px] overflow-hidden shadow-lg bg-[#EAEAEA] dark:bg-slate-950">
+            <div className="relative w-full aspect-[21/9] sm:aspect-[24/9] rounded-[32px] overflow-hidden shadow-lg bg-brand-surface dark:bg-slate-950">
               {banners.map((url, idx) => (
                 <motion.div
                   key={url + idx}
@@ -313,7 +313,7 @@ export const CustomerHome: React.FC = () => {
                   <div className="absolute inset-0 bg-brand-blue/40 rounded-full blur-md animate-ping" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-[10px] font-black text-brand-blue/60 uppercase tracking-widest leading-none mb-1">Operational Sector</span>
+                  <span className="text-[10px] font-black text-brand-blue/60 uppercase tracking-widest leading-none mb-1">Service Location</span>
                   <span className="text-xs font-black text-brand-blue tracking-widest leading-none">
                     {locationStatus === 'granted' ? t('loc.tracking_active') : 'DHAKA, CENTRAL'}
                   </span>
@@ -480,15 +480,15 @@ export const CustomerHome: React.FC = () => {
       <section className="space-y-6">
         <div className="px-6 flex items-center justify-between">
           <div className="space-y-1">
-            <h3 className="font-black text-gray-teal uppercase tracking-widest text-[10px]">Verified Service Nodes</h3>
-            <p className="text-gray-teal/50 text-[8px] font-black uppercase tracking-widest">Nearby Operational Assets</p>
+            <h3 className="font-black text-gray-teal uppercase tracking-widest text-[10px]">Verified Partners</h3>
+            <p className="text-gray-teal/50 text-[8px] font-black uppercase tracking-widest">Nearby Service Providers</p>
           </div>
           <motion.button 
             whileHover={{ x: 5 }}
             onClick={() => navigate('/search')} 
             className="px-4 py-2 bg-brand-surface rounded-xl text-[9px] font-black text-brand-amber uppercase tracking-widest flex items-center gap-2 border border-white/5"
           >
-            Access All <ChevronRight className="w-3.5 h-3.5" />
+            View All <ChevronRight className="w-3.5 h-3.5" />
           </motion.button>
         </div>
         <div className="flex gap-5 overflow-x-auto px-6 pb-6 scrollbar-hide">
@@ -499,7 +499,7 @@ export const CustomerHome: React.FC = () => {
           ) : filteredWorkers.length === 0 ? (
             <div className="flex-shrink-0 w-full py-16 text-center space-y-4 glass-card border-none mx-2">
               <div className="text-5xl opacity-20">🦾</div>
-              <p className="text-slate-400 dark:text-slate-500 font-black text-[10px] uppercase tracking-widest">No Operational Nodes Found</p>
+              <p className="text-slate-400 dark:text-slate-500 font-black text-[10px] uppercase tracking-widest">No Service Providers Found</p>
             </div>
           ) : (
             filteredWorkers.map((worker, index) => (

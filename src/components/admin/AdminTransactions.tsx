@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { collection, query, onSnapshot, orderBy, limit, where, updateDoc, doc, increment, serverTimestamp, addDoc, getDoc, getDocs } from 'firebase/firestore';
+import { collection, query, onSnapshot, orderBy, limit, where, updateDoc, doc, increment, serverTimestamp, addDoc, getDoc, getDocs, runTransaction } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import { 
   CreditCard, 
@@ -35,7 +35,13 @@ export const AdminTransactions: React.FC = () => {
   useEffect(() => {
     let q = query(collection(db, 'transactions'), limit(100));
     
-    if (activeTab !== 'all') {
+    if (activeTab === 'pending') {
+      q = query(
+        collection(db, 'transactions'),
+        where('status', 'in', ['pending', 'pending_approval']),
+        limit(100)
+      );
+    } else if (activeTab !== 'all') {
       q = query(
         collection(db, 'transactions'), 
         where('status', '==', activeTab),
@@ -68,22 +74,73 @@ export const AdminTransactions: React.FC = () => {
 
       if (status === 'approved') {
         if (tx.type === 'credit') {
-          // ADD MONEY FLOW: Increment balance
-          const updateData: any = {
-            walletBalance: increment(tx.amount)
-          };
-          if (tx.description && tx.description.includes('Job Completed:')) {
-            updateData.totalEarnings = increment(tx.amount);
-          }
-          await updateDoc(doc(db, collectionName, tx.userId), updateData);
+          // ADD MONEY FLOW: Increment balance securely via runTransaction
+          await runTransaction(db, async (transaction) => {
+            const txRef = doc(db, 'transactions', tx.id);
+            const txSnap = await transaction.get(txRef);
+            if (!txSnap.exists()) {
+              throw new Error("Transaction not found");
+            }
+            const txData = txSnap.data();
+            if (txData.status !== 'pending' && txData.status !== 'pending_approval') {
+              throw new Error(`Transaction already has status ${txData.status}`);
+            }
 
-          await addDoc(collection(db, 'notifications'), {
-            userId: tx.userId,
-            title: 'Payment Approved',
-            body: `Your deposit of ${formatCurrency(tx.amount)} has been approved and added to your wallet.`,
-            type: 'payment',
-            read: false,
-            createdAt: serverTimestamp()
+            // Update transaction status
+            transaction.update(txRef, {
+              status: 'approved',
+              reviewedByAdmin: adminProfile?.name || 'Admin',
+              reviewedAt: serverTimestamp(),
+              approvedAt: serverTimestamp()
+            });
+
+            // Increment user/provider wallet securely
+            const userRef = doc(db, collectionName, tx.userId);
+            const updateData: any = {
+              walletBalance: increment(tx.amount),
+              updatedAt: serverTimestamp()
+            };
+            if (tx.description && (tx.description.includes('Job Completed:') || tx.description.includes('Escrow payment'))) {
+              updateData.totalEarnings = increment(tx.amount);
+            }
+            transaction.update(userRef, updateData);
+
+            // Sync booking if any
+            if (txData.bookingId) {
+              const bookingRef = doc(db, 'bookings', txData.bookingId);
+              const bookingSnap = await transaction.get(bookingRef);
+              if (bookingSnap.exists()) {
+                const bData = bookingSnap.data();
+                const validationBooking = {
+                  totalPayout: bData.totalPayout ?? (bData.basePrice || 0),
+                  providerBaseRate: bData.providerBaseRate ?? (bData.basePrice || 0),
+                  helperCount: bData.helperCount ?? 0,
+                  helperUnitRate: bData.helperUnitRate ?? 600
+                };
+                if (validationBooking.totalPayout !== (validationBooking.providerBaseRate + (validationBooking.helperCount * validationBooking.helperUnitRate))) {
+                  throw new Error("Financial Ledger Tampering Detected! Aborting Payout System.");
+                }
+              }
+
+              transaction.update(bookingRef, {
+                paymentStatus: 'paid',
+                paymentReleased: true,
+                reviewedByAdmin: adminProfile?.name || 'Admin',
+                reviewedAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+              });
+            }
+
+            // Add notification for the user
+            const notifRef = doc(collection(db, 'notifications'));
+            transaction.set(notifRef, {
+              userId: tx.userId,
+              title: 'Payment Approved',
+              body: `Your payment of ${formatCurrency(tx.amount)} has been approved and added to your wallet.`,
+              type: 'payment',
+              read: false,
+              createdAt: serverTimestamp()
+            });
           });
         } else {
           // WITHDRAWAL FLOW: Balance was already deducted at request time
@@ -116,16 +173,16 @@ export const AdminTransactions: React.FC = () => {
             read: false,
             createdAt: serverTimestamp()
           });
+
+          await updateDoc(doc(db, 'transactions', tx.id), {
+            status: 'approved',
+            reviewedByAdmin: adminProfile?.name || 'Admin',
+            reviewedAt: serverTimestamp(),
+            approvedAt: serverTimestamp()
+          });
         }
 
-        await updateDoc(doc(db, 'transactions', tx.id), {
-          status: 'approved',
-          reviewedByAdmin: adminProfile?.name || 'Admin',
-          reviewedAt: serverTimestamp(),
-          approvedAt: serverTimestamp()
-        });
-
-        toast.success(`${tx.type === 'credit' ? 'Deposit' : 'Withdrawal'} approved!`);
+        toast.success(`${tx.type === 'credit' ? 'Deposit/Release' : 'Withdrawal'} approved!`);
       } else {
         // REJECT FLOW
         if (tx.type === 'debit') {
@@ -164,10 +221,25 @@ export const AdminTransactions: React.FC = () => {
             createdAt: serverTimestamp()
           });
         } else {
+          // Sync booking rejection if any
+          if ((tx as any).bookingId) {
+            try {
+              await updateDoc(doc(db, 'bookings', (tx as any).bookingId), {
+                paymentStatus: 'rejected',
+                paymentReleased: 'rejected',
+                reviewedByAdmin: adminProfile?.name || 'Admin',
+                reviewedAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+              });
+            } catch (bErr) {
+              console.error('Failed to update booking on tx rejection', bErr);
+            }
+          }
+
           await addDoc(collection(db, 'notifications'), {
             userId: tx.userId,
             title: 'Payment Rejected',
-            body: `Your deposit request of ${formatCurrency(tx.amount)} was rejected.`,
+            body: `Your payment request of ${formatCurrency(tx.amount)} was rejected.`,
             type: 'payment',
             read: false,
             createdAt: serverTimestamp()
@@ -242,7 +314,7 @@ export const AdminTransactions: React.FC = () => {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               whileHover={{ scale: 1.01 }}
-              onClick={() => tx.status === 'pending' && setSelectedTx(tx)}
+              onClick={() => (tx.status === 'pending' || tx.status === 'pending_approval') && setSelectedTx(tx)}
               className="glass-card p-6 flex items-center gap-5 hover:bg-white/80 dark:hover:bg-slate-900/80 transition-all cursor-pointer group relative overflow-hidden"
             >
               {/* Status Accent Line */}
@@ -303,9 +375,9 @@ export const AdminTransactions: React.FC = () => {
                 <div className={`text-lg font-black tracking-tight ${tx.type === 'credit' ? 'text-primary-blue' : 'text-red-500'}`}>
                   {tx.type === 'credit' ? '+' : '-'}{formatCurrency(tx.amount)}
                 </div>
-                {tx.status === 'pending' && (
+                {(tx.status === 'pending' || tx.status === 'pending_approval') && (
                   <div className="px-3 py-1 bg-amber-500/10 text-amber-600 dark:text-amber-500 text-[8px] font-black rounded-full uppercase tracking-widest border border-amber-500/20">
-                    Review Required
+                    {tx.status === 'pending_approval' ? 'Escrow Release Required' : 'Review Required'}
                   </div>
                 )}
                 {tx.status === 'approved' && (
@@ -360,7 +432,9 @@ export const AdminTransactions: React.FC = () => {
                 </div>
                 <div className="bg-slate-50 dark:bg-slate-800 rounded-2xl p-4 space-y-1">
                   <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Method</p>
-                  <p className="text-lg font-black text-slate-800 dark:text-white uppercase">{selectedTx.method || 'N/A'}</p>
+                  <p className="text-lg font-black text-slate-800 dark:text-white uppercase">
+                    {(selectedTx as any).paymentMethod || selectedTx.method || 'N/A'}
+                  </p>
                 </div>
                 <div className="bg-slate-50 dark:bg-slate-800 rounded-2xl p-4 space-y-1">
                   <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Type</p>
@@ -371,49 +445,79 @@ export const AdminTransactions: React.FC = () => {
                 <div className="bg-slate-50 dark:bg-slate-800 rounded-2xl p-4 space-y-1">
                   <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Account / TrxID</p>
                   <p className="text-sm font-black text-slate-800 dark:text-white truncate">
-                    {(selectedTx as any).accountNumber || selectedTx.trxId || 'N/A'}
+                    {(selectedTx as any).transactionId || selectedTx.trxId || (selectedTx as any).accountNumber || 'N/A'}
                   </p>
                 </div>
               </div>
 
-              {selectedTx.screenshotUrl && (
-                <div className="space-y-2">
-                  <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest px-2">Payment Screenshot</p>
-                  <div className="relative h-64 bg-slate-100 dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700">
-                    <img 
-                      src={selectedTx.screenshotUrl} 
-                      className="w-full h-full object-contain" 
-                      alt="Payment Proof" 
-                      referrerPolicy="no-referrer"
-                    />
-                    <a 
-                      href={selectedTx.screenshotUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="absolute bottom-4 right-4 bg-white/90 dark:bg-slate-900/90 p-3 rounded-xl shadow-lg backdrop-blur-sm hover:scale-105 transition-all"
-                    >
-                      <ExternalLink className="w-4 h-4 text-slate-800 dark:text-white" />
-                    </a>
+              {(() => {
+                const screenshot = selectedTx.screenshotUrl || (selectedTx as any).paymentScreenshotUrl;
+                if (!screenshot) return null;
+                return (
+                  <div className="space-y-2">
+                    <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest px-2">Payment Screenshot</p>
+                    <div className="relative h-64 bg-slate-100 dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-700">
+                      <img 
+                        src={screenshot} 
+                        className="w-full h-full object-contain cursor-pointer" 
+                        alt="Payment Proof" 
+                        referrerPolicy="no-referrer"
+                        onClick={() => window.open(screenshot, '_blank')}
+                      />
+                      <a 
+                        href={screenshot} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="absolute bottom-4 right-4 bg-white/90 dark:bg-slate-900/90 p-3 rounded-xl shadow-lg backdrop-blur-sm hover:scale-105 transition-all"
+                      >
+                        <ExternalLink className="w-4 h-4 text-slate-800 dark:text-white" />
+                      </a>
+                    </div>
                   </div>
-                </div>
-              )}
+                );
+              })()}
 
-              <div className="flex gap-3 pt-2">
-                <button 
-                  onClick={() => handleAction(selectedTx, 'rejected')}
-                  disabled={!!processing}
-                  className="flex-1 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest border border-red-100 dark:border-red-500/20 active:scale-95 transition-all disabled:opacity-50"
-                >
-                  {processing === selectedTx.id ? '...' : 'REJECT'}
-                </button>
-                <button 
-                  onClick={() => handleAction(selectedTx, 'approved')}
-                  disabled={!!processing}
-                  className={`flex-[2] py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg active:scale-95 transition-all disabled:opacity-50 ${selectedTx.type === 'debit' ? 'bg-slate-900 dark:bg-slate-800 text-white' : 'bg-primary-blue text-white shadow-primary-blue/20'}`}
-                >
-                  {processing === selectedTx.id ? '...' : selectedTx.type === 'debit' ? 'APPROVE Payout' : 'APPROVE & ADD MONEY'}
-                </button>
-              </div>
+              {(() => {
+                const trxIdText = (selectedTx as any).transactionId || selectedTx.trxId || (selectedTx as any).accountNumber || '';
+                const isTrxIdMissing = !trxIdText || trxIdText.trim() === '' || trxIdText.trim().toUpperCase() === 'N/A';
+                const isTxPending = selectedTx.status === 'pending' || selectedTx.status === 'pending_approval';
+
+                return (
+                  <div className="flex flex-col gap-3 pt-2">
+                    {!isTxPending ? (
+                      <p className="text-emerald-500 text-[10px] font-bold text-center uppercase tracking-wider">
+                        Transaction is already {selectedTx.status?.toUpperCase()}
+                      </p>
+                    ) : (selectedTx.type === 'credit' && isTrxIdMissing && selectedTx.status === 'pending') ? (
+                      <p className="text-red-500 text-[10px] font-bold text-center uppercase tracking-wider">
+                        Cannot approve: Customer has not provided a valid Transaction ID.
+                      </p>
+                    ) : null}
+                    <div className="flex gap-3 w-full">
+                      <button 
+                        onClick={() => handleAction(selectedTx, 'rejected')}
+                        disabled={!!processing || !isTxPending}
+                        className="flex-1 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest border border-red-100 dark:border-red-500/20 active:scale-95 transition-all disabled:opacity-50"
+                      >
+                        {processing === selectedTx.id ? '...' : 'REJECT'}
+                      </button>
+                      <button 
+                        onClick={() => handleAction(selectedTx, 'approved')}
+                        disabled={!!processing || !isTxPending || (selectedTx.type === 'credit' && isTrxIdMissing && selectedTx.status === 'pending')}
+                        className={`flex-[2] py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg active:scale-95 transition-all disabled:opacity-50 ${
+                          (!isTxPending || (selectedTx.type === 'credit' && isTrxIdMissing && selectedTx.status === 'pending'))
+                            ? 'opacity-50 cursor-not-allowed bg-slate-200 dark:bg-slate-800 text-slate-400' 
+                            : selectedTx.type === 'debit' 
+                              ? 'bg-slate-900 dark:bg-slate-800 text-white' 
+                              : 'bg-primary-blue text-white shadow-primary-blue/20'
+                        }`}
+                      >
+                        {processing === selectedTx.id ? '...' : selectedTx.type === 'debit' ? 'APPROVE Payout' : selectedTx.status === 'pending_approval' ? 'Approve Release' : 'APPROVE & ADD MONEY'}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })()}
             </motion.div>
           </div>
         )}

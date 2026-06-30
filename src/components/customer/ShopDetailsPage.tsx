@@ -123,11 +123,11 @@ export const ShopDetailsPage: React.FC = () => {
         <section className="space-y-4">
           <h3 className="px-2 text-xs font-black text-white uppercase tracking-widest flex items-center gap-2">
             <Info size={16} className="text-brand-amber" />
-            Operational Dossier
+            About Our Shop
           </h3>
           <div className="bg-brand-slate p-6 rounded-[32px] border border-white/5 shadow-2xl">
             <p className="text-sm text-gray-teal font-medium leading-relaxed">
-              Established professional service node specializing in multi-tier technical engagements. Our deployment infrastructure provides end-to-end solutions for all household and commercial operational requirements.
+              Established professional service shop offering reliable solutions for your home and commercial needs. We provide quality repairs, maintenance, and expert support.
             </p>
           </div>
         </section>
@@ -137,10 +137,10 @@ export const ShopDetailsPage: React.FC = () => {
           <div className="flex items-center justify-between px-2">
             <h3 className="text-xs font-black text-white uppercase tracking-widest flex items-center gap-2">
               <Store size={16} className="text-brand-amber" />
-              Active Field Agents
+              Available Technicians
             </h3>
             <span className="text-[9px] font-black text-gray-teal uppercase tracking-widest bg-brand-slate px-2 py-1 rounded-full border border-white/5">
-              {workers.length} Signals
+              {workers.length} Members
             </span>
           </div>
 

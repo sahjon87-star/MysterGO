@@ -1,15 +1,17 @@
 import React from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import { Home, Search, Calendar, Wallet, User, Bell, LogOut, Store, Menu, X, Settings, Gift, Calculator } from 'lucide-react';
+import { Home, Search, Calendar, Wallet, User, Bell, LogOut, Store, Menu, X, Settings, Gift, Calculator, CreditCard, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { signOut } from 'firebase/auth';
-import { auth } from '../../lib/firebase';
+import { auth, db } from '../../lib/firebase';
+import { collection, query, where, onSnapshot, doc, runTransaction, serverTimestamp, increment } from 'firebase/firestore';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { cn } from '../../lib/utils';
+import { cn, formatCurrency } from '../../lib/utils';
 import { ThemeToggle } from '../ThemeToggle';
 import { Logo } from '../shared/Logo';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 import { CustomerHome } from './CustomerHome';
 import { CustomerSearch } from './CustomerSearch';
@@ -36,6 +38,119 @@ export const CustomerLayout: React.FC = () => {
   const profile = authProfile as any;
   const { t } = useLanguage();
   const [showSidebar, setShowSidebar] = useState(false);
+  const [activeBookingsCount, setActiveBookingsCount] = useState(0);
+
+  React.useEffect(() => {
+    if (!profile?.uid) return;
+    const q = query(
+      collection(db, 'bookings'),
+      where('customerId', '==', profile.uid),
+      where('status', 'in', ['pending', 'accepted', 'ongoing'])
+    );
+    const unsubscribe = onSnapshot(q, (snap) => {
+      setActiveBookingsCount(snap.size);
+    }, (error) => {
+      console.warn('Error listening to active bookings:', error);
+    });
+    return () => unsubscribe();
+  }, [profile?.uid]);
+
+  const [unreleasedBookings, setUnreleasedBookings] = useState<any[]>([]);
+  const [releasingIds, setReleasingIds] = useState<Record<string, boolean>>({});
+  const [isSnoozed, setIsSnoozed] = useState(false);
+  const snoozeTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  const handleSnooze = () => {
+    setIsSnoozed(true);
+    if (snoozeTimeoutRef.current) {
+      clearTimeout(snoozeTimeoutRef.current);
+    }
+    snoozeTimeoutRef.current = setTimeout(() => {
+      setIsSnoozed(false);
+    }, 90000); // Exactly 1.5 minutes (90 seconds)
+  };
+
+  React.useEffect(() => {
+    return () => {
+      if (snoozeTimeoutRef.current) {
+        clearTimeout(snoozeTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  React.useEffect(() => {
+    if (!profile?.uid || profile?.role === 'provider' || profile?.role === 'shop') return;
+    
+    const q = query(
+      collection(db, 'bookings'),
+      where('customerId', '==', profile.uid),
+      where('status', '==', 'completed')
+    );
+
+    const unsubscribe = onSnapshot(q, (snap) => {
+      const bookingsData = snap.docs
+        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .filter((b: any) => b.paymentMethod !== 'cash' && b.paymentReleased !== true && b.paymentReleased !== 'pending_approval');
+      
+      setUnreleasedBookings(bookingsData);
+    }, (error) => {
+      console.warn('Error listening to unreleased bookings:', error);
+    });
+
+    return () => unsubscribe();
+  }, [profile?.uid, profile?.role]);
+
+  const handleRelease = async (booking: any) => {
+    setReleasingIds(prev => ({ ...prev, [booking.id]: true }));
+    try {
+      await runTransaction(db, async (transaction) => {
+        const bookingRef = doc(db, 'bookings', booking.id);
+        const bookingSnap = await transaction.get(bookingRef);
+        if (!bookingSnap.exists()) {
+          throw new Error("Booking not found");
+        }
+        const data = bookingSnap.data();
+        if (data.paymentReleased) return;
+
+        transaction.update(bookingRef, {
+          paymentReleased: 'pending_approval',
+          paymentStatus: 'pending_approval',
+          updatedAt: serverTimestamp()
+        });
+
+        const earning = data.providerEarning || data.totalAmount || 0;
+        const collectionName = data.providerCollection || 'providers';
+
+        const txRef = doc(collection(db, 'transactions'));
+        transaction.set(txRef, {
+          userId: data.providerId,
+          userName: data.providerName || 'Provider',
+          amount: earning,
+          type: 'credit',
+          description: `Escrow payment release request for booking #${booking.id.slice(-6).toUpperCase()}`,
+          status: 'pending_approval',
+          bookingId: booking.id,
+          userCollection: collectionName,
+          createdAt: serverTimestamp()
+        });
+        
+        const notifRef = doc(collection(db, 'notifications'));
+        transaction.set(notifRef, {
+          userId: data.providerId,
+          title: 'Release Requested',
+          message: `Customer requested release of payment ${formatCurrency(earning)} for booking #${booking.id.slice(-6).toUpperCase()}. Awaiting Admin approval.`,
+          type: 'payment',
+          createdAt: serverTimestamp()
+        });
+      });
+      toast.success("Payment release requested! Awaiting Admin approval.");
+    } catch (err: any) {
+      console.error("Error releasing payment:", err);
+      toast.error(err.message || "Failed to request payment release");
+    } finally {
+      setReleasingIds(prev => ({ ...prev, [booking.id]: false }));
+    }
+  };
 
   const allNavItems = [
     { icon: Home, label: 'nav.home', path: '/' },
@@ -68,19 +183,27 @@ export const CustomerLayout: React.FC = () => {
         <div className="flex-1 space-y-2 overflow-y-auto pr-2 no-scrollbar">
           {allNavItems.map((item) => {
             const isActive = location.pathname === item.path;
+            const isBookings = item.path === '/bookings';
             return (
               <button
                 key={item.path}
                 onClick={() => navigate(item.path)}
                 className={cn(
-                  "w-full flex items-center gap-4 p-4 rounded-2xl transition-all duration-300",
+                  "w-full flex items-center justify-between p-4 rounded-2xl transition-all duration-300",
                   isActive 
                     ? "bg-brand-amber text-brand-dark shadow-xl shadow-brand-amber/20" 
                     : "text-gray-teal hover:bg-brand-surface"
                 )}
               >
-                <item.icon className="w-5 h-5" />
-                <span className="font-bold text-sm uppercase tracking-widest">{t(item.label)}</span>
+                <div className="flex items-center gap-4">
+                  <item.icon className="w-5 h-5" />
+                  <span className="font-bold text-sm uppercase tracking-widest">{t(item.label)}</span>
+                </div>
+                {isBookings && activeBookingsCount > 0 && (
+                  <span className="flex h-5 min-w-5 px-1.5 items-center justify-center rounded-full bg-orange-500 text-[10px] font-black text-white shadow-lg animate-pulse shrink-0">
+                    {activeBookingsCount}
+                  </span>
+                )}
               </button>
             );
           })}
@@ -132,6 +255,7 @@ export const CustomerLayout: React.FC = () => {
               <div className="flex-1 space-y-2 overflow-y-auto pr-2 no-scrollbar">
                 {allNavItems.map((item) => {
                   const isActive = location.pathname === item.path;
+                  const isBookings = item.path === '/bookings';
                   return (
                     <button
                       key={item.path}
@@ -140,14 +264,21 @@ export const CustomerLayout: React.FC = () => {
                         setShowSidebar(false);
                       }}
                       className={cn(
-                        "w-full flex items-center gap-4 p-4 rounded-2xl transition-all duration-300",
+                        "w-full flex items-center justify-between p-4 rounded-2xl transition-all duration-300",
                         isActive 
                           ? "bg-brand-amber text-brand-dark shadow-xl shadow-brand-amber/20" 
                           : "text-gray-teal hover:bg-brand-surface"
                       )}
                     >
-                      <item.icon className="w-5 h-5" />
-                      <span className="font-bold text-sm uppercase tracking-widest">{t(item.label)}</span>
+                      <div className="flex items-center gap-4">
+                        <item.icon className="w-5 h-5" />
+                        <span className="font-bold text-sm uppercase tracking-widest">{t(item.label)}</span>
+                      </div>
+                      {isBookings && activeBookingsCount > 0 && (
+                        <span className="flex h-5 min-w-5 px-1.5 items-center justify-center rounded-full bg-orange-500 text-[10px] font-black text-white shadow-lg animate-pulse shrink-0">
+                          {activeBookingsCount}
+                        </span>
+                      )}
                     </button>
                   );
                 })}
@@ -271,6 +402,108 @@ export const CustomerLayout: React.FC = () => {
         })}
       </nav>
       <SupportFAB />
+      
+      {/* Real-time Payment Release Prompts */}
+      <AnimatePresence>
+        {(() => {
+          const anyUnpaid = unreleasedBookings.some((b) => {
+            const transactionId = b.trxId;
+            const screenshotUrl = b.paymentScreenshotUrl;
+            return b.paymentMethod !== 'wallet' && !(transactionId && transactionId.trim() !== "" && transactionId.toUpperCase() !== "N/A" && screenshotUrl);
+          });
+
+          if (unreleasedBookings.length === 0 || (isSnoozed && !anyUnpaid)) return null;
+
+          return (
+            <motion.div
+              initial={{ opacity: 0, y: 100, scale: 0.9 }}
+              animate={anyUnpaid ? { 
+                opacity: 1, 
+                y: 0, 
+                scale: [1, 1.01, 1],
+                transition: {
+                  scale: {
+                    repeat: Infinity,
+                    duration: 2,
+                    ease: "easeInOut"
+                  }
+                }
+              } : { opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 100, scale: 0.9 }}
+              className={`fixed bottom-28 md:bottom-8 right-4 left-4 md:left-auto md:w-[450px] bg-brand-slate/95 backdrop-blur-2xl border-2 rounded-[32px] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-[100] space-y-4 relative transition-colors ${anyUnpaid ? 'border-brand-amber/60 bg-brand-slate/98' : 'border-brand-amber/30'}`}
+            >
+              {/* Close/Snooze Button */}
+              {!anyUnpaid && (
+                <button
+                  onClick={handleSnooze}
+                  className="text-slate-400 hover:text-slate-200 absolute top-3.5 right-3.5 p-1 cursor-pointer rounded-full hover:bg-white/10 transition-colors z-50"
+                  aria-label="Dismiss"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              )}
+
+              {unreleasedBookings.map((booking) => {
+                const isReleasing = releasingIds[booking.id] || false;
+                const transactionId = booking.trxId;
+                const screenshotUrl = booking.paymentScreenshotUrl;
+                const isPaymentDetailsSubmitted = booking.paymentMethod === 'wallet' || !!(transactionId && transactionId.trim() !== "" && transactionId.toUpperCase() !== "N/A" && screenshotUrl);
+
+                return (
+                  <div key={booking.id} className="space-y-4">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-brand-amber/10 rounded-2xl flex items-center justify-center border border-brand-amber/20 shrink-0">
+                        <CreditCard className="w-6 h-6 text-brand-amber animate-bounce" />
+                      </div>
+                      <div className="space-y-1">
+                        <h4 className="text-sm font-black text-cream uppercase tracking-tight">Release Payment Required</h4>
+                        <p className="text-xs text-gray-teal font-medium leading-relaxed">
+                          Your provider <span className="text-brand-amber font-bold">{booking.providerName}</span> has completed the work. Please review and Release Payment.
+                        </p>
+                        <p className="text-[10px] font-mono text-slate-400">
+                          Job ID: #{booking.id.slice(-6).toUpperCase()} • Amount: {formatCurrency(booking.totalAmount)}
+                        </p>
+                      </div>
+                    </div>
+
+                    {!isPaymentDetailsSubmitted && (
+                      <div className="text-[9px] text-brand-amber/95 font-black uppercase tracking-widest bg-brand-amber/5 border border-brand-amber/10 rounded-2xl p-3.5 text-center leading-relaxed">
+                        ⚠️ Please submit your Transaction ID and Gateway Screenshot above to unlock this button.
+                      </div>
+                    )}
+
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => navigate(`/booking-status/${booking.id}`)}
+                        className="flex-1 bg-brand-surface hover:bg-brand-surface/80 text-cream font-bold py-3 px-4 rounded-2xl border border-white/5 text-xs uppercase tracking-wider text-center transition-all"
+                      >
+                        Review Job
+                      </button>
+                      <button
+                        onClick={() => handleRelease(booking)}
+                        disabled={!isPaymentDetailsSubmitted || isReleasing}
+                        title={!isPaymentDetailsSubmitted ? "Please submit your Transaction ID and Gateway Screenshot above to unlock this button." : undefined}
+                        className={cn(
+                          "flex-1 font-black py-3 px-4 rounded-2xl text-xs uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-2",
+                          isPaymentDetailsSubmitted 
+                            ? "bg-brand-amber hover:bg-brand-amber/90 text-brand-dark shadow-xl shadow-brand-amber/20 active:scale-[0.98]" 
+                            : "bg-slate-700/50 text-slate-400 opacity-40 cursor-not-allowed"
+                        )}
+                      >
+                        {isReleasing ? (
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                        ) : (
+                          "Release Payment"
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </motion.div>
+          );
+        })()}
+      </AnimatePresence>
       </div>
     </div>
   );

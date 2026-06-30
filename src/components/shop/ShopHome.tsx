@@ -201,7 +201,7 @@ export const ShopHome: React.FC = () => {
         <div className="px-8 flex items-center justify-between">
           <h3 className="font-black text-slate-800 dark:text-white uppercase tracking-[0.3em] text-[11px] flex items-center gap-3">
             <div className="w-6 h-[1px] bg-primary-blue" />
-            Recent Protocols
+            Recent Orders
           </h3>
           <motion.button 
             whileHover={{ x: 3 }}
@@ -216,11 +216,11 @@ export const ShopHome: React.FC = () => {
           {loading ? (
              <div className="h-24 bg-slate-100 dark:bg-slate-900 rounded-[40px] animate-pulse" />
           ) : activeOrders.length === 0 ? (
-            <div className="text-center py-20 bg-white/50 dark:bg-slate-900/30 backdrop-blur-xl rounded-[48px] border border-slate-100 dark:border-white/5 space-y-6 grayscale opacity-50">
+            <div className="text-center py-20 bg-white/50 dark:bg-slate-900/30 backdrop-blur-xl rounded-[48px] border border-slate-100 dark:white/5 space-y-6 grayscale opacity-50">
               <div className="w-20 h-20 bg-slate-100 dark:bg-white/5 rounded-full flex items-center justify-center mx-auto text-slate-200 shadow-inner">
                 <ShoppingBag className="w-10 h-10" />
               </div>
-              <p className="text-slate-800 dark:text-white font-black text-sm uppercase tracking-widest">No Active Protocol</p>
+              <p className="text-slate-800 dark:text-white font-black text-sm uppercase tracking-widest">No Active Orders</p>
             </div>
           ) : (
             <div className="space-y-4">

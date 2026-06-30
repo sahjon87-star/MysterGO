@@ -130,12 +130,12 @@ export const WorkerDetailsPage: React.FC = () => {
                 <Star className="w-4 h-4 fill-current" />
                 <span className="text-lg font-black text-white">{(worker.rating || 0).toFixed(1)}</span>
               </div>
-              <p className="text-[8px] font-black text-gray-teal uppercase tracking-widest">Efficiency</p>
+              <p className="text-[8px] font-black text-gray-teal uppercase tracking-widest">Rating</p>
             </div>
             <div className="w-[1px] h-10 bg-white/5" />
             <div className="text-center space-y-1.5">
               <h4 className="text-lg font-black text-white">240+</h4>
-              <p className="text-[8px] font-black text-gray-teal uppercase tracking-widest">Deployments</p>
+              <p className="text-[8px] font-black text-gray-teal uppercase tracking-widest">Jobs Done</p>
             </div>
             <div className="w-[1px] h-10 bg-white/5" />
             <div className="text-center space-y-1.5">
@@ -154,8 +154,8 @@ export const WorkerDetailsPage: React.FC = () => {
             <div className="w-12 h-12 rounded-2xl bg-brand-amber/10 border border-brand-amber/20 flex items-center justify-center text-brand-amber mb-4 shadow-inner">
               <Clock size={22} />
             </div>
-            <p className="text-[8px] font-black text-gray-teal uppercase tracking-[0.2em] mb-1">Latency Profile</p>
-            <h5 className="text-[11px] font-black text-white uppercase tracking-widest">{"<"} 15m Response</h5>
+            <p className="text-[8px] font-black text-gray-teal uppercase tracking-[0.2em] mb-1">Average Response</p>
+            <h5 className="text-[11px] font-black text-white uppercase tracking-widest">Under 15 mins</h5>
           </motion.div>
           <motion.div 
             whileHover={{ y: -5 }}
@@ -165,7 +165,7 @@ export const WorkerDetailsPage: React.FC = () => {
               <CheckCircle size={22} />
             </div>
             <p className="text-[8px] font-black text-gray-teal uppercase tracking-[0.2em] mb-1">Status</p>
-            <h5 className="text-[11px] font-black text-emerald-400 uppercase tracking-widest">Active</h5>
+            <h5 className="text-[11px] font-black text-emerald-400 uppercase tracking-widest">Available</h5>
           </motion.div>
         </div>
 
@@ -173,11 +173,11 @@ export const WorkerDetailsPage: React.FC = () => {
         <div className="space-y-4">
           <h3 className="px-3 text-[10px] font-black text-gray-teal uppercase tracking-[0.3em] flex items-center gap-3">
             <div className="w-6 h-[1px] bg-brand-amber" />
-            Operational Directives
+            About Provider
           </h3>
           <div className="bg-brand-slate p-8 rounded-[40px] border border-white/5 shadow-2xl">
             <p className="text-sm text-gray-teal font-bold leading-[1.8] tracking-wide">
-              {worker.skill || 'Skilled professional'} identified as a high-authority asset with extensive deployment history in critical infrastructure. Specializes in advanced {worker.skill} diagnostics, structural architecture, and precision implementation. Consistent records of delivering 100% operational success for all project nodes.
+              {worker.skill || 'Skilled professional'} provider with a proven track record of excellent service. Specializes in quality {worker.skill} services, repairs, and installations. Committed to ensuring 100% customer satisfaction.
             </p>
           </div>
         </div>
@@ -190,20 +190,20 @@ export const WorkerDetailsPage: React.FC = () => {
           <div className="absolute top-0 right-0 w-80 h-80 bg-white/10 rounded-full blur-[100px] -mr-40 -mt-40 transition-all group-hover:bg-white/20" />
           
           <div className="flex items-center justify-between relative z-10">
-            <p className="text-[10px] font-black uppercase tracking-[0.5em] text-brand-dark/60">Resource Credit</p>
-            <span className="px-3 py-1 bg-brand-dark/10 border border-brand-dark/10 rounded-full text-[8px] font-black uppercase tracking-widest text-brand-dark">Institutional</span>
+            <p className="text-[10px] font-black uppercase tracking-[0.5em] text-brand-dark/60">Service Rate</p>
+            <span className="px-3 py-1 bg-brand-dark/10 border border-brand-dark/10 rounded-full text-[8px] font-black uppercase tracking-widest text-brand-dark">Verified</span>
           </div>
           
           <div className="flex items-end gap-2 relative z-10">
             <h2 className="text-5xl font-black tracking-tighter text-brand-dark">
               {formatCurrency(calculateMarkupPrice(worker.hourlyRate))}
             </h2>
-            <p className="text-xs font-black text-brand-dark/60 uppercase mb-2 tracking-widest">/ Node Cycle</p>
+            <p className="text-xs font-black text-brand-dark/60 uppercase mb-2 tracking-widest">/ hour</p>
           </div>
           
           <div className="bg-brand-dark/5 backdrop-blur-md rounded-2xl p-5 border border-brand-dark/10 relative z-10">
             <p className="text-[8px] font-black text-brand-dark/80 uppercase tracking-[0.3em] leading-relaxed">
-              *Final allocation may deviate based on structural complexity and specialized component requirements.
+              *Final pricing may vary based on job complexity and materials required.
             </p>
           </div>
         </motion.div>
@@ -224,7 +224,7 @@ export const WorkerDetailsPage: React.FC = () => {
           onClick={() => navigate(`/booking/${worker.uid}`)}
           className="flex-1 h-20 bg-brand-amber text-brand-dark rounded-[32px] font-black text-xs uppercase tracking-[0.4em] shadow-xl shadow-brand-amber/20 flex items-center justify-center gap-4 group transition-all"
         >
-          Initialize Matrix
+          Book Provider / বুক করুন
           <ChevronRight size={22} className="group-hover:translate-x-2 transition-transform" />
         </motion.button>
       </div>

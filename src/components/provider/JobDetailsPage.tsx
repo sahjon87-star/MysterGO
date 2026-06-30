@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { TrackingMap } from '../shared/TrackingMap';
+import { OTPInput } from '../shared/OTPInput';
 import { Booking } from '../../types';
 import { formatCurrency, getInitials } from '../../lib/utils';
 import { handleFirestoreError, OperationType } from '../../lib/firestore-errors';
@@ -434,6 +435,25 @@ export const JobDetailsPage: React.FC = () => {
                 <div className="space-y-2 pt-2 border-t border-white/5">
                   <p className="text-[10px] font-black text-gray-teal uppercase tracking-widest leading-none">Job Description</p>
                   <p className="text-sm font-medium text-gray-teal leading-relaxed italic">"{job.description}"</p>
+                  
+                  <div className="my-3 p-3 bg-slate-800/80 border border-slate-700 rounded-lg">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 block mb-1">
+                      প্রয়োজনীয় কর্মী / Crew Requirements
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xl">🧑🤝🧑</span>
+                      <span className="text-sm font-bold text-white">
+                        {(job.helperCount || 0) > 0 
+                          ? `${job.helperCount} সাহায্যকারী প্রয়োজন (${job.helperCount} Helper Required)` 
+                          : "কোন সাহায্যকারী লাগবে না (Only Mistri)"}
+                      </span>
+                    </div>
+                    {(job.helperCount || 0) > 0 && (
+                      <p className="text-[11px] text-emerald-400 mt-1 font-mono">
+                        +৳{job.totalHelperCost} Jogan Fare added to ultimate payout
+                      </p>
+                    )}
+                  </div>
                 </div>
              )}
 
@@ -452,26 +472,61 @@ export const JobDetailsPage: React.FC = () => {
 
       {/* Action Buttons */}
       <div className="fixed bottom-20 left-0 right-0 p-4 w-full bg-brand-slate/90 backdrop-blur-xl border-t border-white/5 z-[60]">
-        <div className="flex gap-3">
+        <div className="max-w-md mx-auto w-full">
           {job.status === 'pending' && (
-            <>
-              <button 
-                onClick={() => updateStatus('cancelled')}
-                disabled={updating}
-                className="flex-1 py-5 rounded-[24px] text-[10px] font-black uppercase tracking-widest text-red-400 border-2 border-red-500/20 hover:bg-red-500/10 active:scale-95 transition-all flex items-center justify-center gap-2"
-              >
-                {updating ? <Loader2 className="w-4 h-4 animate-spin" /> : <XCircle className="w-4 h-4" />}
-                Reject Job
-              </button>
-              <button 
-                onClick={() => updateStatus('accepted')}
-                disabled={updating}
-                className="flex-[2] py-5 bg-brand-amber text-brand-dark rounded-[24px] text-[10px] font-black uppercase tracking-widest shadow-xl shadow-brand-amber/20 hover:bg-brand-amber/90 active:scale-95 transition-all flex items-center justify-center gap-2"
-              >
-                {updating ? <Loader2 className="w-4 h-4 animate-spin" /> : <ShieldCheck className="w-4 h-4" />}
-                Accept Request
-              </button>
-            </>
+            <div className="flex flex-col gap-3 w-full">
+              {/* Job Description block before Action Buttons */}
+              <div className="bg-slate-100 rounded-2xl p-4 border border-brand-amber/20 text-left space-y-1 w-full">
+                <span className="text-[9px] font-black text-brand-amber uppercase tracking-wider block">
+                  Job Description / কাজের বিবরণ
+                </span>
+                <p className="text-xs font-bold text-slate-900 leading-relaxed">
+                  {job.deploymentDescription || job.description || 'No description provided / কোনো কাজের বিবরণ নেই'}
+                </p>
+                
+                <div className="my-3 p-3 bg-slate-800/80 border border-slate-700 rounded-lg">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 block mb-1">
+                    প্রয়োজনীয় কর্মী / Crew Requirements
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl">🧑🤝🧑</span>
+                    <span className="text-sm font-bold text-white">
+                      {(job.helperCount || 0) > 0 
+                        ? `${job.helperCount} সাহায্যকারী প্রয়োজন (${job.helperCount} Helper Required)` 
+                        : "কোন সাহায্যকারী লাগবে না (Only Mistri)"}
+                    </span>
+                  </div>
+                  {(job.helperCount || 0) > 0 && (
+                    <p className="text-[11px] text-emerald-400 mt-1 font-mono">
+                      +৳{job.totalHelperCost} Jogan Fare added to ultimate payout
+                    </p>
+                  )}
+                </div>
+
+                <p className="text-[9px] text-slate-500 font-medium leading-normal mt-1 pt-1 border-t border-slate-200">
+                  Please read the details carefully. Once accepted, cancellations may affect your provider rating.
+                </p>
+              </div>
+
+              <div className="flex gap-3 w-full">
+                <button 
+                  onClick={() => updateStatus('cancelled')}
+                  disabled={updating}
+                  className="flex-1 py-5 rounded-[24px] text-[10px] font-black uppercase tracking-widest text-red-400 border-2 border-red-500/20 hover:bg-red-500/10 active:scale-95 transition-all flex items-center justify-center gap-2"
+                >
+                  {updating ? <Loader2 className="w-4 h-4 animate-spin" /> : <XCircle className="w-4 h-4" />}
+                  Reject Job
+                </button>
+                <button 
+                  onClick={() => updateStatus('accepted')}
+                  disabled={updating}
+                  className="flex-[2] py-5 bg-brand-amber text-brand-dark rounded-[24px] text-[10px] font-black uppercase tracking-widest shadow-xl shadow-brand-amber/20 hover:bg-brand-amber/90 active:scale-95 transition-all flex items-center justify-center gap-2"
+                >
+                  {updating ? <Loader2 className="w-4 h-4 animate-spin" /> : <ShieldCheck className="w-4 h-4" />}
+                  Accept Request
+                </button>
+              </div>
+            </div>
           )}
 
           {job.status === 'accepted' && (
@@ -528,14 +583,9 @@ export const JobDetailsPage: React.FC = () => {
                 <p className="text-xs font-medium text-gray-teal">Ask the customer for the <span className="font-black text-brand-amber">Start OTP</span> to begin working.</p>
               </div>
 
-              <input 
-                type="text"
-                maxLength={4}
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                className="otp-input w-full rounded-3xl py-6 text-center text-4xl font-black tracking-[0.5em] focus:border-brand-amber outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500"
-                placeholder="0000"
-              />
+              <div className="py-4 z-10 relative">
+                <OTPInput length={4} value={otp} onChange={setOtp} />
+              </div>
 
               <div className="flex gap-3 relative z-10">
                 <button 
@@ -576,18 +626,13 @@ export const JobDetailsPage: React.FC = () => {
               </div>
               
               <div className="space-y-2 relative z-10">
-                <h3 className="text-xl font-black text-cream uppercase tracking-tight">Final Settlement</h3>
-                <p className="text-xs font-medium text-gray-teal">Ask the customer for the <span className="font-black text-brand-amber">6-digit Completion OTP</span> to release payment.</p>
+                <h3 className="text-xl font-black text-cream uppercase tracking-tight">Verify Completion Code</h3>
+                <p className="text-xs font-medium text-gray-teal">Ask the customer for the <span className="font-black text-brand-amber">6-digit completion code</span> to finish the job and receive payment.</p>
               </div>
 
-              <input 
-                type="text"
-                maxLength={6}
-                value={completionOtp}
-                onChange={(e) => setCompletionOtp(e.target.value)}
-                className="otp-input w-full rounded-3xl py-6 text-center text-4xl font-black tracking-[0.35em] focus:border-emerald-500 outline-none transition-all placeholder:text-slate-400 dark:placeholder:text-slate-500"
-                placeholder="000000"
-              />
+              <div className="py-4 z-10 relative">
+                <OTPInput length={6} value={completionOtp} onChange={setCompletionOtp} />
+              </div>
 
               <div className="flex gap-3 relative z-10">
                  <button 

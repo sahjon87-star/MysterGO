@@ -233,7 +233,7 @@ export const CustomerWallet: React.FC = () => {
         
         <div className="relative z-10 text-center space-y-6">
           <div className="space-y-2">
-            <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em]">Available Capital</p>
+            <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em]">Wallet Balance</p>
             <div className="text-5xl font-black text-white tracking-tighter">
               {formatCurrency(profile?.walletBalance || 0)}
             </div>
@@ -241,7 +241,7 @@ export const CustomerWallet: React.FC = () => {
           
           <div className="flex items-center justify-center gap-2 text-slate-500 text-[9px] font-black uppercase tracking-widest bg-white/5 py-1 px-3 rounded-full w-fit mx-auto">
             <RefreshCw className="w-3 h-3 animate-spin-slow" />
-            <span>Synced Live with Ledger</span>
+            <span>Updated Live</span>
           </div>
 
           <div className="flex gap-4 pt-4 max-w-sm mx-auto">
@@ -275,7 +275,7 @@ export const CustomerWallet: React.FC = () => {
                 <Gift className="w-7 h-7" />
               </div>
               <div className="space-y-0.5">
-                <h3 className="font-black text-base uppercase tracking-tight text-white leading-none">Capital Reward</h3>
+                <h3 className="font-black text-base uppercase tracking-tight text-white leading-none">Referral Bonus</h3>
                 <p className="text-white/70 text-[10px] font-bold uppercase tracking-widest">Earn ৳20 per successful referral</p>
               </div>
             </div>
@@ -300,7 +300,7 @@ export const CustomerWallet: React.FC = () => {
       {/* Transactions */}
       <div className="px-4 space-y-5">
         <div className="flex items-center justify-between px-2">
-          <h3 className="font-black text-slate-800 dark:text-white uppercase tracking-widest text-xs">Wallet Ledger</h3>
+          <h3 className="font-black text-slate-800 dark:text-white uppercase tracking-widest text-xs">Transaction History</h3>
           <div className="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 rounded-full text-[8px] font-black text-slate-400 uppercase tracking-tighter">
             {sortedTransactions.length} ENTRIES
           </div>
@@ -312,7 +312,7 @@ export const CustomerWallet: React.FC = () => {
           ) : sortedTransactions.length === 0 ? (
             <div className="glass-card p-16 text-center space-y-4">
               <div className="text-5xl animate-bounce">📦</div>
-              <p className="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-widest">Digital Ledger is Empty</p>
+              <p className="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-widest">No transactions yet</p>
             </div>
           ) : (
             sortedTransactions.map((tx) => (
@@ -335,7 +335,7 @@ export const CustomerWallet: React.FC = () => {
                         <span className="px-2 py-0.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-500 text-[7px] font-black rounded-full uppercase tracking-widest border border-emerald-500/10">Verified by {tx.reviewedByAdmin}</span>
                      )}
                      {tx.status === 'pending' && (
-                        <span className="px-2 py-0.5 bg-amber-500/10 text-amber-600 dark:text-amber-500 text-[7px] font-black rounded-full uppercase tracking-widest border border-amber-500/10">Under Audit</span>
+                        <span className="px-2 py-0.5 bg-amber-500/10 text-amber-600 dark:text-amber-500 text-[7px] font-black rounded-full uppercase tracking-widest border border-amber-500/10">Pending Verification</span>
                      )}
                   </div>
                   <div className="flex items-center gap-1.5 mt-1.5">

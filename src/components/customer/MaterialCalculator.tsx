@@ -910,7 +910,7 @@ export const MaterialCalculator: React.FC = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={handleGetEstimate}
-                  className="w-full sm:w-auto px-6 py-4 bg-gradient-to-r from-brand-amber to-[#D97706] hover:from-[#D97706] hover:to-[#B45309] text-brand-dark font-black text-xs uppercase tracking-widest rounded-2xl shadow-lg flex items-center justify-center gap-2.5 transition-all text-neutral-900"
+                  className="w-full sm:w-auto px-6 py-4 bg-gradient-to-r from-brand-amber to-brand-amber-light hover:from-brand-amber-light hover:to-brand-amber text-brand-dark font-black text-xs uppercase tracking-widest rounded-2xl shadow-lg flex items-center justify-center gap-2.5 transition-all text-neutral-900"
                 >
                   <Sparkles className="w-4 h-4 fill-brand-dark/20 animate-spin" />
                   {lang === 'bn' ? 'Ask Gemini AI for Estimation Summary' : 'Ask Gemini AI for Estimation Summary'}
@@ -940,7 +940,7 @@ export const MaterialCalculator: React.FC = () => {
               <motion.div 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-brand-slate border border-[#3B82F6]/20 rounded-2xl p-5 relative shadow-sm"
+                className="bg-brand-slate border border-brand-blue/20 rounded-2xl p-5 relative shadow-sm"
               >
                 {/* Voice / Custom speaking overlay banner */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-white/5 pb-3.5 mb-3.5 gap-3">
@@ -985,7 +985,7 @@ export const MaterialCalculator: React.FC = () => {
                     <button
                       onClick={() => setShowSettings(!showSettings)}
                       className={`p-2 rounded-xl border transition-all ${
-                        showSettings ? 'bg-brand-amber/20 border-brand-amber text-brand-amber' : 'bg-white/5 border-white/5 text-[#8FA2A2] hover:text-white'
+                        showSettings ? 'bg-brand-amber/20 border-brand-amber text-brand-amber' : 'bg-white/5 border-white/5 text-gray-teal hover:text-white'
                       }`}
                       title="Adjust Speech Settings"
                     >
@@ -1001,7 +1001,7 @@ export const MaterialCalculator: React.FC = () => {
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: 'auto' }}
                       exit={{ opacity: 0, height: 0 }}
-                      className="bg-brand-dark/60 border border-white/5 p-3 rounded-xl mb-4 space-y-3 overflow-hidden text-[10px] font-black uppercase tracking-widest text-[#8FA2A2]"
+                      className="bg-brand-dark/60 border border-white/5 p-3 rounded-xl mb-4 space-y-3 overflow-hidden text-[10px] font-black uppercase tracking-widest text-gray-teal"
                     >
                       <div className="flex justify-between items-center">
                         <span className="text-[9px] text-white">Adjustable voice controls</span>
@@ -1074,7 +1074,7 @@ export const MaterialCalculator: React.FC = () => {
 
                 {/* Action buttons below */}
                 <div className="border-t border-white/5 pt-3.5 mt-4 flex justify-between items-center">
-                  <span className="text-[8px] font-black uppercase text-[#5E6D6D]">Gemini output report</span>
+                  <span className="text-[8px] font-black uppercase text-gray-teal">Gemini output report</span>
                   <button
                     onClick={handleGetEstimate}
                     className="flex items-center gap-1 bg-white/5 hover:bg-white/10 text-brand-amber font-black text-[9px] uppercase tracking-widest px-3 py-1.5 rounded-lg transition-all"

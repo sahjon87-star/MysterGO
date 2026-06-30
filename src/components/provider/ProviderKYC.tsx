@@ -167,9 +167,15 @@ export const ProviderKYC: React.FC = () => {
                 </div>
                 <input 
                   type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  maxLength={17}
                   value={formData.nidNumber}
-                  onChange={(e) => setFormData(prev => ({ ...prev, nidNumber: e.target.value }))}
-                  className="w-full bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[28px] pl-14 pr-6 py-5 focus:ring-2 focus:ring-primary-blue outline-none text-sm font-black dark:text-white shadow-sm"
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/[^0-9]/g, '');
+                    setFormData(prev => ({ ...prev, nidNumber: val }));
+                  }}
+                  className="w-full bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-[28px] pl-14 pr-6 py-5 focus:ring-2 focus:ring-primary-blue outline-none text-sm font-black text-slate-900 dark:text-white shadow-sm"
                   placeholder="Enter 10 or 13 digit NID number"
                 />
               </div>

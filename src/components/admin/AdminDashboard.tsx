@@ -200,8 +200,8 @@ export const AdminDashboard: React.FC = () => {
       {/* Title Section */}
       <div className="flex items-center justify-between px-2">
         <div className="space-y-1">
-          <h2 className="text-3xl font-black text-slate-800 dark:text-white tracking-tighter leading-none">Command Center</h2>
-          <p className="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-[0.3em]">Operational Oversight & Intelligence</p>
+          <h2 className="text-3xl font-black text-slate-800 dark:text-white tracking-tighter leading-none">Control Panel</h2>
+          <p className="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-[0.3em]">Administrative Control Panel</p>
         </div>
         <motion.button 
           whileHover={{ scale: 1.05 }}
@@ -210,7 +210,7 @@ export const AdminDashboard: React.FC = () => {
           className="glass-card flex items-center gap-2 px-6 py-3 bg-white/50 dark:bg-slate-800/50 text-brand-amber hover:text-white hover:bg-brand-amber rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-glass"
         >
           <Megaphone className="w-3.5 h-3.5" />
-          Matrix Broadcast
+          Send Broadcast
         </motion.button>
       </div>
 
@@ -265,13 +265,13 @@ export const AdminDashboard: React.FC = () => {
               </div>
               <div className="flex-1 space-y-0.5">
                 <h4 className="text-sm font-black text-slate-800 dark:text-white uppercase tracking-tight">{stats.pendingKYC} Professional KYC</h4>
-                <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Identity Audit Required</p>
+                <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Verification Pending</p>
               </div>
               <button 
                 onClick={() => navigate('/admin/providers')}
                 className="bg-white dark:bg-slate-800 text-action-orange px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl active:scale-95 transition-all border border-action-orange/10"
               >
-                Audit
+                Review
               </button>
             </motion.div>
           )}
@@ -292,7 +292,7 @@ export const AdminDashboard: React.FC = () => {
                 onClick={() => navigate('/admin/shops')}
                 className="bg-white dark:bg-slate-800 text-primary-blue px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl active:scale-95 transition-all border border-primary-blue/10"
               >
-                Audit
+                Review
               </button>
             </motion.div>
           )}
@@ -344,7 +344,7 @@ export const AdminDashboard: React.FC = () => {
       {/* Activity Feed Ledger */}
       <div className="space-y-5 pb-20">
         <div className="flex items-center justify-between px-2">
-          <h3 className="font-black text-slate-800 dark:text-white uppercase tracking-widest text-[10px]">Transmission Ledger</h3>
+          <h3 className="font-black text-slate-800 dark:text-white uppercase tracking-widest text-[10px]">Recent Activity</h3>
           <div className="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 rounded-full text-[8px] font-black text-slate-400 uppercase tracking-tighter">
             LIVE FEED
           </div>
@@ -354,7 +354,7 @@ export const AdminDashboard: React.FC = () => {
           {recentActivity.length === 0 ? (
             <div className="glass-card p-16 text-center space-y-4">
               <div className="text-5xl animate-bounce">📡</div>
-              <p className="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-widest">No Transmissions Detected</p>
+              <p className="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-widest">No Recent Activity</p>
             </div>
           ) : (
             recentActivity.map((activity, index) => (

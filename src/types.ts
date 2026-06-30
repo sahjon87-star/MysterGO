@@ -124,6 +124,7 @@ export interface Booking {
   providerCollection?: 'providers' | 'shops';
   service: string;
   description: string;
+  deploymentDescription?: string;
   address: string;
   location?: { lat: number; lng: number };
   date: string;
@@ -136,10 +137,11 @@ export interface Booking {
   totalAmount: number; // This will be the markupPrice
   commission: number; // This will be applicationFee + paymentCharges
   providerEarning: number; // This will be basePrice
-  paymentMethod: 'bkash' | 'nagad' | 'cash';
-  paymentStatus: 'pending' | 'submitted' | 'paid' | 'rejected';
+  paymentMethod: 'bkash' | 'nagad' | 'cash' | 'wallet';
+  paymentStatus: 'pending' | 'submitted' | 'paid' | 'rejected' | 'pending_approval';
   trxId?: string;
   paymentScreenshotUrl?: string;
+  hasSubmittedTrx?: boolean;
   status: BookingStatus;
   jobType: JobType;
   completionOTP?: string;
@@ -150,6 +152,12 @@ export interface Booking {
   provider?: ProviderProfile | UserProfile;
   providerLocation?: { lat: number; lng: number };
   providerAddress?: string;
+  helperCount?: number;
+  helperUnitRate?: number;
+  totalHelperCost?: number;
+  providerBaseRate?: number;
+  totalPayout?: number;
+  requiresHelper?: boolean;
   createdAt: any;
   updatedAt?: any;
   acceptedAt?: any;
@@ -226,7 +234,7 @@ export interface Transaction {
   type: 'credit' | 'debit';
   amount: number;
   description: string;
-  status?: 'pending' | 'approved' | 'rejected';
+  status?: 'pending' | 'approved' | 'rejected' | 'pending_approval';
   method?: 'bkash' | 'nagad';
   trxId?: string;
   screenshotUrl?: string;

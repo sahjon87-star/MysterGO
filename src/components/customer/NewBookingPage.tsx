@@ -4,12 +4,14 @@ import { doc, getDoc, addDoc, collection, serverTimestamp, onSnapshot, query, wh
 import { db } from '../../lib/firebase';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
-import { ArrowLeft, Calendar as CalendarIcon, Clock, MapPin, CheckCircle2, Store, Briefcase, Wrench, Loader2 } from 'lucide-react';
+import { ArrowLeft, Calendar as CalendarIcon, Clock, MapPin, CheckCircle2, Store, Briefcase, Wrench, Loader2, Users, UserPlus } from 'lucide-react';
 import { motion } from 'motion/react';
 import toast from 'react-hot-toast';
 import { ProviderProfile, JobType, ShopProfile } from '../../types';
 import { formatCurrency, getInitials } from '../../lib/utils';
 import { notificationService } from '../../services/notificationService';
+
+const HELPER_UNIT_RATE = 600;
 
 // Helper for distance calculation
 const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
@@ -60,6 +62,7 @@ export const NewBookingPage: React.FC = () => {
   const [jobType, setJobType] = useState<JobType>('standard');
   const [paymentMethod, setPaymentMethod] = useState<'bkash' | 'nagad' | 'cash' | 'wallet'>('bkash');
   const [nearbyShops, setNearbyShops] = useState<ShopProfile[]>([]);
+  const [helperCount, setHelperCount] = useState<number>(0);
 
   useEffect(() => {
     // Listen for global settings
@@ -149,7 +152,10 @@ export const NewBookingPage: React.FC = () => {
         ? (worker.contractRate || 0)
         : (worker.hourlyRate || 0) * hours;
 
-    const { markupPrice, applicationFee, paymentCharges } = calculateMarkup(basePrice);
+    const totalHelperCost = helperCount * HELPER_UNIT_RATE;
+    const finalPayout = basePrice + totalHelperCost;
+
+    const { markupPrice, applicationFee, paymentCharges } = calculateMarkup(finalPayout);
 
     // Check wallet balance if payment method is wallet
     if (paymentMethod === 'wallet' && (profile.walletBalance || 0) < markupPrice) {
@@ -172,13 +178,19 @@ export const NewBookingPage: React.FC = () => {
         date,
         time,
         hours: jobType === 'daily' ? days * 8 : hours,
-        basePrice,
+        helperCount,
+        helperUnitRate: HELPER_UNIT_RATE,
+        totalHelperCost,
+        providerBaseRate: basePrice,
+        totalPayout: finalPayout,
+        requiresHelper: helperCount > 0,
+        basePrice: finalPayout, // Combined fare for compatibility
         markupPrice,
         applicationFee,
         paymentCharges,
         totalAmount: markupPrice,
         commission: applicationFee + paymentCharges,
-        providerEarning: basePrice,
+        providerEarning: finalPayout, // Entire combo payout
         paymentMethod,
         paymentStatus: paymentMethod === 'wallet' ? 'paid' : 'pending',
         status: 'pending',
@@ -263,7 +275,10 @@ export const NewBookingPage: React.FC = () => {
       ? (worker.contractRate || 0)
       : (worker.hourlyRate || 0) * hours;
 
-  const pricing = calculateMarkup(currentBasePrice);
+  const totalHelperCost = helperCount * HELPER_UNIT_RATE;
+  const finalPayout = currentBasePrice + totalHelperCost;
+
+  const pricing = calculateMarkup(finalPayout);
 
   return (
     <div className="min-h-screen bg-brand-dark pb-40 transition-colors duration-500">
@@ -277,8 +292,8 @@ export const NewBookingPage: React.FC = () => {
           <ArrowLeft className="w-5 h-5 text-white" />
         </motion.button>
         <div className="flex flex-col">
-          <h1 className="font-black text-white uppercase tracking-tighter text-lg leading-none">Initiate Request</h1>
-          <span className="text-[8px] font-black text-brand-amber uppercase tracking-[0.3em] mt-1">Deployment Protocol v4.0</span>
+          <h1 className="font-black text-white uppercase tracking-tighter text-lg leading-none">Book Service</h1>
+          <span className="text-[8px] font-black text-brand-amber uppercase tracking-[0.3em] mt-1">Booking Form</span>
         </div>
       </nav>
 
@@ -301,7 +316,7 @@ export const NewBookingPage: React.FC = () => {
             <p className="text-brand-amber text-[9px] font-black uppercase tracking-[0.2em]">{worker.skill || worker.providerType}</p>
             <div className="flex items-center gap-2 mt-2">
               <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
-              <span className="text-[8px] font-black text-gray-teal uppercase tracking-widest">Active Node</span>
+              <span className="text-[8px] font-black text-gray-teal uppercase tracking-widest">Available</span>
             </div>
           </div>
           <div className="text-right">
@@ -323,7 +338,7 @@ export const NewBookingPage: React.FC = () => {
         <div className="space-y-4">
           <h3 className="font-black text-white uppercase tracking-[0.3em] text-[10px] px-2 flex items-center gap-3">
              <div className="w-5 h-[1px] bg-brand-amber" />
-             Job Category Matrix
+             Job Category
           </h3>
           <div className="grid grid-cols-3 gap-4">
             {[
@@ -347,21 +362,104 @@ export const NewBookingPage: React.FC = () => {
           </div>
         </div>
 
+        {/* Helper Configuration & Live BD Rates */}
+        <div className="space-y-4">
+          <div className="flex justify-between items-center px-2">
+            <h3 className="font-black text-white uppercase tracking-[0.3em] text-[10px] flex items-center gap-3">
+              <div className="w-5 h-[1px] bg-brand-amber" />
+              Add Reliable Helpers (Jogan)
+            </h3>
+            <span className="text-[8px] font-black text-[#FF5A00] bg-[#FF5A00]/10 border border-[#FF5A00]/20 px-3 py-1 rounded-full uppercase tracking-widest">
+              Live BD Standard Rate
+            </span>
+          </div>
+
+          <div className="bg-brand-slate rounded-[32px] p-6 border border-white/5 shadow-2xl space-y-4">
+            <div className="flex items-start justify-between gap-4 border-b border-white/5 pb-4">
+              <div className="space-y-1">
+                <p className="text-[10px] font-black text-white uppercase tracking-wider">
+                  Helper / Jogali Combo Support
+                </p>
+                <p className="text-[8px] font-bold text-gray-teal uppercase tracking-widest">
+                  Bring Jogan helpers directly to the site for speed & efficiency
+                </p>
+              </div>
+              <div className="text-right">
+                <span className="text-brand-amber font-black text-xs uppercase tracking-wider block">
+                  ৳{HELPER_UNIT_RATE} / day
+                </span>
+                <span className="text-[7px] text-gray-teal font-black uppercase tracking-widest">
+                  Per helper rate
+                </span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-3">
+              {([
+                { count: 0, label: "0 Helpers", sub: "Solo Mistri" },
+                { count: 1, label: "1 Helper", sub: "Mistri + 1 Jogan" },
+                { count: 2, label: "2 Helpers", sub: "Mistri + 2 Jogan" },
+              ] as const).map((opt) => (
+                <motion.button
+                  key={opt.count}
+                  type="button"
+                  whileHover={{ y: -3 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setHelperCount(opt.count)}
+                  className={`flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all ${
+                    helperCount === opt.count
+                      ? "border-brand-amber bg-brand-amber/10 text-brand-amber shadow-2xl"
+                      : "border-white/5 bg-brand-dark text-gray-teal hover:border-white/10"
+                  }`}
+                >
+                  {opt.count === 0 ? (
+                    <Users className="w-4 h-4 opacity-50" />
+                  ) : (
+                    <UserPlus className="w-4 h-4 text-brand-amber" />
+                  )}
+                  <span className="text-[9px] font-black uppercase tracking-wider">{opt.label}</span>
+                  <span className="text-[7px] text-gray-teal/70 font-bold uppercase tracking-widest leading-none">
+                    {opt.sub}
+                  </span>
+                </motion.button>
+              ))}
+            </div>
+
+            {helperCount > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-brand-dark/50 rounded-2xl p-4 border border-white/5 flex justify-between items-center"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 rounded-full bg-brand-amber animate-pulse" />
+                  <span className="text-[8px] font-black text-white uppercase tracking-widest">
+                    Combo Allocation Active
+                  </span>
+                </div>
+                <span className="text-[9px] font-black text-brand-amber uppercase tracking-widest">
+                  Allocated Helper Fare: +{formatCurrency(helperCount * HELPER_UNIT_RATE)}
+                </span>
+              </motion.div>
+            )}
+          </div>
+        </div>
+
         {/* Form Logic HUD */}
         <div className="bg-brand-slate rounded-[48px] p-8 border border-white/5 shadow-2xl space-y-8">
           <div className="grid grid-cols-1 gap-8">
             <div className="space-y-3">
-              <label className="text-[9px] font-black text-gray-teal uppercase tracking-[0.3em] px-2">Deployment Description</label>
+              <label className="text-[9px] font-black text-gray-teal uppercase tracking-[0.3em] px-2">Job Details / কাজের বিবরণ</label>
               <textarea 
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="w-full px-6 py-5 bg-brand-dark border border-brand-surface rounded-[28px] focus:ring-2 focus:ring-brand-amber outline-none text-sm font-bold min-h-[120px] resize-none text-cream shadow-inner transition-all placeholder:text-gray-teal/50"
-                placeholder="Specify precise operational requirements..."
+                placeholder="Describe your requirements / কাজের বিবরণ দিন..."
               />
             </div>
 
             <div className="space-y-3">
-              <label className="text-[9px] font-black text-gray-teal uppercase tracking-[0.3em] px-2">Location Coordinates</label>
+              <label className="text-[9px] font-black text-gray-teal uppercase tracking-[0.3em] px-2">Work Address / ঠিকানা</label>
               <div className="relative group">
                 <MapPin className="absolute left-6 top-1/2 -translate-y-1/2 text-brand-amber w-5 h-5 z-10 transition-transform group-focus-within:scale-110" />
                 <input 
@@ -369,14 +467,14 @@ export const NewBookingPage: React.FC = () => {
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   className="w-full pl-16 pr-6 py-5 bg-brand-dark border border-brand-surface rounded-[28px] focus:ring-2 focus:ring-brand-amber outline-none text-sm font-bold text-cream shadow-inner transition-all placeholder:text-gray-teal/50"
-                  placeholder="Street, Sector, District Data..."
+                  placeholder="Street, Area, District..."
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-3">
-                <label className="text-[9px] font-black text-gray-teal uppercase tracking-[0.3em] px-2">Deployment Date</label>
+                <label className="text-[9px] font-black text-gray-teal uppercase tracking-[0.3em] px-2">Preferred Date / পছন্দসই তারিখ</label>
                 <div className="relative group">
                   <CalendarIcon className="absolute left-6 top-1/2 -translate-y-1/2 text-brand-amber w-5 h-5 z-10" />
                   <input 
@@ -411,32 +509,42 @@ export const NewBookingPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Ledger Breakdown HUD */}
+          {/* Booking Summary */}
           <div className="bg-brand-dark rounded-[36px] p-8 space-y-4 border border-white/5 shadow-2xl relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-64 h-64 bg-brand-amber/5 rounded-full blur-[80px] -mr-32 -mt-32" />
             
             <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em] text-gray-teal group-hover:text-white transition-colors">
               <span>
-                Base Resource Credit ({
+                Worker Fare / কাজের মজুরি ({
                   jobType === 'daily' 
                     ? `${formatCurrency(worker.dailyRate || worker.hourlyRate * 8)} × ${days}d`
                     : jobType === 'contract'
-                      ? 'Fixed Node Contract'
+                      ? 'Fixed Contract'
                       : `${formatCurrency(worker.hourlyRate)} × ${hours}hr`
                 })
               </span>
               <span className="text-white">
-                {formatCurrency(pricing.basePrice)}
+                {formatCurrency(currentBasePrice)}
               </span>
             </div>
+            {helperCount > 0 && (
+              <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em] text-brand-amber transition-colors">
+                <span>
+                  Helper Fare / জোগালির মজুরি ({helperCount} × {formatCurrency(HELPER_UNIT_RATE)})
+                </span>
+                <span className="text-brand-amber">
+                  {formatCurrency(totalHelperCost)}
+                </span>
+              </div>
+            )}
             <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em] text-gray-teal group-hover:text-white transition-colors">
-              <span>Protocol Fee ({settings.applicationFeeRate}%)</span>
+              <span>Service Charge ({settings.applicationFeeRate}%)</span>
               <span className="text-white">
                 {formatCurrency(pricing.applicationFee)}
               </span>
             </div>
             <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em] text-gray-teal group-hover:text-white transition-colors">
-              <span>Ledger Processing ({settings.paymentChargeRate}%)</span>
+              <span>Platform Fee ({settings.paymentChargeRate}%)</span>
               <span className="text-white">
                 {formatCurrency(pricing.paymentCharges)}
               </span>
@@ -444,7 +552,7 @@ export const NewBookingPage: React.FC = () => {
             <div className="h-px bg-white/5 my-4" />
             <div className="flex justify-between items-center">
               <div className="space-y-1">
-                <span className="text-[10px] font-black text-brand-amber uppercase tracking-[0.3em] block">Total Allocation</span>
+                <span className="text-[10px] font-black text-brand-amber uppercase tracking-[0.3em] block">Total Payable Amount</span>
                 <span className="text-[8px] font-black text-gray-teal uppercase tracking-widest">Calculated Real-Time</span>
               </div>
               <span className="text-4xl font-black text-white tracking-tighter">
@@ -631,7 +739,7 @@ export const NewBookingPage: React.FC = () => {
           disabled={submitting}
           className="w-full h-16 bg-brand-amber hover:shadow-brand-amber/20 text-brand-dark font-black text-xs uppercase tracking-[0.4em] rounded-[28px] shadow-2xl transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3"
         >
-          {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Confirm Deployment'}
+          {submitting ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Confirm Booking'}
         </motion.button>
       </div>
     </div>

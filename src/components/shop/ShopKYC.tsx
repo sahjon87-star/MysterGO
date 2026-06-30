@@ -189,9 +189,15 @@ export const ShopKYC: React.FC = () => {
                     <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest px-4">Owner NID Number</label>
                     <input 
                       type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      maxLength={17}
                       value={formData.ownerNid}
-                      onChange={(e) => setFormData(prev => ({ ...prev, ownerNid: e.target.value }))}
-                      className="w-full bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-5 rounded-2xl outline-none focus:ring-2 focus:ring-primary-blue text-sm font-bold shadow-sm"
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/[^0-9]/g, '');
+                        setFormData(prev => ({ ...prev, ownerNid: val }));
+                      }}
+                      className="w-full bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-5 rounded-2xl outline-none focus:ring-2 focus:ring-primary-blue text-sm font-bold text-slate-900 dark:text-white shadow-sm"
                       placeholder="Enter 10/13 digit NID"
                     />
                  </div>

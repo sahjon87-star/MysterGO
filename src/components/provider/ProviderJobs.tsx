@@ -89,8 +89,8 @@ export const ProviderJobs: React.FC = () => {
     <div className="space-y-8 pb-32 transition-all duration-500 bg-brand-dark min-h-screen">
       {/* Protocol Header */}
       <div className="px-6 pt-10 space-y-1.5">
-        <h2 className="text-3xl font-black text-cream uppercase tracking-tighter leading-none">Deployment Matrix</h2>
-        <p className="text-[10px] font-black text-gray-teal uppercase tracking-[0.4em] leading-none">Protocol Authorization Logs</p>
+        <h2 className="text-3xl font-black text-cream uppercase tracking-tighter leading-none">Job Management</h2>
+        <p className="text-[10px] font-black text-gray-teal uppercase tracking-[0.4em] leading-none">View and manage your jobs</p>
       </div>
 
       {/* Persistence Tabs - High Contrast */}
@@ -193,26 +193,61 @@ export const ProviderJobs: React.FC = () => {
                     <motion.div 
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
-                      className="flex gap-3 mt-8 pt-6 border-t border-white/5 relative z-10"
+                      className="flex flex-col gap-3 mt-8 pt-6 border-t border-white/5 relative z-10 w-full"
                     >
-                      <motion.button 
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={(e) => { e.stopPropagation(); updateStatus(job.id, 'cancelled'); }}
-                        className="flex-1 py-4 rounded-2xl text-[9px] font-black uppercase tracking-[0.4em] text-gray-teal border border-white/5 hover:bg-red-500/10 hover:text-red-500 transition-all flex items-center justify-center gap-2 bg-brand-surface"
-                      >
-                        <XCircle className="w-4 h-4" />
-                        Abort
-                      </motion.button>
-                      <motion.button 
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={(e) => { e.stopPropagation(); updateStatus(job.id, 'accepted'); }}
-                        className="flex-[2] py-4 bg-brand-amber text-brand-dark rounded-2xl text-[9px] font-black uppercase tracking-[0.4em] shadow-xl shadow-brand-amber/20 hover:shadow-brand-amber/40 transition-all flex items-center justify-center gap-2"
-                      >
-                        <ShieldCheck className="w-4 h-4" />
-                        Confirm Matrix
-                      </motion.button>
+                      {/* Job Description block before Action Buttons */}
+                      <div className="bg-slate-100 rounded-2xl p-4 border border-brand-amber/20 text-left space-y-1 w-full">
+                        <span className="text-[9px] font-black text-brand-amber uppercase tracking-wider block">
+                          Job Description / কাজের বিবরণ
+                        </span>
+                        <p className="text-xs font-bold text-slate-900 leading-relaxed">
+                          {job.deploymentDescription || job.description || 'No description provided / কোনো কাজের বিবরণ নেই'}
+                        </p>
+                        
+                        <div className="my-3 p-3 bg-slate-800/80 border border-slate-700 rounded-lg">
+                          <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 block mb-1">
+                            প্রয়োজনীয় কর্মী / Crew Requirements
+                          </span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xl">🧑🤝🧑</span>
+                            <span className="text-sm font-bold text-white">
+                              {(job.helperCount || 0) > 0 
+                                ? `${job.helperCount} সাহায্যকারী প্রয়োজন (${job.helperCount} Helper Required)` 
+                                : "কোন সাহায্যকারী লাগবে না (Only Mistri)"}
+                            </span>
+                          </div>
+                          {(job.helperCount || 0) > 0 && (
+                            <p className="text-[11px] text-emerald-400 mt-1 font-mono">
+                              +৳{job.totalHelperCost} Jogan Fare added to ultimate payout
+                            </p>
+                          )}
+                        </div>
+
+                        <p className="text-[9px] text-slate-500 font-medium leading-normal mt-1 pt-1 border-t border-slate-200">
+                          Please read the details carefully. Once accepted, cancellations may affect your provider rating.
+                        </p>
+                      </div>
+
+                      <div className="flex gap-3 w-full">
+                        <motion.button 
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={(e) => { e.stopPropagation(); updateStatus(job.id, 'cancelled'); }}
+                          className="flex-1 py-4 rounded-2xl text-[9px] font-black uppercase tracking-[0.4em] text-gray-teal border border-white/5 hover:bg-red-500/10 hover:text-red-500 transition-all flex items-center justify-center gap-2 bg-brand-surface"
+                        >
+                          <XCircle className="w-4 h-4" />
+                          Abort
+                        </motion.button>
+                        <motion.button 
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={(e) => { e.stopPropagation(); updateStatus(job.id, 'accepted'); }}
+                          className="flex-[2] py-4 bg-brand-amber text-brand-dark rounded-2xl text-[9px] font-black uppercase tracking-[0.4em] shadow-xl shadow-brand-amber/20 hover:shadow-brand-amber/40 transition-all flex items-center justify-center gap-2"
+                        >
+                          <ShieldCheck className="w-4 h-4" />
+                          Confirm Matrix
+                        </motion.button>
+                      </div>
                     </motion.div>
                   )}
 

@@ -115,7 +115,7 @@ export const SearchPage: React.FC = () => {
       <div className="p-4 space-y-6">
         {/* Category Filters */}
         <div className="space-y-3">
-          <h3 className="px-2 text-[10px] font-black text-gray-teal uppercase tracking-widest">Protocol Filters</h3>
+          <h3 className="px-2 text-[10px] font-black text-gray-teal uppercase tracking-widest">Filters</h3>
           <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
             <button 
               onClick={() => setActiveCat('all')}

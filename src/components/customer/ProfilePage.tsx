@@ -49,15 +49,15 @@ export const ProfilePage: React.FC = () => {
     {
       title: "Activity & History",
       items: [
-        { icon: Clock, label: "Engagement History", sub: "All past bookings", path: "/bookings", color: "text-primary-blue", bg: "bg-primary-blue/10" },
-        { icon: MessageCircle, label: "Help & Support", sub: "24/7 Support Signal", path: "/support", color: "text-indigo-500", bg: "bg-indigo-500/10" },
+        { icon: Clock, label: "Booking History", sub: "All past bookings", path: "/bookings", color: "text-primary-blue", bg: "bg-primary-blue/10" },
+        { icon: MessageCircle, label: "Help & Support", sub: "24/7 Customer Support", path: "/support", color: "text-indigo-500", bg: "bg-indigo-500/10" },
       ]
     },
     {
       title: "Identity & Trust",
       items: [
-        { icon: Settings, label: "Protocol Settings", sub: "Privacy, Theme, Lang", path: "/settings", color: "text-slate-500", bg: "bg-slate-500/10" },
-        { icon: Shield, label: "Security Node", sub: "Password, Verification", path: "/security", color: "text-rose-500", bg: "bg-rose-500/10" },
+        { icon: Settings, label: "App Settings", sub: "Privacy, Theme, Lang", path: "/settings", color: "text-slate-500", bg: "bg-slate-500/10" },
+        { icon: Shield, label: "Security Settings", sub: "Password, Verification", path: "/security", color: "text-rose-500", bg: "bg-rose-500/10" },
       ]
     }
   ];

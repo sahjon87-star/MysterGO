@@ -72,16 +72,40 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; role?: 'customer' | 
     }
   }
 
-  if (role === 'admin' && !isAdmin) return <Navigate to="/" replace />;
-  if (role === 'provider' && !isProvider) return <Navigate to="/" replace />;
-  if (role === 'shop_owner' && !isShopOwner) return <Navigate to="/" replace />;
-  if (role === 'customer' && !isCustomer) return <Navigate to="/" replace />;
+  const checkRole = () => {
+    if (role === 'admin' && !isAdmin) return true;
+    if (role === 'provider' && !isProvider) return true;
+    if (role === 'shop_owner' && !isShopOwner) return true;
+    if (role === 'customer' && !isCustomer) return true;
+    return false;
+  };
+
+  if (checkRole()) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-brand-dark text-white p-6">
+        <div className="bg-brand-slate border border-white/10 rounded-2xl p-8 max-w-md w-full text-center space-y-4 shadow-glass-var">
+          <h2 className="text-xl font-black text-brand-amber uppercase tracking-widest">Access Denied</h2>
+          <p className="text-gray-teal text-sm leading-relaxed">
+            You do not have the required permissions to view this page. Please log in with the correct account type or return to your dashboard.
+          </p>
+          <div className="pt-4">
+            <button 
+              onClick={() => window.location.href = '/'}
+              className="w-full bg-brand-surface hover:bg-white/10 text-cream py-3 rounded-xl font-bold transition-all border border-white/5"
+            >
+              Return Home
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return <>{children}</>;
 };
 
 const PanelRouter: React.FC = () => {
-  const { profile, isAdmin, isProvider, isShopOwner } = useAuth();
+  const { profile, isAdmin, isProvider, isShopOwner, isCustomer } = useAuth();
   const location = useLocation();
   const isRoot = location.pathname === '/';
 
@@ -89,6 +113,27 @@ const PanelRouter: React.FC = () => {
     if (isAdmin) return <Navigate to="/admin" replace />;
     if (isProvider) return <Navigate to="/pro" replace />;
     if (isShopOwner) return <Navigate to="/merchant" replace />;
+  }
+
+  if (!isCustomer) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-brand-dark text-white p-6">
+        <div className="bg-brand-slate border border-white/10 rounded-2xl p-8 max-w-md w-full text-center space-y-4">
+          <h2 className="text-xl font-black text-brand-amber uppercase tracking-widest">Access Denied</h2>
+          <p className="text-gray-teal text-sm leading-relaxed">
+            This section is reserved for customers. As a service provider, merchant, or administrator, please use your dedicated dashboard.
+          </p>
+          <div className="pt-4 flex gap-4">
+            <button 
+              onClick={() => window.location.href = '/'}
+              className="w-full bg-brand-surface hover:bg-white/10 text-cream py-3 rounded-xl font-bold transition-all border border-white/5"
+            >
+              Go to Dashboard
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
   
   return <CustomerLayout />;
@@ -126,7 +171,31 @@ export default function App() {
         <LanguageProvider>
           <AuthProvider>
             <LocationProvider>
-              <Toaster position="top-center" reverseOrder={false} />
+              <Toaster 
+                position="top-center" 
+                reverseOrder={false} 
+                toastOptions={{
+                  style: {
+                    background: '#1F2937', // High contrast dark slate
+                    color: '#fff',
+                    borderRadius: '16px',
+                    padding: '16px',
+                    boxShadow: '0 10px 40px -10px rgba(0,0,0,0.5)',
+                  },
+                  success: {
+                    iconTheme: {
+                      primary: '#10B981',
+                      secondary: '#fff',
+                    },
+                  },
+                  error: {
+                    iconTheme: {
+                      primary: '#EF4444',
+                      secondary: '#fff',
+                    },
+                  },
+                }}
+              />
               <LocationPrompt />
               <FCMHandler />
               <div className="min-h-screen bg-brand-dark flex flex-col items-center justify-center transition-colors duration-300">
