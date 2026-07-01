@@ -251,40 +251,40 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   useEffect(() => {
     let watchId: number;
 
-    if (navigator.geolocation) {
-      watchId = navigator.geolocation.watchPosition(
-        (position) => {
-          const { latitude, longitude, accuracy } = position.coords;
-          
-          const prevLoc = lastStateLocationRef.current;
-          const delta = prevLoc 
-            ? Math.max(Math.abs(latitude - prevLoc.lat), Math.abs(longitude - prevLoc.lng))
-            : Infinity;
+    const startWatching = () => {
+      if (navigator.geolocation) {
+        watchId = navigator.geolocation.watchPosition(
+          (position) => {
+            const { latitude, longitude, accuracy } = position.coords;
+            
+            const prevLoc = lastStateLocationRef.current;
+            const delta = prevLoc 
+              ? Math.max(Math.abs(latitude - prevLoc.lat), Math.abs(longitude - prevLoc.lng))
+              : Infinity;
 
-          // Only update state if moved significantly (> 20 meters / ~0.0002 deg) to avoid high frequency render storms
-          if (delta > 0.0002) {
-            lastStateLocationRef.current = { lat: latitude, lng: longitude };
-            setLocation({ lat: latitude, lng: longitude, accuracy });
-            setStatus('granted');
-            updateProfileLocation(latitude, longitude);
-          }
-        },
-        (err) => {
-          // Only set error if we don't have a location yet or if it's a permanent denial
-          if (err.code === 1) { // PERMISSION_DENIED
-            setStatus('denied');
-            setError('Location permission denied');
-          }
-        },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-      );
-    }
+            if (delta > 0.0002) {
+              lastStateLocationRef.current = { lat: latitude, lng: longitude };
+              setLocation({ lat: latitude, lng: longitude, accuracy });
+              setStatus('granted');
+              updateProfileLocation(latitude, longitude);
+            }
+          },
+          (err) => {
+            if (err.code === 1) {
+              setStatus('denied');
+              setError('Location permission denied');
+            }
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+      }
+    };
 
-    // Check permissions API
     if (navigator.permissions && navigator.permissions.query) {
       navigator.permissions.query({ name: 'geolocation' as PermissionName }).then((result) => {
         if (result.state === 'granted') {
           setStatus('granted');
+          startWatching();
         } else if (result.state === 'prompt') {
           setStatus('prompt');
         } else {
@@ -294,6 +294,7 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         result.onchange = () => {
           if (result.state === 'granted') {
             setStatus('granted');
+            startWatching();
           } else if (result.state === 'prompt') {
             setStatus('prompt');
           } else {

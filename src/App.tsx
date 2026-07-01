@@ -22,7 +22,6 @@ import { CustomerLayout } from './components/customer/CustomerLayout';
 import { ProviderLayout } from './components/provider/ProviderLayout';
 import { ShopLayout } from './components/shop/ShopLayout';
 import { AdminLayout } from './components/admin/AdminLayout';
-import { LocationPrompt } from './components/shared/LocationPrompt';
 import { FCMHandler } from './components/shared/FCMHandler';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode; role?: 'customer' | 'provider' | 'shop_owner' | 'admin' }> = ({ children, role }) => {
@@ -196,7 +195,6 @@ export default function App() {
                   },
                 }}
               />
-              <LocationPrompt />
               <FCMHandler />
               <div className="min-h-screen bg-brand-dark flex flex-col items-center justify-center transition-colors duration-300">
                 <div className="w-full min-h-screen bg-brand-dark flex flex-col overflow-hidden relative transition-all duration-300">
