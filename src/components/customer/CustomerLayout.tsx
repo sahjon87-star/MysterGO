@@ -432,16 +432,13 @@ export const CustomerLayout: React.FC = () => {
               exit={{ opacity: 0, y: 100, scale: 0.9 }}
               className={`fixed bottom-28 md:bottom-8 right-4 left-4 md:left-auto md:w-[450px] bg-brand-slate/95 backdrop-blur-2xl border-2 rounded-[32px] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-[100] space-y-4 relative transition-colors ${anyUnpaid ? 'border-brand-amber/60 bg-brand-slate/98' : 'border-brand-amber/30'}`}
             >
-              {/* Close/Snooze Button */}
-              {!anyUnpaid && (
-                <button
-                  onClick={handleSnooze}
-                  className="text-gray-teal hover:text-cream absolute top-3.5 right-3.5 p-1 cursor-pointer rounded-full hover:bg-white/10 transition-colors z-50"
-                  aria-label="Dismiss"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              )}
+              <button
+                onClick={handleSnooze}
+                className="text-gray-teal hover:text-cream absolute top-6 right-6 p-2 cursor-pointer rounded-full hover:bg-white/10 transition-colors z-[110]"
+                aria-label="Dismiss"
+              >
+                <X className="w-5 h-5" />
+              </button>
 
               {unreleasedBookings.map((booking) => {
                 const isReleasing = releasingIds[booking.id] || false;

@@ -61,9 +61,10 @@ export const BookingStatusPage: React.FC = () => {
     // Fetch platform settings for numbers
     const fetchSettings = async () => {
       try {
-        const snap = await getDocs(collection(db, 'settings'));
-        if (!snap.empty) {
-          setSettings(snap.docs[0].data());
+        const { getDoc } = await import('firebase/firestore');
+        const snap = await getDoc(doc(db, 'settings', 'system_config'));
+        if (snap.exists()) {
+          setSettings(snap.data());
         }
       } catch (err) {
         console.warn('Failed to fetch settings:', err);
@@ -610,15 +611,39 @@ export const BookingStatusPage: React.FC = () => {
                   </div>
                 )}
 
-                <div className="bg-brand-dark rounded-[32px] p-6 space-y-4 border border-brand-surface shadow-inner">
-                  <p className="text-[10px] font-black text-gray-teal uppercase tracking-widest opacity-60 leading-relaxed px-1">Send <span className="text-cream bg-brand-amber/20 px-2 py-0.5 rounded-lg border border-brand-amber/20">{formatCurrency(booking.totalAmount)}</span> to Official {booking.paymentMethod === 'bkash' ? 'bKash' : 'Nagad'} Number:</p>
-                  <div className="flex items-center justify-between bg-brand-surface p-5 rounded-2xl border border-white/5 group active:scale-95 transition-all">
-                     <p className="text-2xl font-black text-brand-amber tracking-tighter leading-none">
+                <div className="bg-brand-dark rounded-[32px] p-8 space-y-8 border border-brand-surface shadow-inner">
+                  <div className="text-center space-y-4">
+                    <p className="text-lg font-black text-cream uppercase tracking-tight leading-tight">
+                      Please complete your payment of <span className="text-brand-amber">{formatCurrency(booking.totalAmount)}</span> to our official {booking.paymentMethod === 'bkash' ? 'bKash' : 'Nagad'} number below.
+                    </p>
+                    <p className="text-[10px] font-black text-gray-teal uppercase tracking-[0.2em] leading-relaxed opacity-80">
+                      After payment, enter your Transaction ID (TrxID) and upload the payment screenshot to confirm.
+                    </p>
+                  </div>
+
+                  <div 
+                    onClick={() => {
+                      const num = booking.paymentMethod === 'bkash' ? (settings?.bkashNumber || '017XXXXXXXX') : (settings?.nagadNumber || '018XXXXXXXX');
+                      navigator.clipboard.writeText(num);
+                    }}
+                    className="flex items-center justify-between bg-brand-surface p-6 rounded-2xl border border-brand-amber/20 group active:scale-95 transition-all cursor-pointer"
+                  >
+                     <p className="text-3xl font-black text-brand-amber tracking-tighter leading-none">
                         {booking.paymentMethod === 'bkash' ? (settings?.bkashNumber || '017XXXXXXXX') : (settings?.nagadNumber || '018XXXXXXXX')}
                      </p>
-                     <span className="text-[8px] font-black text-gray-teal uppercase tracking-[0.3em] opacity-40">Copy Number</span>
+                     <div className="flex flex-col items-end gap-1">
+                       <span className="text-[8px] font-black text-gray-teal uppercase tracking-[0.3em] opacity-40">Click to Copy</span>
+                       <div className="w-8 h-1 bg-brand-amber/20 rounded-full" />
+                     </div>
                   </div>
-                  <p className="text-[8px] text-gray-teal font-black uppercase tracking-[0.3em] text-center italic">Please complete the payment on bKash/Nagad first</p>
+
+                  <div className="flex items-center justify-center gap-4 text-[8px] font-black text-gray-teal uppercase tracking-[0.2em]">
+                    <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-brand-amber" /> 1. Pay</div>
+                    <div className="w-4 h-[1px] bg-white/5" />
+                    <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-brand-amber" /> 2. TrxID</div>
+                    <div className="w-4 h-[1px] bg-white/5" />
+                    <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-full bg-brand-amber" /> 3. Screenshot</div>
+                  </div>
                 </div>
 
                 <div className="space-y-3">
