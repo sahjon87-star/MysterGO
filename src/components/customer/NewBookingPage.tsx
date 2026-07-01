@@ -99,9 +99,12 @@ export const NewBookingPage: React.FC = () => {
     return () => unsubSettings();
   }, [workerId]);
 
+  const profileId = profile?.uid;
+  const profileLocation = profile?.location;
+  
   useEffect(() => {
     const fetchNearbyShops = async () => {
-      if (!worker || !profile?.location) return;
+      if (!worker || !profileLocation) return;
       try {
         const shopCat = getShopCategoryForWorker(worker.category);
         const q = query(collection(db, 'shops'), where('shopCategory', '==', shopCat));
@@ -111,9 +114,9 @@ export const NewBookingPage: React.FC = () => {
         // Filter by 5km radius
         const filtered = (shops || []).filter(shop => {
           if (!shop.location?.lat || !shop.location?.lng) return false;
-          if (!profile.location?.lat || !profile.location?.lng) return false;
+          if (!profileLocation?.lat || !profileLocation?.lng) return false;
           const dist = calculateDistance(
-            profile.location.lat, profile.location.lng,
+            profileLocation.lat, profileLocation.lng,
             shop.location.lat, shop.location.lng
           );
           return dist <= 5;
@@ -124,7 +127,7 @@ export const NewBookingPage: React.FC = () => {
       }
     };
     fetchNearbyShops();
-  }, [worker, profile]);
+  }, [workerId, profileId, profileLocation?.lat, profileLocation?.lng]);
 
   const calculateMarkup = (basePrice: number) => {
     const applicationFee = Math.round(basePrice * (settings.applicationFeeRate / 100));

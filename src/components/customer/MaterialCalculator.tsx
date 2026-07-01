@@ -47,13 +47,14 @@ export const MaterialCalculator: React.FC = () => {
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
   const [showSettings, setShowSettings] = useState<boolean>(false);
 
+  const [isOnline, setIsOnline] = useState<boolean>(true);
+
   React.useEffect(() => {
-    // Fetch Bangladesh Construction market rates on mount, falling back gracefully to robust defaults
+    // Initial health check to detect if backend API is reachable
     fetch('/api/calculator/rates')
       .then(res => {
-        if (!res.ok) {
-          throw new Error(`status ${res.status}`);
-        }
+        if (!res.ok) throw new Error();
+        setIsOnline(true);
         return res.json();
       })
       .then(data => {
@@ -61,8 +62,9 @@ export const MaterialCalculator: React.FC = () => {
           setRates(prev => ({ ...prev, ...data }));
         }
       })
-      .catch(err => {
-        console.warn("Could not load fresh market rates from server, relying on local standard database:", err.message || err);
+      .catch(() => {
+        setIsOnline(false);
+        console.warn("Backend API unreachable. Ensure you are not on a static-only host like Netlify without proxy configuration.");
       });
   }, []);
 
@@ -253,6 +255,11 @@ export const MaterialCalculator: React.FC = () => {
       });
 
       if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error(lang === 'bn' 
+            ? "সার্ভার পাওয়া যায়নি (404)। আপনি কি স্ট্যাটিক হোস্টিং ব্যবহার করছেন?" 
+            : "API Endpoint not found (404). Backend server might not be running on this host.");
+        }
         let serverErrorMsg = '';
         try {
           const errData = await response.json();

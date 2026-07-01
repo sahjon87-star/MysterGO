@@ -129,9 +129,9 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const currentProfile = profileRef.current as any;
     if (!user?.uid || !currentProfile || !currentProfile.onboardingComplete) return;
 
-    // Rate limit updates based on tracking state (High frequency: 10 seconds, normal: 120 seconds)
+    // Rate limit updates based on tracking state (High frequency: 15 seconds, normal: 300 seconds)
     const now = Date.now();
-    const intervalThreshold = hasActiveTrackingRef.current ? 10000 : 120000;
+    const intervalThreshold = hasActiveTrackingRef.current ? 15000 : 300000;
     if (lastUpdateRef.current && (now - lastUpdateRef.current < intervalThreshold)) {
       return;
     }
@@ -261,8 +261,8 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             ? Math.max(Math.abs(latitude - prevLoc.lat), Math.abs(longitude - prevLoc.lng))
             : Infinity;
 
-          // Only update state if moved significantly (> 11 meters) to avoid high frequency render storms
-          if (delta > 0.0001) {
+          // Only update state if moved significantly (> 20 meters / ~0.0002 deg) to avoid high frequency render storms
+          if (delta > 0.0002) {
             lastStateLocationRef.current = { lat: latitude, lng: longitude };
             setLocation({ lat: latitude, lng: longitude, accuracy });
             setStatus('granted');
