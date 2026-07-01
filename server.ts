@@ -1,11 +1,9 @@
+import "./src/server/cleanEnv.js";
 import express from "express";
 import path from "path";
 import { GoogleGenAI } from "@google/genai";
-import dotenv from "dotenv";
 import cors from "cors";
 import { getDbAdmin, getAuthAdmin, FieldValue } from "./src/server/firebaseAdmin.js";
-
-dotenv.config();
 
 const app = express();
 const PORT = 3000;
