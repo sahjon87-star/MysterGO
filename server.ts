@@ -3,38 +3,9 @@ import path from "path";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
 import cors from "cors";
-import { initializeApp, getApps, getApp, cert } from "firebase-admin/app";
-import { getFirestore, FieldValue } from "firebase-admin/firestore";
-import { getAuth } from "firebase-admin/auth";
+import { getDbAdmin, getAuthAdmin, FieldValue } from "./src/server/firebaseAdmin.js";
 
 dotenv.config();
-
-// Initialize Firebase Admin SDK
-let adminApp;
-if (getApps().length === 0) {
-  const projectId = process.env.VITE_FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID || "rajmistri-1";
-  
-  let credential;
-  if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
-    try {
-      const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
-      credential = cert(serviceAccount);
-      console.log("Firebase Admin initialized with Service Account credentials.");
-    } catch (e) {
-      console.warn("Failed to parse FIREBASE_SERVICE_ACCOUNT_KEY as JSON.");
-    }
-  }
-
-  adminApp = initializeApp({
-    projectId: projectId,
-    ...(credential ? { credential } : {})
-  });
-} else {
-  adminApp = getApp();
-}
-
-const databaseId = process.env.VITE_FIRESTORE_DATABASE_ID || process.env.FIRESTORE_DATABASE_ID;
-const dbAdmin = databaseId && databaseId.trim() !== "" ? getFirestore(adminApp, databaseId) : getFirestore(adminApp);
 
 const app = express();
 const PORT = 3000;
@@ -410,7 +381,7 @@ const verifyToken = async (req: express.Request, res: express.Response, next: ex
   }
   const token = authHeader.split('Bearer ')[1];
   try {
-    const decodedToken = await getAuth().verifyIdToken(token);
+    const decodedToken = await getAuthAdmin().verifyIdToken(token);
     (req as any).user = decodedToken;
     next();
   } catch (error) {
@@ -437,7 +408,7 @@ apiRouter.post("/wallet/topup", verifyToken, async (req, res) => {
     }
 
     const targetCollection = collection || "users";
-    const userRef = dbAdmin.collection(targetCollection).doc(userId);
+    const userRef = getDbAdmin().collection(targetCollection).doc(userId);
     const userSnap = await userRef.get();
 
     if (!userSnap.exists) {
@@ -445,7 +416,7 @@ apiRouter.post("/wallet/topup", verifyToken, async (req, res) => {
     }
 
     // 1. Add pending transaction
-    const txRef = dbAdmin.collection("transactions").doc();
+    const txRef = getDbAdmin().collection("transactions").doc();
     await txRef.set({
       userId,
       userName: name || userSnap.data()?.name || "",
@@ -480,8 +451,8 @@ apiRouter.post("/jobs/complete", verifyToken, async (req, res) => {
       return res.status(403).json({ error: "Forbidden: You can only complete your own jobs" });
     }
 
-    const bookingRef = dbAdmin.collection("bookings").doc(bookingId);
-    const providerRef = dbAdmin.collection("providers").doc(providerId);
+    const bookingRef = getDbAdmin().collection("bookings").doc(bookingId);
+    const providerRef = getDbAdmin().collection("providers").doc(providerId);
 
     const [bookingSnap, providerSnap] = await Promise.all([
       bookingRef.get(),
@@ -505,7 +476,7 @@ apiRouter.post("/jobs/complete", verifyToken, async (req, res) => {
 
     const earning = bookingData.providerEarning || bookingData.totalAmount || bookingData.price || 0;
 
-    await dbAdmin.runTransaction(async (transaction) => {
+    await getDbAdmin().runTransaction(async (transaction) => {
       transaction.update(bookingRef, {
         status: "completed",
         completedAt: FieldValue.serverTimestamp(),
@@ -516,7 +487,7 @@ apiRouter.post("/jobs/complete", verifyToken, async (req, res) => {
         totalJobs: FieldValue.increment(1)
       });
 
-      const txRef = dbAdmin.collection("transactions").doc();
+      const txRef = getDbAdmin().collection("transactions").doc();
       transaction.set(txRef, {
         userId: providerId,
         userName: providerSnap.data()?.name || "",
@@ -531,7 +502,7 @@ apiRouter.post("/jobs/complete", verifyToken, async (req, res) => {
 
       // Notify customer if exists
       if (bookingData.customerId) {
-        const notifyCustomerRef = dbAdmin.collection("notifications").doc();
+        const notifyCustomerRef = getDbAdmin().collection("notifications").doc();
         transaction.set(notifyCustomerRef, {
           userId: bookingData.customerId,
           title: "Service Completed",
@@ -567,8 +538,8 @@ apiRouter.post("/orders/complete", verifyToken, async (req, res) => {
       return res.status(403).json({ error: "Forbidden: You can only complete your own shop's orders" });
     }
 
-    const orderRef = dbAdmin.collection("orders").doc(orderId);
-    const shopRef = dbAdmin.collection("shops").doc(shopId);
+    const orderRef = getDbAdmin().collection("orders").doc(orderId);
+    const shopRef = getDbAdmin().collection("shops").doc(shopId);
 
     const [orderSnap, shopSnap] = await Promise.all([
       orderRef.get(),
@@ -592,7 +563,7 @@ apiRouter.post("/orders/complete", verifyToken, async (req, res) => {
 
     const amount = orderData.totalAmount || 0;
 
-    await dbAdmin.runTransaction(async (transaction) => {
+    await getDbAdmin().runTransaction(async (transaction) => {
       transaction.update(orderRef, {
         status: "delivered",
         deliveredAt: FieldValue.serverTimestamp(),
@@ -604,7 +575,7 @@ apiRouter.post("/orders/complete", verifyToken, async (req, res) => {
         totalOrders: FieldValue.increment(1)
       });
 
-      const txRef = dbAdmin.collection("transactions").doc();
+      const txRef = getDbAdmin().collection("transactions").doc();
       transaction.set(txRef, {
         userId: shopId,
         userName: shopSnap.data()?.shopName || shopSnap.data()?.name || "",
@@ -619,7 +590,7 @@ apiRouter.post("/orders/complete", verifyToken, async (req, res) => {
 
       // Notify customer if exists
       if (orderData.customerId) {
-        const notifyCustomerRef = dbAdmin.collection("notifications").doc();
+        const notifyCustomerRef = getDbAdmin().collection("notifications").doc();
         transaction.set(notifyCustomerRef, {
           userId: orderData.customerId,
           title: "Order Delivered",
@@ -660,7 +631,7 @@ apiRouter.post("/referrals/claim", verifyToken, async (req, res) => {
       return res.status(400).json({ error: "Invalid referral code prefix. Must start with MGO-." });
     }
 
-    const settingsRef = dbAdmin.collection("settings").doc("system_config");
+    const settingsRef = getDbAdmin().collection("settings").doc("system_config");
     const settingsSnap = await settingsRef.get();
     const settingsData = settingsSnap.exists ? settingsSnap.data() : null;
     const isReferralEnabled = settingsData?.isReferralEnabled !== false;
@@ -673,7 +644,7 @@ apiRouter.post("/referrals/claim", verifyToken, async (req, res) => {
     const newUserCollection = newUserRole === "provider" ? "providers" : newUserRole === "shop_owner" ? "shops" : "users";
     
     // Idempotency check: see if user already claimed a referral
-    const newUserRef = dbAdmin.collection(newUserCollection).doc(newUserId);
+    const newUserRef = getDbAdmin().collection(newUserCollection).doc(newUserId);
     const newUserSnap = await newUserRef.get();
     
     if (newUserSnap.exists && newUserSnap.data()?.referredBy) {
@@ -685,7 +656,7 @@ apiRouter.post("/referrals/claim", verifyToken, async (req, res) => {
     let referrerCollection = "";
 
     for (const coll of collections) {
-      const snap = await dbAdmin.collection(coll).where("referralCode", "==", cleanCode).limit(1).get();
+      const snap = await getDbAdmin().collection(coll).where("referralCode", "==", cleanCode).limit(1).get();
       if (!snap.empty) {
         referrerDoc = snap.docs[0];
         referrerCollection = coll;
@@ -701,26 +672,26 @@ apiRouter.post("/referrals/claim", verifyToken, async (req, res) => {
       return res.status(400).json({ error: "Self-referral is blocked." });
     }
 
-    await dbAdmin.runTransaction(async (transaction) => {
+    await getDbAdmin().runTransaction(async (transaction) => {
       // Re-read inside transaction to ensure concurrency safety
       const txNewUserSnap = await transaction.get(newUserRef);
       if (txNewUserSnap.exists && txNewUserSnap.data()?.referredBy) {
         throw new Error("Referral already claimed.");
       }
       // 1. Credit Referrer
-      transaction.update(dbAdmin.collection(referrerCollection).doc(referrerDoc.id), {
+      transaction.update(getDbAdmin().collection(referrerCollection).doc(referrerDoc.id), {
         walletBalance: FieldValue.increment(rewardAmount)
       });
 
       // 2. Credit New User & Link Referral
-      transaction.update(dbAdmin.collection(newUserCollection).doc(newUserId), {
+      transaction.update(getDbAdmin().collection(newUserCollection).doc(newUserId), {
         walletBalance: FieldValue.increment(rewardAmount),
         referredBy: referrerDoc.id,
         referredByCollection: referrerCollection
       });
 
       // 3. Referrer Transaction Log
-      const refTxRef = dbAdmin.collection("transactions").doc();
+      const refTxRef = getDbAdmin().collection("transactions").doc();
       transaction.set(refTxRef, {
         userId: referrerDoc.id,
         userName: referrerDoc.data()?.name || "MistriGO user",
@@ -733,7 +704,7 @@ apiRouter.post("/referrals/claim", verifyToken, async (req, res) => {
       });
 
       // 4. New User Sign-up Log
-      const newUserTxRef = dbAdmin.collection("transactions").doc();
+      const newUserTxRef = getDbAdmin().collection("transactions").doc();
       transaction.set(newUserTxRef, {
         userId: newUserId,
         userName: newUserName || "New User",
@@ -746,7 +717,7 @@ apiRouter.post("/referrals/claim", verifyToken, async (req, res) => {
       });
 
       // 5. Referrer Notification
-      const refNotifyRef = dbAdmin.collection("notifications").doc();
+      const refNotifyRef = getDbAdmin().collection("notifications").doc();
       transaction.set(refNotifyRef, {
         userId: referrerDoc.id,
         title: "Referral Reward Received!",
@@ -757,7 +728,7 @@ apiRouter.post("/referrals/claim", verifyToken, async (req, res) => {
       });
 
       // 6. New User Notification
-      const userNotifyRef = dbAdmin.collection("notifications").doc();
+      const userNotifyRef = getDbAdmin().collection("notifications").doc();
       transaction.set(userNotifyRef, {
         userId: newUserId,
         title: "Referral Reward Claimed!",
@@ -786,7 +757,7 @@ apiRouter.use((req, res) => {
   });
 });
 
-app.use(['/api', '/'], apiRouter);
+app.use(['/.netlify/functions/api', '/api', '/'], apiRouter);
 
 async function startServer() {
   // Vite middleware for development
