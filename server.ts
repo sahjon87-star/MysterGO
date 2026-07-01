@@ -755,7 +755,7 @@ apiRouter.use((req, res) => {
   });
 });
 
-app.use(['/.netlify/functions/api', '/api', '/'], apiRouter);
+app.use(['/.netlify/functions/api', '/api'], apiRouter);
 
 async function startServer() {
   // Vite middleware for development
