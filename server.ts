@@ -40,8 +40,19 @@ const dbAdmin = databaseId && databaseId.trim() !== "" ? getFirestore(adminApp, 
 const app = express();
 const PORT = 3000;
 
+const apiRouter = express.Router();
 app.use(cors());
 app.use(express.json());
+
+// Health Check
+apiRouter.get("/health", (req, res) => {
+  res.json({ 
+    status: "ok", 
+    time: new Date().toISOString(),
+    env: process.env.NODE_ENV,
+    hasGeminiKey: !!process.env.GEMINI_API_KEY
+  });
+});
 
 // Customizable Market Rates & Guidelines for Bangladesh Construction
 const BANGLADESH_CONSTRUCTION_RATES = {
@@ -172,12 +183,12 @@ async function generateContentStreamWithFallback(genAI: any, options: {
 }
 
 // Rates Endpoint
-app.get("/api/calculator/rates", (req, res) => {
+apiRouter.get("/calculator/rates", (req, res) => {
   res.json(BANGLADESH_CONSTRUCTION_RATES);
 });
 
 // Geocode Proxy Endpoint
-app.get("/api/geocode", async (req, res) => {
+apiRouter.get("/geocode", async (req, res) => {
   try {
     const { lat, lon } = req.query;
     if (!lat || !lon) return res.status(400).json({ error: "Missing lat/lon" });
@@ -201,7 +212,7 @@ app.get("/api/geocode", async (req, res) => {
 });
 
 // Estimation Endpoint
-app.post("/api/calculator/estimate", async (req, res) => {
+apiRouter.post("/calculator/estimate", async (req, res) => {
   try {
     const { tab, inputs, results } = req.body;
     const apiKey = process.env.GEMINI_API_KEY;
@@ -305,7 +316,7 @@ app.post("/api/calculator/estimate", async (req, res) => {
 });
 
 // Gemini API Route
-app.post("/api/gemini", async (req, res) => {
+apiRouter.post("/gemini", async (req, res) => {
   try {
     const { prompt, config, isTTS } = req.body;
     const apiKey = process.env.GEMINI_API_KEY;
@@ -349,7 +360,7 @@ app.post("/api/gemini", async (req, res) => {
 });
 
 // Streaming version for suggestions
-app.post("/api/gemini/stream", async (req, res) => {
+apiRouter.post("/gemini/stream", async (req, res) => {
   try {
     const { prompt } = req.body;
     const apiKey = process.env.GEMINI_API_KEY;
@@ -404,7 +415,7 @@ const verifyToken = async (req: express.Request, res: express.Response, next: ex
 };
 
 // Secure Ledger API: POST /api/wallet/topup
-app.post("/api/wallet/topup", verifyToken, async (req, res) => {
+apiRouter.post("/wallet/topup", verifyToken, async (req, res) => {
   try {
     const { userId, amount, method, trxId, name, phone, address, collection } = req.body;
     if (!userId || !amount || !trxId || !method) {
@@ -453,7 +464,7 @@ app.post("/api/wallet/topup", verifyToken, async (req, res) => {
 });
 
 // Secure Ledger API: POST /api/jobs/complete
-app.post("/api/jobs/complete", verifyToken, async (req, res) => {
+apiRouter.post("/jobs/complete", verifyToken, async (req, res) => {
   try {
     const { bookingId, providerId } = req.body;
     if (!bookingId || !providerId) {
@@ -540,7 +551,7 @@ app.post("/api/jobs/complete", verifyToken, async (req, res) => {
 });
 
 // Secure Ledger API: POST /api/orders/complete
-app.post("/api/orders/complete", verifyToken, async (req, res) => {
+apiRouter.post("/orders/complete", verifyToken, async (req, res) => {
   try {
     const { orderId, shopId } = req.body;
     if (!orderId || !shopId) {
@@ -628,7 +639,7 @@ app.post("/api/orders/complete", verifyToken, async (req, res) => {
 });
 
 // Secure Ledger API: POST /api/referrals/claim
-app.post("/api/referrals/claim", verifyToken, async (req, res) => {
+apiRouter.post("/referrals/claim", verifyToken, async (req, res) => {
   try {
     const { referralCode, newUserId, newUserRole, newUserName } = req.body;
     if (!referralCode || !newUserId) {
@@ -758,6 +769,8 @@ app.post("/api/referrals/claim", verifyToken, async (req, res) => {
     res.status(500).json({ error: error.message || "Internal Server Error" });
   }
 });
+
+app.use(['/api', '/'], apiRouter);
 
 async function startServer() {
   // Vite middleware for development

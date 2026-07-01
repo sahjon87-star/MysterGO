@@ -58,19 +58,15 @@ export const BookingStatusPage: React.FC = () => {
 
   useEffect(() => {
     if (authLoading || !authUser) return;
-    // Fetch platform settings for numbers
-    const fetchSettings = async () => {
-      try {
-        const { getDoc } = await import('firebase/firestore');
-        const snap = await getDoc(doc(db, 'settings', 'system_config'));
-        if (snap.exists()) {
-          setSettings(snap.data());
-        }
-      } catch (err) {
-        console.warn('Failed to fetch settings:', err);
+    // Real-time listener for platform settings (bKash/Nagad numbers)
+    const unsubSettings = onSnapshot(doc(db, 'settings', 'system_config'), (snap) => {
+      if (snap.exists()) {
+        setSettings(snap.data());
       }
-    };
-    fetchSettings();
+    }, (err) => {
+      console.warn('Failed to listen to settings:', err);
+    });
+    return () => unsubSettings();
   }, [authLoading, authUser]);
 
   useEffect(() => {

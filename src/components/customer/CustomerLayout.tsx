@@ -434,7 +434,7 @@ export const CustomerLayout: React.FC = () => {
             >
               <button
                 onClick={handleSnooze}
-                className="text-gray-teal hover:text-cream absolute top-6 right-6 p-2 cursor-pointer rounded-full hover:bg-white/10 transition-colors z-[110]"
+                className="text-gray-teal hover:text-cream absolute top-4 right-4 p-2 cursor-pointer rounded-full hover:bg-white/10 transition-colors z-[110]"
                 aria-label="Dismiss"
               >
                 <X className="w-5 h-5" />
