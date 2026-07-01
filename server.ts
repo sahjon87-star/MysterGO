@@ -1,6 +1,5 @@
 import express from "express";
 import path from "path";
-import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -43,6 +42,12 @@ const PORT = 3000;
 const apiRouter = express.Router();
 app.use(cors());
 app.use(express.json());
+
+// Debug Middleware for API
+apiRouter.use((req, res, next) => {
+  console.log(`API Request: ${req.method} ${req.url}`);
+  next();
+});
 
 // Health Check
 apiRouter.get("/health", (req, res) => {
@@ -770,11 +775,23 @@ apiRouter.post("/referrals/claim", verifyToken, async (req, res) => {
   }
 });
 
+// API Router Catch-all (for JSON errors on 404)
+apiRouter.use((req, res) => {
+  console.warn(`API Route Not Found: ${req.method} ${req.originalUrl || req.url}`);
+  res.status(404).json({ 
+    error: "API Endpoint not found", 
+    method: req.method, 
+    path: req.url,
+    fullPath: req.originalUrl
+  });
+});
+
 app.use(['/api', '/'], apiRouter);
 
 async function startServer() {
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",

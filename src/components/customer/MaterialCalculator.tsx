@@ -255,11 +255,6 @@ export const MaterialCalculator: React.FC = () => {
       });
 
       if (!response.ok) {
-        if (response.status === 404) {
-          throw new Error(lang === 'bn' 
-            ? "সার্ভার পাওয়া যায়নি (404)। আপনি কি স্ট্যাটিক হোস্টিং ব্যবহার করছেন?" 
-            : "API Endpoint not found (404). Backend server might not be running on this host.");
-        }
         let serverErrorMsg = '';
         try {
           const errData = await response.json();
@@ -267,6 +262,13 @@ export const MaterialCalculator: React.FC = () => {
         } catch (e) {
           // ignore parsing error
         }
+
+        if (response.status === 404) {
+          throw new Error(serverErrorMsg || (lang === 'bn' 
+            ? "সার্ভার পাওয়া যায়নি (404)। আপনার ব্যাকএন্ড ফাংশন কি ডিভলয় হয়েছে?" 
+            : "API Endpoint not found (404). Your backend function might not be deployed."));
+        }
+        
         throw new Error(serverErrorMsg || `Server returned status ${response.status}`);
       }
 
