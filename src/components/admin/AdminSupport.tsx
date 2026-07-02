@@ -134,16 +134,13 @@ export const AdminSupport = () => {
   // Fetch Requester Info
   useEffect(() => {
     if (!selectedTicket) return;
-    const fetchRequester = async () => {
-      const coll = selectedTicket.requesterRole === 'worker' ? 'providers' : 'users';
-      const unsub = onSnapshot(doc(db, coll, selectedTicket.raisedBy), (docSnap) => {
-        if (docSnap.exists()) {
-          setRequesterInfo(docSnap.data() as any);
-        }
-      });
-      return () => unsub();
-    };
-    fetchRequester();
+    const coll = selectedTicket.requesterRole === 'worker' ? 'providers' : 'users';
+    const unsub = onSnapshot(doc(db, coll, selectedTicket.raisedBy), (docSnap) => {
+      if (docSnap.exists()) {
+        setRequesterInfo(docSnap.data() as any);
+      }
+    });
+    return () => unsub();
   }, [selectedTicket]);
 
   const poolTickets = tickets.filter(t => t.status === 'open');

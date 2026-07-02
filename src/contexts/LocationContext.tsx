@@ -244,17 +244,28 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setStatus('denied');
         setError(err.message);
       },
-      { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 }
     );
   };
 
   useEffect(() => {
-    let watchId: number;
+    let watchId: number | null = null;
+    let isMounted = true;
+    let permissionStatus: PermissionStatus | null = null;
+
+    const stopWatching = () => {
+      if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
+        watchId = null;
+      }
+    };
 
     const startWatching = () => {
-      if (navigator.geolocation) {
+      stopWatching(); // ensure we clear any existing watch before starting a new one
+      if (navigator.geolocation && isMounted) {
         watchId = navigator.geolocation.watchPosition(
           (position) => {
+            if (!isMounted) return;
             const { latitude, longitude, accuracy } = position.coords;
             
             const prevLoc = lastStateLocationRef.current;
@@ -270,18 +281,36 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             }
           },
           (err) => {
+            if (!isMounted) return;
             if (err.code === 1) {
               setStatus('denied');
               setError('Location permission denied');
             }
           },
-          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
         );
+      }
+    };
+
+    const handlePermissionChange = function(this: PermissionStatus) {
+      if (!isMounted) return;
+      if (this.state === 'granted') {
+        setStatus('granted');
+        startWatching();
+      } else if (this.state === 'prompt') {
+        setStatus('prompt');
+        stopWatching();
+      } else {
+        setStatus('denied');
+        stopWatching();
       }
     };
 
     if (navigator.permissions && navigator.permissions.query) {
       navigator.permissions.query({ name: 'geolocation' as PermissionName }).then((result) => {
+        if (!isMounted) return;
+        permissionStatus = result;
+        
         if (result.state === 'granted') {
           setStatus('granted');
           startWatching();
@@ -291,21 +320,16 @@ export const LocationProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           setStatus('denied');
         }
 
-        result.onchange = () => {
-          if (result.state === 'granted') {
-            setStatus('granted');
-            startWatching();
-          } else if (result.state === 'prompt') {
-            setStatus('prompt');
-          } else {
-            setStatus('denied');
-          }
-        };
+        result.addEventListener('change', handlePermissionChange);
       });
     }
 
     return () => {
-      if (watchId) navigator.geolocation.clearWatch(watchId);
+      isMounted = false;
+      stopWatching();
+      if (permissionStatus) {
+        permissionStatus.removeEventListener('change', handlePermissionChange);
+      }
     };
   }, [user?.uid, profile?.role]);
 

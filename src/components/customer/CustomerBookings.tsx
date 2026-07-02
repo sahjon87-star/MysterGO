@@ -183,7 +183,7 @@ export const CustomerBookings: React.FC = () => {
       unsubBookings();
       unsubOrders();
     };
-  }, [profile]);
+  }, [profile?.uid]);
 
   const filteredBookings = bookings.filter(b => {
     if (activeTab === 'active') return ['pending', 'accepted', 'ongoing'].includes(b.status);

@@ -71,7 +71,7 @@ export const CustomerWallet: React.FC = () => {
     });
 
     return () => unsubscribe();
-  }, [profile]);
+  }, [profile?.uid]);
 
   const sortedTransactions = useMemo(() => {
     return [...transactions].sort((a, b) => {

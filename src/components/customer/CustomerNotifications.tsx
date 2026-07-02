@@ -39,7 +39,7 @@ export const CustomerNotifications: React.FC = () => {
     });
 
     return () => unsubscribe();
-  }, [profile]);
+  }, [profile?.uid]);
 
   const markAsRead = async (id: string) => {
     try {
