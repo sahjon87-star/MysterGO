@@ -68,6 +68,8 @@ export const MaterialCalculator: React.FC = () => {
       });
   }, []);
 
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+
   // Ensure speech synthesis stops on component unmount
   React.useEffect(() => {
     return () => {
@@ -333,9 +335,11 @@ export const MaterialCalculator: React.FC = () => {
     utterance.onstart = () => setIsSpeaking(true);
     utterance.onend = () => setIsSpeaking(false);
     utterance.onerror = (e) => {
-      console.error('Speech synthesis error:', e);
+      console.warn('Speech synthesis interrupted or failed:', e);
       setIsSpeaking(false);
     };
+
+    utteranceRef.current = utterance;
 
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utterance);
