@@ -111,8 +111,8 @@ export const NewBookingPage: React.FC = () => {
         const snap = await getDocs(q);
         const shops = snap.docs.map(doc => ({ uid: doc.id, ...doc.data() } as ShopProfile));
         
-        // Filter by 5km radius
-        const filtered = (shops || []).filter(shop => {
+        // Filter by 5km radius with graceful fallback
+        let filtered = (shops || []).filter(shop => {
           if (!shop.location?.lat || !shop.location?.lng) return false;
           if (!profileLocation?.lat || !profileLocation?.lng) return false;
           const dist = calculateDistance(
@@ -121,6 +121,9 @@ export const NewBookingPage: React.FC = () => {
           );
           return dist <= 5;
         });
+        if (filtered.length === 0) {
+          filtered = shops || [];
+        }
         setNearbyShops(filtered);
       } catch (err) {
         console.error('Error fetching nearby shops:', err);

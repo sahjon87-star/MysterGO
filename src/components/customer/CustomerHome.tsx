@@ -74,11 +74,9 @@ export const CustomerHome: React.FC = () => {
       handleFirestoreError(error, OperationType.LIST, 'settings');
     });
 
-    // Listen for workers
+    // Listen for workers - relaxed to support full-stack fallbacks and local filtering
     const qWorkers = query(
-      collection(db, 'providers'),
-      where('kycStatus', '==', 'verified'),
-      where('isOnline', '==', true)
+      collection(db, 'providers')
     );
     const unsubWorkers = onSnapshot(qWorkers, (snap) => {
       const workerData = snap.docs
@@ -139,12 +137,30 @@ export const CustomerHome: React.FC = () => {
   const userLocation = liveLocation || profile?.location;
 
   const filteredWorkers = React.useMemo(() => {
+    // 1. Initial category filter
     let workerData = activeCat === 'all' 
       ? workers 
       : workers.filter(w => w.category === activeCat);
 
+    // 2. Sorting: Verified first, Online first, then rating
+    workerData = [...workerData].sort((a, b) => {
+      const getKycVal = (status?: string) => {
+        if (status === 'verified') return 3;
+        if (status === 'pending') return 2;
+        return 1;
+      };
+      const kycDiff = getKycVal(b.kycStatus) - getKycVal(a.kycStatus);
+      if (kycDiff !== 0) return kycDiff;
+
+      const onlineDiff = (b.isOnline ? 1 : 0) - (a.isOnline ? 1 : 0);
+      if (onlineDiff !== 0) return onlineDiff;
+
+      return (b.rating || 0) - (a.rating || 0);
+    });
+
+    // 3. Radius filtering with graceful fallback
     if (userLocation?.lat && userLocation?.lng) {
-      workerData = workerData.filter(w => {
+      const nearby = workerData.filter(w => {
         if (!w.location?.lat || !w.location?.lng) return false;
         const dist = calculateDistance(
           userLocation.lat, 
@@ -152,8 +168,12 @@ export const CustomerHome: React.FC = () => {
           w.location.lat, 
           w.location.lng
         );
-        return dist <= 10; // Increased to 10km
+        return dist <= 10;
       });
+      // Fallback: If no providers are nearby within 10km, show the sorted list anyway so it's not empty
+      if (nearby.length > 0) {
+        return nearby.slice(0, 10);
+      }
     }
     return workerData.slice(0, 10);
   }, [workers, activeCat, userLocation?.lat, userLocation?.lng]);
@@ -161,8 +181,20 @@ export const CustomerHome: React.FC = () => {
   const filteredShops = React.useMemo(() => {
     let shopData = shops;
 
+    // Sort by verified first if that field exists, or top rating
+    shopData = [...shopData].sort((a, b) => {
+      const getKycVal = (status?: string) => {
+        if (status === 'verified') return 3;
+        if (status === 'pending') return 2;
+        return 1;
+      };
+      const kycDiff = getKycVal(b.kycStatus) - getKycVal(a.kycStatus);
+      if (kycDiff !== 0) return kycDiff;
+      return (b.rating || 0) - (a.rating || 0);
+    });
+
     if (userLocation?.lat && userLocation?.lng) {
-      shopData = shopData.filter(s => {
+      const nearby = shopData.filter(s => {
         if (!s.location?.lat || !s.location?.lng) return false;
         const dist = calculateDistance(
           userLocation.lat, 
@@ -170,8 +202,11 @@ export const CustomerHome: React.FC = () => {
           s.location.lat, 
           s.location.lng
         );
-        return dist <= 10; // Increased to 10km
+        return dist <= 10;
       });
+      if (nearby.length > 0) {
+        return nearby.slice(0, 10);
+      }
     }
     return shopData.slice(0, 10);
   }, [shops, userLocation?.lat, userLocation?.lng]);

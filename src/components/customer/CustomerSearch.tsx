@@ -32,8 +32,7 @@ export const CustomerSearch: React.FC = () => {
       try {
         // Fetch Workers
         const q = query(
-          collection(db, 'providers'),
-          where('kycStatus', '==', 'verified')
+          collection(db, 'providers')
         );
         const snap = await getDocs(q);
         const data = snap.docs
@@ -66,19 +65,39 @@ export const CustomerSearch: React.FC = () => {
 
     if (activeFilter === 'online') {
       workerResults = workerResults.filter(w => w.isOnline);
-    } else if (activeFilter === 'top_rated') {
-      workerResults = [...workerResults].sort((a, b) => (b.rating || 0) - (a.rating || 0));
-    } else if (activeFilter === 'price_low') {
-      workerResults = [...workerResults].sort((a, b) => (a.hourlyRate || 0) - (b.hourlyRate || 0));
     }
 
-    // Radius filter
+    // Sort by Verified, Online, then filter selection
+    workerResults = [...workerResults].sort((a, b) => {
+      const getKycVal = (status?: string) => {
+        if (status === 'verified') return 3;
+        if (status === 'pending') return 2;
+        return 1;
+      };
+      const kycDiff = getKycVal(b.kycStatus) - getKycVal(a.kycStatus);
+      if (kycDiff !== 0) return kycDiff;
+
+      const onlineDiff = (b.isOnline ? 1 : 0) - (a.isOnline ? 1 : 0);
+      if (onlineDiff !== 0) return onlineDiff;
+
+      if (activeFilter === 'top_rated') {
+        return (b.rating || 0) - (a.rating || 0);
+      } else if (activeFilter === 'price_low') {
+        return (a.hourlyRate || 0) - (b.hourlyRate || 0);
+      }
+      return 0;
+    });
+
+    // Radius filter with graceful fallback
     if (profile?.location?.lat && profile?.location?.lng) {
-      workerResults = workerResults.filter(w => {
+      const nearby = workerResults.filter(w => {
         if (!w.location?.lat || !w.location?.lng) return false;
         const dist = calculateDistance(profile.location.lat, profile.location.lng, w.location.lat, w.location.lng);
         return dist <= 5;
       });
+      if (nearby.length > 0) {
+        workerResults = nearby;
+      }
     }
     setFilteredWorkers(workerResults);
 
@@ -87,17 +106,33 @@ export const CustomerSearch: React.FC = () => {
       (s.shopName || '').toLowerCase().includes((searchTerm || '').toLowerCase()) ||
       (s.shopCategory || '').toLowerCase().includes((searchTerm || '').toLowerCase())
     );
-    if (activeFilter === 'top_rated') {
-      shopResults = [...shopResults].sort((a, b) => (b.rating || 0) - (a.rating || 0));
-    }
 
-    // Radius filter
+    // Sort shops by KYC and Rating
+    shopResults = [...shopResults].sort((a, b) => {
+      const getKycVal = (status?: string) => {
+        if (status === 'verified') return 3;
+        if (status === 'pending') return 2;
+        return 1;
+      };
+      const kycDiff = getKycVal(b.kycStatus) - getKycVal(a.kycStatus);
+      if (kycDiff !== 0) return kycDiff;
+
+      if (activeFilter === 'top_rated') {
+        return (b.rating || 0) - (a.rating || 0);
+      }
+      return 0;
+    });
+
+    // Radius filter with graceful fallback
     if (profile?.location?.lat && profile?.location?.lng) {
-      shopResults = shopResults.filter(s => {
+      const nearby = shopResults.filter(s => {
         if (!s.location?.lat || !s.location?.lng) return false;
         const dist = calculateDistance(profile.location.lat, profile.location.lng, s.location.lat, s.location.lng);
         return dist <= 5;
       });
+      if (nearby.length > 0) {
+        shopResults = nearby;
+      }
     }
     setFilteredShops(shopResults);
   }, [searchTerm, activeFilter, workers, shops]);
