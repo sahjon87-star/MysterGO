@@ -112,6 +112,18 @@ export const BookingStatusPage: React.FC = () => {
 
   const handleSubmitPayment = async () => {
     if (!bookingId || !trxId) return;
+    
+    const cleanTrxId = trxId.trim();
+    const method = booking?.paymentMethod || 'bkash';
+    if (method === 'bkash' && cleanTrxId.length !== 10) {
+      setFeedback({ type: 'error', message: 'bKash Transaction ID must be exactly 10 characters long.' });
+      return;
+    }
+    if (method === 'nagad' && cleanTrxId.length !== 8) {
+      setFeedback({ type: 'error', message: 'Nagad Transaction ID must be exactly 8 characters long.' });
+      return;
+    }
+
     setSubmitting(true);
     setFeedback(null);
     try {
@@ -647,8 +659,9 @@ export const BookingStatusPage: React.FC = () => {
                   <input 
                     type="text"
                     value={trxId}
-                    onChange={(e) => setTrxId(e.target.value)}
-                    placeholder={booking.paymentMethod === 'bkash' ? 'bKash Transaction ID (TrxID)' : 'Nagad Transaction ID (TrxID)'}
+                    maxLength={booking.paymentMethod === 'bkash' ? 10 : booking.paymentMethod === 'nagad' ? 8 : 12}
+                    onChange={(e) => setTrxId(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''))}
+                    placeholder={booking.paymentMethod === 'bkash' ? 'bKash Transaction ID (exactly 10 chars)' : 'Nagad Transaction ID (exactly 8 chars)'}
                     className="w-full bg-brand-dark border border-brand-surface rounded-[28px] px-6 py-5 text-base font-black focus:ring-2 focus:ring-brand-amber outline-none text-cream tracking-widest shadow-inner placeholder:text-gray-teal/50"
                   />
                 </div>

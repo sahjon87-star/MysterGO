@@ -98,6 +98,15 @@ export const CustomerWallet: React.FC = () => {
       toast.error('Please fill all fields');
       return;
     }
+    const cleanTrxId = trxId.trim();
+    if (method === 'bkash' && cleanTrxId.length !== 10) {
+      toast.error('bKash Transaction ID must be exactly 10 characters long.');
+      return;
+    }
+    if (method === 'nagad' && cleanTrxId.length !== 8) {
+      toast.error('Nagad Transaction ID must be exactly 8 characters long.');
+      return;
+    }
     
     setProcessing(true);
     try {
@@ -421,9 +430,10 @@ export const CustomerWallet: React.FC = () => {
                   <input 
                     type="text" 
                     value={trxId}
-                    onChange={(e) => setTrxId(e.target.value)}
+                    maxLength={method === 'bkash' ? 10 : method === 'nagad' ? 8 : 12}
+                    onChange={(e) => setTrxId(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''))}
                     className="w-full bg-slate-50 dark:bg-brand-surface border border-slate-100 dark:border-slate-800 rounded-2xl px-5 py-4 focus:ring-2 focus:ring-primary-blue outline-none text-sm font-bold text-cream dark:text-cream"
-                    placeholder="Enter TrxID"
+                    placeholder={method === 'bkash' ? 'bKash TrxID (exactly 10 chars)' : method === 'nagad' ? 'Nagad TrxID (exactly 8 chars)' : 'Enter TrxID'}
                   />
                 </div>
 

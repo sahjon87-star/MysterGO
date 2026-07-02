@@ -49,6 +49,16 @@ export const WalletPage: React.FC = () => {
       toast.error('Please enter amount and TrxID');
       return;
     }
+    const cleanTrxId = trxId.trim();
+    if (method === 'bkash' && cleanTrxId.length !== 10) {
+      toast.error('bKash Transaction ID must be exactly 10 characters long.');
+      return;
+    }
+    if (method === 'nagad' && cleanTrxId.length !== 8) {
+      toast.error('Nagad Transaction ID must be exactly 8 characters long.');
+      return;
+    }
+
     const numAmount = parseFloat(amount);
     if (isNaN(numAmount) || numAmount < 10) {
       toast.error('Minimum recharge: ৳10');
@@ -169,8 +179,9 @@ export const WalletPage: React.FC = () => {
             <input 
               type="text"
               value={trxId}
-              onChange={(e) => setTrxId(e.target.value)}
-              placeholder="Enter Transaction ID (TrxID)"
+              maxLength={method === 'bkash' ? 10 : method === 'nagad' ? 8 : 12}
+              onChange={(e) => setTrxId(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''))}
+              placeholder={method === 'bkash' ? 'bKash TrxID (exactly 10 chars)' : method === 'nagad' ? 'Nagad TrxID (exactly 8 chars)' : 'Enter Transaction ID'}
               className="w-full bg-slate-50 dark:bg-brand-surface/50 border border-transparent dark:border-slate-700 p-4 rounded-2xl outline-none focus:ring-2 focus:ring-primary-blue text-sm font-bold text-cream dark:text-cream transition-all"
             />
           </div>
